@@ -1,0 +1,182 @@
+﻿@model SchoolMIS.Models.IncomeTable
+
+<link href="~/Content/custom/customCSS.css" rel="stylesheet" />
+<body>
+    <div class="container-fluid p-2">
+        <div class="row">
+            <div class="d-flex justify-content-md-between pt-2 pb-4">
+                <h4><b>د عایداتو معلومات اضافه کول</b></h4>
+                <h4><b>Create  Income Information</b></h4>
+
+            </div>
+        </div>
+
+        @*this is alert section*@
+        <div id="resultMessage"></div>
+        <div class="card p-4">
+            <form id="IncomeForm" enctype="multipart/form-data">
+                @Html.AntiForgeryToken()
+                <div class="row">
+                    <div class="col-8">
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <p class="control-label me-3  mb-0">څیز نوم</p>
+                                    <div class="col-md-12">
+                                        <input type="text" name="Name" id="Name" class="form-control" style="width: 100%; height: 40px" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <p class="control-label me-3  mb-0">اندازه</p>
+                                    <div class="col-md-12">
+                                        <input type="text" name="Amount" id="Amount" class="form-control" style="width: 100%; height: 40px" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <p class="control-label me-3  mb-0"> فی قیمت</p>
+                                    <div class="col-md-12">
+                                        <input type="text" name="price" id="price" class="form-control" style="width: 100%; height: 40px" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <p class="control-label me-3  mb-0"> ټول تخفیف</p>
+                                    <div class="col-md-12">
+                                        <input type="text" name="Discount" id="Discount" class="form-control" style="width: 100%; height: 40px" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <p class="control-label me-3  mb-0">مجموعه</p>
+                                    <div class="col-md-12">
+                                        <input type="number" name="NetAmount" id="NetAmount" onclick="colIncomes(this)" class="form-control" style="width: 100%; height: 40px" />
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <p class="control-label me-3  mb-0">تاریخ</p>
+                                    <div class="col-md-12">
+                                        <input type="text" name="Date" id="Date" class="form-control" style="width:100%;height:40px" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <p class="control-label me-3  mb-0"> خرڅوونکی</p>
+                                    <div class="col-md-12">
+                                        @Html.DropDownList("StaffID", null, htmlAttributes: new { @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <p class="control-label me-3  mb-0"> وضاخت</p>
+                                    <div class="col-md-12">
+                                        <input type="text" name="Description" id="Description" class="form-control" style="width:100%; height:40px" />
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="form-group">
+                                <div class="btn-group  col-12 ">
+                                    <a href="@Url.Action("Index","IncomeTables")" class="btn  btn-outline-success border-bottom-success"> لیست ته شاتګ</a>
+                                    <button type="submit" class="btn btn-primary"> نوی معلومات اضافه کړئ</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="row ms-1 border-1 mt-4">
+                            <img src="~/Content/image/money3.png" style="width: 100%; height: 350px; border-radius: 5%; " />
+                        </div>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+
+    </div>
+
+    <script src="~/Scripts/jquery-3.7.0.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script type="text/javascript"></script>
+    @section Scripts {
+        @Scripts.Render("~/bundles/persianDatepicker")
+
+        <script>
+            $(document).ready(function () {
+           
+                $("#Date").persianDatepicker({
+                    format: 'YYYY/MM/DD',
+                    autoClose: true
+                });
+            });
+        </script>
+    }
+    <script>
+    $(document).ready(function () {
+
+        $("#IncomeForm").validate({
+            rules: {
+                Name: {
+                    required: true,
+                },
+                price: {
+                    required: true,
+                    number: true
+                },
+                Amount: {
+                    required: true,
+                    number:true
+
+                },
+                NetAmount: {
+                    required: true,
+                    number: true
+                },
+                Date: {
+                    required: true,
+
+                },
+            },
+            submitHandler: function (form) {
+               
+                 
+                var formData = new FormData(form);
+
+                $.ajax({
+                    url: '@Url.Action("Create", "IncomeTables")',
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        if (response.success) {
+                            $("#resultMessage").html("<div class='alert alert-success'>" + response.msg + "</div>");
+                            $("#IncomeForm")[0].reset();
+                            window.location.href = response.redirectUrl;
+                        } else {
+                            $("#resultMessage").html("<div class='alert alert-danger'>" + response.msg + "</div>");
+                        }
+                    },
+                    error: function () {
+                        $("#resultMessage").html("<div class='alert alert-danger'>An error occurred.</div>");
+                    }
+
+                });
+            }
+        });
+
+    });
+
+        function colIncomes() {
+            var price = $("#price").val();
+            var Amount = $("#Amount").val();
+            var Discount = $("#Discount").val();
+            var collection = parseFloat(price) * parseFloat(Amount) - parseFloat(Discount);
+
+            $("#NetAmount").val(collection).text(collection);
+
+        }
+    </script>
+
+</body>

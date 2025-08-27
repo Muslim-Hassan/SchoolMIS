@@ -1,0 +1,134 @@
+﻿@model List<SchoolMIS.Models.timeTable>
+@{
+    var allTimes = ViewBag.AllTimes as List<string>;
+}
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+
+<html dir="rtl">
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link href="~/Content/custom/customCSS.css" rel="stylesheet" />
+    <link href="~/Content/css/sb-admin-2.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-3.7.0.min.js"></script>
+    <title>marksByClass</title>
+</head>
+<body class="pashtoFont p-4">
+    <div class="container-fluid">
+        <div class="col-12 d-flex flex-row justify-content-between  mb-3 p-3">
+
+            <img src="~/Content/image/logo1.jpg" style="width:150px ;height:80px" />
+            <div class="text-center">
+                <h2><b>چاردیوال خصوصی ښوونځی </b></h2>
+                <h4><b>د استاذانو ورځنی تقسیم اوقات راپور  </b></h4>
+            </div>
+            @if (ViewBag.Image != null)
+            {
+                <img src="@Url.Content(ViewBag.Image)" style="width: 80px; height: 80px" />
+            }
+
+
+        </div>
+      
+        @using (Html.BeginForm("teacherTimeTable", "ScheduleTables", FormMethod.Post, new { @class = "hideInPrint" }))
+        {
+
+
+<div class="row mb-4">
+                <div class="col-md-1 border bg-light   text-center">
+                 <label class="fw-bold mt-1 pt-1"><b>استاذ</b></label>
+                </div>
+                <div class="col-md-8">
+                   
+                        @Html.DropDownList("staffid", ViewBag.StaffList as SelectList?? new SelectList(Enumerable.Empty<SelectListItem>()),"select list", new {@class="form-control hideInPrint"})
+                    
+                 
+                </div>
+                <div class="col-md-3">
+                    <input type="submit" value="د ټاکل شوی استاذ تقسیم اوقات پیدا کړئ" class="btn btn-primary hideInPrint" />
+
+
+                </div>
+            </div>
+
+
+        }
+
+
+        <div class="row">
+            <p>د <b> ښاغلی/اغلۍ :</b><b>[ @ViewBag.Name ]</b> ورځنی تقسیم اوقات</p>
+        </div>
+
+
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Day</th>
+                    @foreach (var time in allTimes)
+                    {
+                        <th>@time</th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var dayGroup in Model)
+                {
+                    <tr>
+                        <td>@dayGroup.Day</td>
+                        @foreach (var time in allTimes)
+                        {
+                            <td>
+                                @if (dayGroup.TimeSubjectMapping.ContainsKey(time))
+                                {
+                                    @dayGroup.TimeSubjectMapping[time]
+                                }
+                                else
+                                {
+                                    @("ساعت خالی دی")// Empty if no class
+                                }
+                            </td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+
+
+    </div>
+    <div class="col-12  d-flex flex-row justify-content-center" dir="ltr">
+       
+        <div>
+            <a href="@Url.Action("Dashboard","Home")" id="hideInPrint" class="btn btn-success ">کور پاڼی ته شاتګ </a>
+            <a class="btn btn-primary " id="hideInPrint" onclick="window.print()">PDF ذخیره کړئ </a>
+            <a class="btn btn-primary  " id="hideInPrint" onclick="window.print()">راپور پرنټ کړئ </a>
+        </div>
+    </div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

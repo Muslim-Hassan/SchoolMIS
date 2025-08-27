@@ -1,0 +1,297 @@
+﻿@model IEnumerable<SchoolMIS.Models.ExpencesTable>
+@{
+    String Actions = "hidden";
+    String creation = "hidden";
+
+
+    if (Session["UserId"] == null)
+    {
+        Response.Redirect("~/Home/Index");
+    }
+    else
+    {
+
+        if (Session["UserType"].ToString() == "admin" || Session["UserType"].ToString() == "Admin" || Session["UserType"].ToString() == "ادمین" || Session["UserType"].ToString() == "اډمین")
+        {
+
+
+            creation = "show";
+            Actions = "show";
+
+
+        }
+        else
+        {
+
+            creation = "show";
+
+
+
+        }
+
+    }
+}
+<style>
+    .left{float:left;}
+    .right{float:right;}
+</style>
+<div class="d-flex justify-content-md-between pt-2">
+    <h4><b>د  مصارفو معلومات</b></h4>
+
+    <p class="btn btn-group">
+        <a href="@Url.Action("Dashboard","Home")" class="btn btn-primary"> کور صفحه</a>
+        <a href="@Url.Action("Create","ExpencesTables")" class="btn btn-success @creation"> نوی معلومات اضافه کړئ</a>
+
+    </p>
+    <h4><b>Expences  Information</b></h4>
+</div>
+
+<div class="card shadow  pre-scrollable ">
+
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="0">
+                <thead class="table-active">
+                    <tr>
+
+                        <th>شماره</th>
+                        <th> څیز نوم</th>
+                        <th>اندازه</th>
+                        <th>فی قیمت</th>
+                        <th>مجموعه قیمت</th>
+                        <th>راوړونکی</th>
+                        <th>تاریخ</th>
+                        <th>وضاحت </th>
+                        <th class="@Actions">Action </th>
+                    </tr>
+                </thead>
+                <tfoot class="table-active">
+                    <tr>
+                        <th>شماره</th>
+                        <th> څیز نوم</th>
+                        <th>اندازه</th>
+                        <th>فی قیمت</th>
+                        <th>مجموعه قیمت</th>
+                        <th>راوړونکی</th>
+                        <th>تاریخ</th>
+                        <th>وضاحت </th>
+                        <th class="@Actions">Action </th>
+                    </tr>
+                </tfoot>
+                <tbody id="tbody">
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ExpencesID)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ItemName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Amount)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Price)
+                            </td>
+                            <td>
+                                @{ 
+                                    var totalPrice =Math.Round( item.Amount * item.Price,2);
+                                }@totalPrice
+
+
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.StaffTable.Name)
+
+                            </td>
+                            <td>
+                                @SchoolMIS.Models.Converssion.ToShamsi(item.Date)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Description)
+
+                            </td>
+                            <td class="@Actions">
+                                <div class="btn-group">
+                                    @Html.ActionLink(" ", "Edit", "ExpencesTables", new { id = item.ExpencesID }, new { @class = "btn btn-primary fa fa-edit" })
+                                    @*<button class="btn btn-info btn-Details" data-id="@item.ExpencesID"><i class="fa fa-info"></i></button>*@
+                                    <button class="btn btn-danger btn-delete" data-id="@item.ExpencesID"><i class="fa fa-trash"></i></button>
+                                </div>
+                            </td>
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+@* delete model*@
+<div id="deleteModal" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white d-flex justify-content-between align-content-center border-dark">
+                <img src="~/Content/image/logo1.jpg" style="width:40px;border-radius:50%;" />
+
+                <h4 class="modal-title text-center px-2"><b> ایا مصارفو  معلومات لمنځه یوسی؟</b></h4>
+
+
+            </div>
+            <div class="modal-body">
+                @* this is alert section*@
+                <div id="resultMessage"></div>
+                <div class="row">
+
+                    <div class="col-6 card p-3 shadow">
+                        <p><span id="DDate" class="left"></span><strong class="right"> :تاریخ</strong> </p>
+                        <hr class="m-0 p-0" />
+                        <p><span id="DStaff" class="left"></span><strong class="right"> :راوړونکی</strong> </p>
+                        <hr class="m-0 p-0" />
+                        <p><span id="DDescription" class="left"></span><strong class="right"> :  وضاحت</strong> </p>
+                    </div>
+                    <div class="col-6 card p-3 shadow">
+                        <p><span id="DItemName" class="left"></span><strong class="right"> : څیز نوم</strong> </p>
+                        <hr class="m-0 p-0" />
+                        <p><span id="DAmount" class="left"></span><strong class="right"> : اندازه یا شمیر</strong> </p>
+                        <hr class="m-0 p-0" />
+                        <p> <span id="DPrice" class="left"></span><strong class="right"> : قیمت</strong></p>
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="modal-footer bg-danger text-white">
+                <form id="deleteForm">
+                    <input type="hidden" id="input" />
+                    <button type="submit" class="btn btn-primary" id="submitbtn">هو</button>
+                </form>
+                <button type="button" class="btn btn-secondary pe-2" data-bs-dismiss="modal"> نه</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@* details modal*@
+@*<div id="detailsModal" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white d-flex justify-content-between align-content-center border-dark">
+                    <img src="~/Content/image/logo1.jpg" style="width:40px;border-radius:50%;" />
+
+                    <h4 class="modal-title text-center px-2"><b><span id="header"></span>امتحان معلومات</b></h4>
+
+
+                </div>
+                <div class="modal-body " id="modelBody">
+                    <div class="row">
+                        <div class="col-6 card p-3 shadow">
+                            <p><span id="Date"></span><strong class="right"> :تاریخ</strong> </p>
+                            <hr class="m-0 p-0" />
+                            <p><span id="Staff"></span><strong class="right"> :راوړونکی</strong> </p>
+                            <hr class="m-0 p-0" />
+                            <p><span id="Description"></span><strong class="right"> :  وضاحت</strong> </p>
+                        </div>
+                        <div class="col-6 card p-3 shadow">
+                            <p><span id="ItemName"></span><strong class="right"> : څیز نوم</strong> </p>
+                            <hr class="m-0 p-0" />
+                            <p><span id="Amount"></span><strong class="right"> : اندازه یا شمیر</strong> </p>
+                            <hr class="m-0 p-0" />
+                            <p> <span id="Price"></span><strong class="right"> : قیمت</strong></p>
+                        </div>
+                    </div>
+
+
+
+                </div>
+
+                <div class="modal-footer bg-danger text-white">
+                    <button type="button" class="btn btn-secondary pe-2" data-bs-dismiss="modal">شا تګ</button>
+                </div>
+            </div>
+        </div>
+    </div>*@
+
+<script src="~/Scripts/jquery-3.7.0.min.js"></script>
+
+<script type="text/javascript"></script>
+<script>
+    $(document).ready(function () {
+           //this is deletion section
+       $('.btn-delete').click(function () {
+         var id = $(this).data('id');
+           $.ajax({
+
+            url: '@Url.Action("Delete","ExpencesTables")',
+            type: 'POST',
+            data: { id: id },
+            success: function (response) {
+                if (response.success) {
+                    $('#input').val(response.data.ExpencesID);
+                    $('#DItemName').text(response.data.ItemName);
+                    $('#DAmount').text(response.data.Amount);
+                    $('#DPrice').text(response.data.Price);
+                    $('#DStaff').text(response.data.staff);
+                    $('#DDate').text(response.data.date);
+                    $('#DDescription').text(response.data.Description);
+
+                    //modal show
+                    $('#deleteModal').modal('show');
+                } else {
+                    $("#resultMessage").html("<div class='alert alert-success'>" + response.msg + "</div>");
+                }
+            },
+            error: function () {
+              alert("errore")
+            }
+        });
+
+       });
+       //------------------------------ConfirmDeletion
+       $('#submitbtn').click(function (e) {
+          e.preventDefault();  // Prevent the default form submission
+          var id=parseInt($('#input').val());
+           $.ajax({
+               url: '@Url.Action("ConDelete", "ExpencesTables")',
+               type: 'POST',
+               data: { id: id },  // Send the serialized data
+               success: function (response) {
+                 $("#resultMessage").html("<div class='alert alert-success'>" + response.msg + "</div>");
+                 window.location.href = response.redirectUrl;
+        },
+        error: function () {
+            alert("error occured");
+        }
+    });
+});
+ //this is for detail----------------------------------
+        @*$('.btn-Details').click(function () {
+            var id = $(this).data('id');
+            $.ajax({
+                url: '@Url.Action("Details", "ExpencesTables")',
+                type: 'POST',
+                data: { id: id },
+                success: function (response) {
+                    if (response.success) {
+                        $('#header').val(response.data.ItemName);
+                        $('#ItemName').text(response.data.ItemName);
+                        $('#Amount').text(response.data.Amount);
+                        $('#Price').text(response.data.Price);
+                        $('#Staff').text(response.data.staff);
+                        $('#Date').text(response.data.date);
+                        $('#Description').text(response.data.Description);
+
+                        // Show the modal
+                        $('#detailsModal').modal('show');
+                    } else {
+                        alert("errore occurd")
+                    }
+                },
+                error: function () {
+                    alert('An error occurred while fetching the details.');
+                }
+            });
+        });*@
+});
+</script>
+

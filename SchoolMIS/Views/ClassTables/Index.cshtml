@@ -1,0 +1,261 @@
+﻿@model IEnumerable<SchoolMIS.Models.ClassTable>
+@{
+    String Actions = "hidden";
+    String creation = "hidden";
+
+
+    if (Session["UserId"] == null)
+    {
+        Response.Redirect("~/Home/Index");
+    }
+    else
+    {
+
+        if (Session["UserType"].ToString() == "admin" || Session["UserType"].ToString() == "Admin" || Session["UserType"].ToString() == "ادمین" || Session["UserType"].ToString() == "اډمین")
+        {
+
+
+            creation = "show";
+            Actions = "show";
+
+
+        }
+     
+
+    }
+}
+<div class="d-flex justify-content-md-between  py-2">
+    <h4><b>د صنفونو  معلومات</b></h4>
+
+    <p class="btn btn-group">
+        <a href="@Url.Action("Dashboard","Home")" class="btn btn-primary"> کور صفحه</a>
+        <a href="@Url.Action("Create","ClassTables")" class="btn btn-success @creation"> نوی معلومات اضافه کړئ</a>
+
+    </p>
+    <h4><b> Class Information</b></h4> 
+</div>
+<div>
+    <!-- DataTales Example -->
+    <div class="card shadow  pre-scrollable">
+
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="0">
+                    <thead class="table-active">
+                        <tr>
+                            <th>شماره</th>
+                            <th> صنف</th>
+                            <th>ټول شاګردان</th>
+                            <th>حاضر شاګردان</th>
+                            <th>استاذ</th>
+                            <th class="@Actions">Action</th>
+                        </tr>
+                    </thead>
+                    <tfoot class="table-active">
+                        <tr>
+                            <th>شماره</th>
+                            <th> صنف</th>
+                            <th>ټول شاګردان</th>
+                            <th>حاضر شاګردان</th>
+                            <th>استاذ</th>
+                            <th class="@Actions">Action</th>
+                        </tr>
+                    </tfoot>
+                    <tbody id="tbody">
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ClassID)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.StudentAmount)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.PresentStudent)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.StaffTable.Name)
+                                </td>
+                                <td class="@Actions">
+                                    <div class="btn-group">
+                                        @Html.ActionLink(" ", "Edit", "ClassTables", new { id = item.ClassID }, new { @class = "btn btn-primary fa fa-edit" })
+                                        @*<button class="btn btn-info btn-Details" data-id="@item.UserID"><i class="fa fa-info"></i></button>*@
+                                        <button class="btn btn-danger btn-delete" data-id="@item.ClassID"><i class="fa fa-trash"></i></button>
+                                    </div>
+                                </td>
+
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+
+
+@* delete model*@
+<div id="deleteModal" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white d-flex justify-content-between align-content-center border-dark">
+                <img src="~/Content/image/logo1.jpg" style="width:40px;border-radius:50%;" />
+
+                <h4 class="modal-title text-center px-2"><b> ایا غواړی چی صنف   لمنځه یوسی؟</b></h4>
+
+
+            </div>
+            <div class="modal-body px-4">
+
+                @* this is alert section*@
+                <div id="resultMessage"></div>
+                <p><span id="DClass" style="float: left;"></span><strong style="float:right;">صنف :  </strong> </p>
+                <hr class="p-0 m-0" /><br />
+                <p> <span id="DAllStudent" style="float: left;"></span><strong style="float:right">ټول شاګردان : </strong></p>
+                <hr class="p-0 m-0" /><br />
+                <p><span id="DPresentStudent" style="float: left;"></span><strong style="float:right;">حاضر شاګردان : </strong> </p>
+                <hr class="p-0 m-0" /><br />
+                <p> <span id="DStaff" style="float:left;"></span><strong style="float:right">استاذ : </strong></p>
+
+
+            </div>
+            <div class="modal-footer bg-danger text-white">
+                <form id="deleteForm">
+                    <input type="hidden" id="input" />
+                    <button type="submit" class="btn btn-primary" id="submitbtn">هو</button>
+                </form>
+                <button type="button" class="btn btn-secondary pe-2" data-bs-dismiss="modal"> نه</button>
+            </div>
+        </div>
+    </div>
+</div>
+@* details model*@
+@*<div id="detailsModal" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white d-flex justify-content-between align-content-center border-dark">
+                    <img src="~/Content/image/logo1.jpg" style="width:40px;border-radius:50%;" />
+
+                    <h4 class="modal-title text-center px-2"><b><span id="header"></span>صنف معلومات</b></h4>
+
+
+                </div>
+                <div class="modal-body px-4">
+
+                    <p><span id="Class"></span><strong style="float:right;"> : صنف </strong> </p>
+                    <hr />
+                    <p> <span id="AllStudent"></span><strong style="float:right"> :ټول شاګردان </strong></p>
+                    <hr />
+                    <p><span id="PresentStudent"></span><strong style="float:right;"> : حاضر شاګردان</strong> </p>
+                    <hr />
+                    <p> <span id="Staff"></span><strong style="float:right"> :استاذ </strong></p>
+                </div>
+                <div class="modal-footer bg-danger text-white">
+
+                    <button type="button" class="btn btn-secondary pe-2" data-bs-dismiss="modal">شا تګ</button>
+                </div>
+            </div>
+        </div>
+    </div>*@
+
+
+
+<script src="~/Scripts/jquery-3.7.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+
+        //this is detail section
+     @*$('.btn-Details').click(function () {
+     var id = $(this).data('id');
+
+
+     // AJAX request to get student details
+     $.ajax({
+         url: '@Url.Action("Details", "ClassTables")',
+         type: 'POST',
+         data: { id: id },
+         success: function (response) {
+
+
+             if (response.success) {
+
+                 $('#header').text(response.data.Name);
+                 $('#Class').text(response.data.Name);
+                 $('#AllStudent').text(response.data.StudentAmount);
+                 $('#PresentStudent').text(response.data.PresentStudent);
+                 $('#Staff').text(response.data.staff);
+
+                 // Show the modal
+                 $('#detailsModal').modal('show');
+             } else {
+                 alert("errore occurd")
+             }
+         },
+         error: function () {
+             alert('An error occurred while fetching the details.');
+         }
+     });
+ });*@
+
+
+
+
+    //this is deletion section
+        $('.btn-delete').click(function () {
+
+          var id = $(this).data('id');
+         // AJAX request to delete the record
+         $.ajax({
+             url: '@Url.Action("Delete", "ClassTables")',
+             type: 'POST',
+             data: { id: id },
+             success: function (response) {
+                 if (response.success) {
+
+                     $('#input').val(response.data.ClassID);
+                     $('#DClass').text(response.data.Name);
+                     $('#DAllStudent').text(response.data.StudentAmount);
+                     $('#DPresentStudent').text(response.data.PresentStudent);
+                     $('#DStaff').text(response.data.staff);
+                     //modal show
+                     $('#deleteModal').modal('show');
+                 } else {
+                     alert(response.message);
+                 }
+             },
+             error: function () {
+               alert("errore")
+             }
+         });
+
+        });
+
+        //------------------------------
+        $('#submitbtn').click(function (e) {
+           e.preventDefault();  // Prevent the default form submission
+           var id=parseInt($('#input').val());
+            $.ajax({
+                url: '@Url.Action("ConDelete", "ClassTables")',
+                type: 'POST',
+                data: { id: id },  // Send the serialized data
+                success: function (response) {
+
+                    $("#resultMessage").html("<div class='alert alert-success'>" + response.msg + "</div>");
+                  window.location.href = response.redirectUrl;
+         },
+         error: function () {
+             alert("error occured");
+         }
+     });
+ });
+    });
+</script>
+

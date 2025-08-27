@@ -1,0 +1,240 @@
+﻿
+@{
+
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+
+<html dir="rtl">
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link href="~/Content/custom/customCSS.css" rel="stylesheet" />
+    <link href="~/Content/css/sb-admin-2.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+
+    <title>marksByClass</title>
+</head>
+<body class="pashtoFont p-4">
+    <div class="container-fluid">
+        <div class="col-12 d-flex flex-row justify-content-between  mb-3 p-3">
+
+            <img src="~/Content/image/logo1.jpg" style="width:150px ;height:80px" />
+            <div class="text-center">
+                <h2><b>چاردیوال خصوصی ښوونځی </b></h2>
+                <h4><b>د صنف په اساس  د محرومو شاګردانو  راپور  </b></h4>
+            </div>
+            <img src="~/Content/image/aei.jpg" style="width:150px ;height:80px" />
+
+        </div>
+
+        @using (Html.BeginForm("devoidStudent", "StudentAttendencyTables", FormMethod.Post, new { @class = "hideInPrint" }))
+        {
+            <div class="row mb-4">
+                <div class="col-md-10">
+
+                    <div class="row">
+                        <div class="col-md-2 bg-light border">
+                            <label class=" mt-1 fw-bold pe-3">صنف</label>
+                        </div>
+                        <div class="col-md-10">
+                            @Html.DropDownList("ClassID", ViewBag.StudentList as SelectList, "صنف وټاکئ", new { @id = "ClassID",  @class = "form-control hideInPrint" })
+
+                        </div>
+
+                    </div>
+                </div>
+
+
+                <div class="col-md-2">
+
+                    <button type="submit" class="btn btn-primary hideInPrint" style="width:100%">   راپور جوړ کړئ </button>
+
+                </div>
+            </div>
+
+
+        }
+
+
+
+        @*<table class="table table-bordered ">*@
+        <!--<thead class="">-->
+        @*<tr>
+            <th colspan="2" class="bg-light text-center">
+                نوم :
+                @{
+                    if (Model.Student != null)
+                    {
+                        @Model.Student.Name;
+                    }
+                }
+
+            </th>*@
+
+        @*<th class="bg-light text-center">
+                پلار نوم :
+
+                @{
+                    if (Model.Student != null)
+                    {
+                        @Model.Student.FatherName;
+                    }
+                }
+
+            </th>*@
+
+        @*<th class="bg-light text-center">
+                نیکه نوم :
+                @{
+                    if (Model.Student != null)
+                    {
+                        @Model.Student.GrandFatherName;
+                    }
+                }
+            </th>*@
+
+        @*<th class="bg-light text-center">
+                صنف :
+                @{
+                    if (Model.Student != null)
+                    {
+                        @Model.Student.ClassTable.Name;
+                    }
+
+                }
+            </th>*@
+
+        <!--</tr>
+        </thead>-->
+        @*</table>*@
+
+
+        @{
+            var deprived = ViewBag.mahroom as List<dynamic>;
+            var notDeprived = ViewBag.notMahroom as List<dynamic>;
+        }
+        @*<h2>محروم شاګردان (Absence > 25%)</h2>
+            <table>
+                <tr><th>نوم</th><th>فیصدي غیر حاضري</th></tr>
+                @foreach (var student in deprived)
+                {
+                    <tr>
+                        <td>@student.Name</td>
+
+                        <td>@student.absentPercent %</td>
+                    </tr>
+                }
+            </table>
+
+            <h2>غیر محروم شاګردان (Absence ≤ 25%)</h2>
+            <table>
+                <tr><th>نوم</th><th>فیصدي غیر حاضري</th></tr>
+                @foreach (var student in notDeprived)
+                {
+                    <tr>
+                        <td>@student.Name</td>
+
+                        <td>@student.absentPercent %</td>
+                    </tr>
+                }
+            </table>*@
+        <div class="row my-3">
+          <h4 class="text-center"><b>  د @ViewBag.ClassName  د محرومو او غیر محرومو شاګردانو لیست</b></h4>
+        </div>
+        <div class="row d-flex flex-row justify-content-between">
+
+            <div class="col-md-6">
+                <h5 class="text-center"><b>د غیر محرومو شاګردانو لیست</b></h5>
+
+                <table class="table table-bordered">
+                    <thead class="table-active">
+                        <tr>
+                            <th>اساس </th>
+                            <th> نوم</th>
+                            <th> پلار نوم</th>
+                            <th> رسمی ورځی</th>
+                            <th> غیر حاضر</th>
+                            <th>  غیر حاضری فیصدی</th>
+                            @*<th> تصویر </th>*@
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var student in notDeprived)
+                        {
+                            <tr>
+                                <td>@student.RollNO</td>
+                                <td>@student.Name</td>
+                                <td>@student.FatherName</td>
+                                <td>@student.formalDay</td>
+                                <td>@student.absentDay</td>
+                                <td>@student.absentPercent</td>
+                                @*<td class="text-center border-1 rounded">
+                                    <img src="~/Content/img/@Path.GetFileName(@student.Image)" style="width:30px" />
+                                </td>*@
+                            </tr>
+                        }
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            <div class="col-md-6">
+                <h5 class="text-center"><b>د محرومو شاګردانو لیست</b> </h5>
+                <table class="table table-bordered">
+                    <thead class="table-active">
+                        <tr>
+                            <th>اساس </th>
+                            <th> نوم</th>
+                            <th> پلار نوم</th>
+                            <th> رسمی ورځی</th>
+                            <th> غیر حاضر</th>
+                            <th>  غیر حاضری فیصدی</th>
+                            @*<th> تصویر </th>*@
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var student in deprived)
+                        {
+                            <tr>
+                                <td>@student.RollNO</td>
+                                <td>@student.Name</td>
+                                <td>@student.FatherName</td>
+                                <td>@student.formalDay</td>
+                                <td>@student.absentDay</td>
+                                <td>@student.absentPercent</td>
+                                @*<td class="text-center border-1 rounded">
+                                    <img src="~/Content/img/@Path.GetFileName(@student.Image)" style="width:30px" />
+                                </td>*@
+                            </tr>
+                        }
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+
+
+
+
+
+
+
+
+    </div>
+    <div class="col-12  d-flex flex-row justify-content-center" dir="ltr">
+
+        <div>
+            <a href="@Url.Action("Dashboard","Home")" id="hideInPrint" class="btn btn-success ">کور پاڼی ته شاتګ </a>
+            <a class="btn btn-primary " id="hideInPrint" onclick="window.print()">PDF ذخیره کړئ </a>
+            <a class="btn btn-primary  " id="hideInPrint" onclick="window.print()">راپور پرنټ کړئ </a>
+        </div>
+    </div>
+    <script src="~/Scripts/jquery-3.7.0.min.js"></script>
+    <script type="text/javascript"></script>
+ 
+
+</body>
+</html>

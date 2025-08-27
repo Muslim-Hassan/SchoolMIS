@@ -1,0 +1,289 @@
+﻿@model IEnumerable<SchoolMIS.Models.TransferStdTable>
+<div class="d-flex justify-content-md-between pt-2">
+    <h4><b>د  شاګردانو سه پرچه </b></h4>
+
+    <p class="btn btn-group">
+        @Html.ActionLink("   کور صفحه ", "Dashboard", "Home", null, new { @class = "btn btn-primary" })
+        @Html.ActionLink(" نوی معلومات اضافه کړئ", "Create", null, new { @class = "btn btn-success" })
+
+    </p>
+    <h4><b>Transfermation of Student </b></h4>
+</div>
+<style>
+    .left{
+        float:left;
+    }
+    .right {
+        float: right;
+    }
+</style>
+<div class="card shadow  pre-scrollable ">
+
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="0">
+                <thead class="table-active">
+                    <tr>
+                        <th>اساس</th>
+                        <th>نوم</th>
+                        <th>پلار نوم</th>
+                        <th> صنف </th>
+                        <th> مکتب څخه</th>
+                        <th>مکتب ته</th>
+                        <th>تاریخ</th>
+                        <th>Action </th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <th>اساس</th>
+                        <th>نوم</th>
+                        <th>پلار نوم</th>
+                        <th> صنف </th>
+                        <th> مکتب څخه</th>
+                        <th>مکتب ته</th>
+                        <th>تاریخ</th>
+                    
+                        <th>Action </th>
+                    </tr>
+                </tfoot>
+                <tbody id="tbody">
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.RollNo)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.FatherName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ClassTable.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.FromSchool)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ToSchool)
+                            </td>
+                            <td>
+                                @SchoolMIS.Models.Converssion.ToShamsi(item.Date)
+                            </td>
+                         
+                            <td>
+                                <div class="btn-group">
+                                    @Html.ActionLink(" ", "Edit", "TransferStdTables", new { id = item.TransferStdID }, new { @class = "btn btn-primary fa fa-edit" })
+                                    <button class="btn btn-info btn-Details" data-id="@item.TransferStdID"><i class="fa fa-info"></i></button>
+                                    <button class="btn btn-danger btn-delete" data-id="@item.TransferStdID"><i class="fa fa-trash"></i></button>
+                                </div>
+                            </td>
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+@* delete model*@
+<div id="deleteModal" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white d-flex justify-content-between align-content-center border-dark">
+                <h4 class="modal-title text-center px-2"><b> ایا شاګرد د سه پرچی  معلومات لمنځه یوسی؟</b></h4>
+
+                <img src="~/Content/image/logo1.jpg" style="width:40px;border-radius:50%;" />
+
+
+
+            </div>
+            <div class="modal-body">
+                @* this is alert section*@
+                <div id="resultMessage"></div>
+                <div class="row">
+                    <div class="col-md-6 d-flex flex-row justify-content-center  card shadow">
+                        <img src=""  style="width: 243px; height: 160px; border-radius: 3%; border: 1px solid black" id="DFrontImage" />
+                    </div>
+                    <div class="col-md-6 d-flex flex-row justify-content-center  card shadow">
+                        <img src="" style="width: 243px; height: 160px; border-radius: 3%; border: 1px solid black" id="DBackImage" />
+                    </div>
+                </div>
+                <div class="row">
+
+                    <div class="col-6 card p-3 shadow">
+                        <p><span id="DStudent" class="left"></span><strong class="right">شاګرد :</strong> </p>
+                        <hr class="m-0 p-0" />
+                        <p><span id="DFatherName" class="left"></span><strong class="right">پلار نوم :</strong> </p>
+                        <hr class="m-0 p-0" />
+                        <p><span id="DFromSchool" class="left"></span><strong class="right">مکتب څخه : </strong> </p>
+                      
+
+
+                    </div>
+                    <div class="col-6 card p-3 shadow">
+                        <p><span id="DRollNo" class="left"></span><strong class="right">اساس :</strong> </p>
+                        <hr class="m-0 p-0" />
+                        <p><span id="DClass" class="left"></span><strong class="right">صنف :</strong> </p>
+                        <hr class="m-0 p-0" />
+                        <p><span id="DToSchool" class="left"></span><strong class="right">مکتب ته :  </strong> </p>
+                        <hr class="m-0 p-0" />
+                        <p><span id="DDate" class="left"></span><strong class="right"> تاریخ:</strong> </p>
+                    
+
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="modal-footer bg-danger text-white">
+                <form id="deleteForm">
+                    <input type="hidden" id="input" />
+                    <button type="submit" class="btn btn-primary" id="submitbtn">هو</button>
+                </form>
+                <button type="button" class="btn btn-secondary pe-2" data-bs-dismiss="modal"> نه</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@* details modal*@
+<div id="detailsModal" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white d-flex justify-content-between align-content-center border-dark">
+                <h4 class="modal-title text-center px-2"><b><span id="header"></span>سه پرچی معلومات</b></h4>
+                <img src="~/Content/image/logo1.jpg" style="width:40px;border-radius:50%;" />
+
+            </div>
+            <div class="modal-body " id="modelBody">
+                <div class="row">
+                    <div class="col-md-6 card  shadow d-flex flex-row justify-content-center ">
+                        <img src="" style="width:243px; height: 150px; border-radius: 3%; border: 1px solid black" id="FrontImage" />
+                    </div>
+                    <div class="col-md-6 d-flex flex-row justify-content-center  card shadow">
+                        <img src="" style="width: 243px; height: 150px; border-radius: 3%; border: 1px solid black " id="BackImage" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6 card p-3 shadow">
+                        <p><span id="Student" class="left"></span><strong class="right">شاګرد :</strong> </p>
+                        <hr class="m-0 p-0" />
+                        <p><span id="FatherName" class="left"></span><strong class="right">پلار نوم :</strong> </p>
+                        <hr class="m-0 p-0" />
+                        <p><span id="FromSchool" class="left"></span><strong class="right">مکتب څخه : </strong> </p>
+                     
+
+                    </div>
+                    <div class="col-6 card p-3 shadow">
+
+
+                        <p><span id="RollNo" class="left"></span><strong class="right">اساس :</strong> </p>
+                        <hr class="m-0 p-0" />
+                        <p><span id="Class" class="left"></span><strong class="right">صنف :</strong> </p>
+                        <hr class="m-0 p-0" />
+                        <p><span id="ToSchool" class="left"></span><strong class="right">مکتب ته :  </strong> </p>
+                        <hr class="m-0 p-0" />
+                        <p><span id="Date" class="left"></span><strong class="right">تاریخ :</strong> </p>
+                     
+                    </div>
+                </div>
+            </div>
+                <div class="modal-footer bg-danger text-white">
+                    <button type="button" class="btn btn-secondary pe-2" data-bs-dismiss="modal">شا تګ</button>
+                </div>
+            </div>
+        </div>
+    
+</div>
+
+<script src="~/Scripts/jquery-3.7.0.min.js"></script>
+
+<script type="text/javascript"></script>
+<script>
+    $(document).ready(function () {
+           //this is deletion section
+       $('.btn-delete').click(function () {
+         var id = $(this).data('id');
+           $.ajax({
+
+            url: '@Url.Action("Delete", "TransferStdTables")',
+            type: 'POST',
+            data: { id: id },
+            success: function (response) {
+                if (response.success) {
+                    $('#input').val(response.data.TransferStdID);
+                    $('#DDate').text(response.data.Date);
+                    $('#DStudent').text(response.data.Name);
+                    $('#DRollNo').text(response.data.RollNo);
+                    $('#DFatherName').text(response.data.FatherName);
+                    $('#DFromSchool').text(response.data.FromSchool);
+                    $('#DClass').text(response.data.Class);
+                    $('#DToSchool').text(response.data.ToSchool);
+                    $('#DFrontImage').attr('src', response.data.FrontImage);
+                    $('#DBackImage').attr('src', response.data.BackImage);
+
+                    //modal show
+                    $('#deleteModal').modal('show');
+                } else {
+                    $("#resultMessage").html("<div class='alert alert-success'>" + response.msg + "</div>");
+                }
+            },
+            error: function () {
+              alert("errore")
+            }
+        });
+
+       });
+       //------------------------------ConfirmDeletion
+       $('#submitbtn').click(function (e) {
+          e.preventDefault();  // Prevent the default form submission
+          var id=parseInt($('#input').val());
+           $.ajax({
+               url: '@Url.Action("ConDelete", "TransferStdTables")',
+               type: 'POST',
+               data: { id: id },  // Send the serialized data
+               success: function (response) {
+                 $("#resultMessage").html("<div class='alert alert-success'>" + response.msg + "</div>");
+                 window.location.href = response.redirectUrl;
+        },
+        error: function () {
+            alert("error occured");
+        }
+    });
+});
+ //this is for detail----------------------------------
+        $('.btn-Details').click(function () {
+            var id = $(this).data('id');
+            $.ajax({
+                url: '@Url.Action("Details", "TransferStdTables")',
+                type: 'POST',
+                data: { id: id },
+                success: function (response) {
+                    if (response.success) {
+                        $('#header').text(response.data.student);
+                        $('#Date').text(response.data.Date);
+                        $('#Student').text(response.data.Name);
+                        $('#RollNo').text(response.data.RollNo);
+                        $('#FatherName').text(response.data.FatherName);
+                        $('#FromSchool').text(response.data.FromSchool);
+                        $('#Class').text(response.data.Class);
+                        $('#ToSchool').text(response.data.ToSchool);
+                        $('#FrontImage').attr('src', response.data.FrontImage);
+                        $('#BackImage').attr('src', response.data.BackImage);
+
+                        // Show the modal
+                        $('#detailsModal').modal('show');
+                    } else {
+                        alert("errore occurd")
+                    }
+                },
+                error: function () {
+                    alert('An error occurred while fetching the details.');
+                }
+            });
+        });
+});
+</script>

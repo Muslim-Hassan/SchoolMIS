@@ -1,0 +1,56 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>AttendencyGet</title>
+</head>
+<body>
+    <div>
+        <form action="/StudentAttendencyTables/stdAttendency " method="post">
+            <div class="row mb-4">
+                <div class="col-md-4">
+                    <label>Studnet</label>
+                    @Html.DropDownList("StudentID", null, htmlAttributes: new { @class = "form-control" })
+                    </div>
+                <div class="col-md-4">
+                    <label>Class</label>
+                    @Html.DropDownList("ClassID", null, htmlAttributes: new { @class = "form-control" })
+                    </div>
+                <div class="col-md-3">
+                    <label>Month</label>
+                    <select type="text" name="Month" id="Month" class="form-control hideInPrint" style="width: 100%; height: 40px">
+                        <option value="All">All</option>
+                        <option value="January">January</option>
+                        <option value="Feberuary">Feberuary</option>
+                        <option value="March">March</option>
+                        <option value="April">April</option>
+                        <option value="May">May</option>
+                        <option value="June">June</option>
+                        <option value="July">July</option>
+                        <option value="August">August</option>
+                        <option value="September">September</option>
+                        <option value="October">October</option>
+                        <option value="November">November</option>
+                        <option value="December">December</option>
+
+                    </select>
+                </div>
+                <div class="col-md-1">
+                    <button type="submit" class="btn btn-primary hideInPrint"> جوړ کړئ</button>
+
+
+                </div>
+            </div>
+
+
+        </form>
+       
+    </div>
+</body>
+</html>

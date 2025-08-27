@@ -1,0 +1,325 @@
+﻿@model IEnumerable<SchoolMIS.Models.IncomeTable>
+
+@{
+    String Actions = "hidden";
+    String creation = "hidden";
+
+
+    if (Session["UserId"] == null)
+    {
+        Response.Redirect("~/Home/Index");
+    }
+    else
+    {
+
+        if (Session["UserType"].ToString() == "admin" || Session["UserType"].ToString() == "Admin" || Session["UserType"].ToString() == "ادمین" || Session["UserType"].ToString() == "اډمین")
+        {
+
+
+            creation = "show";
+            Actions = "show";
+
+
+        }
+        else
+        {
+            creation = "show";
+        }
+
+    }
+}
+<style>
+    .left{float:left;}
+    .right{float:right;}
+</style>
+<div class="d-flex justify-content-md-between pt-2">
+    <h4><b>د  عایداتو معلومات</b></h4>
+
+    <p class="btn btn-group">
+        <a href="@Url.Action("Dashboard","Home")" class="btn btn-primary"> کور صفحه</a>
+        <a href="@Url.Action("Create","IncomeTables")" class="btn btn-success @creation"> نوی معلومات اضافه کړئ</a>
+
+    </p>
+    <h4><b>Income  Information</b></h4>
+</div>
+
+<div class="card shadow  pre-scrollable ">
+
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="0">
+                <thead class="table-active">
+                    <tr>
+                        <th> څیز نوم</th>
+                        <th>اندازه</th>
+                        <th>فی قیمت</th>
+                        <th> ټول تخفیف</th>
+                        <th>مجموعه</th>
+                        <th>خرڅوونکی</th>
+                        <th>Date</th>
+                        <th class="@Actions">Action </th>
+                    </tr>
+                </thead>
+                <tfoot class="table-active">
+                    <tr>
+                        <th> څیز نوم</th>
+                        <th>اندازه</th>
+                        <th>قیمت</th>
+                        <th>تخفیف</th>
+                        <th>مجموعه</th>
+                        <th>خرڅوونکی</th>
+                        <th>Date</th>
+                     
+                        <th class="@Actions">Action </th>
+                    </tr>
+                </tfoot>
+                <tbody id="tbody">
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Amount)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.price)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Discount)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.NetAmount)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.StaffTable.Name)
+
+                            </td>
+                            <td>
+                                @SchoolMIS.Models.Converssion.ToShamsi(item.PaidDate)
+                            </td>
+                        
+                            <td class="@Actions">
+                                <div class="btn-group">
+                                    @Html.ActionLink(" ", "Edit", "IncomeTables", new { id = item.IncomeID }, new { @class = "btn btn-primary fa fa-edit" })
+                                    <button class="btn btn-info btn-Details" data-id="@item.IncomeID"><i class="fa fa-info"></i></button>
+                                    <button class="btn btn-danger btn-delete" data-id="@item.IncomeID"><i class="fa fa-trash"></i></button>
+                                </div>
+                            </td>
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+@* delete model*@
+<div id="deleteModal" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white d-flex justify-content-between align-content-center border-dark">
+                <h4 class="modal-title text-center px-2"><b> ایا  غواړۍ عایداتو  معلومات لمنځه یوسی؟</b></h4>
+                <img src="~/Content/image/logo1.jpg" style="width:40px;border-radius:50%;" />
+
+
+
+
+            </div>
+            <div class="modal-body">
+                @* this is alert section*@
+                <div id="resultMessage"></div>
+                <div class="row">
+                    <div class="col-6 card p-3 shadow">
+                        <p> <span id="DIncomeID" class="left"></span><strong class="right"> شماره : </strong></p>
+                        <hr class="m-0 p-0" />
+                        <p><span id="DItemName" class="left"></span><strong class="right"> څیز نوم : </strong> </p>
+                        <hr class="m-0 p-0" />
+                        <p><span id="DAmount" class="left"></span><strong class="right"> اندازه یا شمیر : </strong> </p>
+                        <hr class="m-0 p-0" />
+                        <p> <span id="DPrice" class="left"></span><strong class="right"> قیمت : </strong></p>
+                       
+                    </div>
+                    <div class="col-6 card p-3 shadow">
+
+
+                        <p> <span id="DDiscount" class="left"></span><strong class="right"> تخفیف : </strong></p>
+                        <hr class="m-0 p-0" />
+                        <p><span id="DNetAmount" class="left"></span><strong class="right"> مجموعه :</strong> </p>
+                        <hr class="m-0 p-0" />
+                        <p><span id="DDate" class="left"></span><strong class="right"> تاریخ :</strong> </p>
+                        <hr class="m-0 p-0" />
+                        <p><span id="DStaff" class="left"></span><strong class="right"> خرڅوونکی : </strong> </p>
+
+
+                    </div>
+
+
+                </div>
+                <div class="row ">
+                    <div class="col-md-2 card">
+                        <p><strong class="right" class="pt-md-2"> وضاحت :  </strong> </p>
+                    </div>
+                    <div class="col-md-10 card">
+                        <p><span id="DDescription"></span></p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer bg-danger text-white">
+                <form id="deleteForm">
+                    <input type="hidden" id="input" />
+                    <button type="submit" class="btn btn-primary" id="submitbtn">هو</button>
+                </form>
+                <button type="button" class="btn btn-secondary pe-2" data-bs-dismiss="modal"> نه</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@* details modal*@
+<div id="detailsModal" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white d-flex justify-content-between align-content-center border-dark">
+                    <h4 class="modal-title text-center px-2"><b><span id="header"></span> معلومات</b></h4>
+                    <img src="~/Content/image/logo1.jpg" style="width:40px;border-radius:50%;" />
+
+
+
+
+                </div>
+                <div class="modal-body " id="modelBody">
+                    <div class="row">
+                        <div class="col-6 card p-3 shadow">
+                            <p> <span id="IncomeID" class="left"></span><strong class="right"> شماره : </strong></p>
+                            <hr class="m-0 p-0" />
+                            <p><span id="ItemName" class="left"></span><strong class="right"> څیز نوم : </strong> </p>
+                            <hr class="m-0 p-0" />
+                            <p><span id="Amount" class="left"></span><strong class="right"> اندازه یا شمیر : </strong> </p>
+                            <hr class="m-0 p-0" />
+                            <p> <span id="Price" class="left"></span><strong class="right"> قیمت : </strong></p>
+                        
+                        </div>
+                        <div class="col-6 card p-3 shadow">
+
+
+                            <p> <span id="Discount" class="left"></span><strong class="right"> تخفیف : </strong></p>
+                            <hr class="m-0 p-0" />
+                            <p><span id="NetAmount" class="left"></span><strong class="right"> مجموعه :</strong> </p>
+                            <hr class="m-0 p-0" />
+                            <p><span id="Date" class="left"></span><strong class="right"> تاریخ :</strong> </p>
+                            <hr class="m-0 p-0" />
+                            <p><span id="Staff" class="left"></span><strong class="right"> خرڅوونکی : </strong> </p>
+
+
+                        </div>
+
+
+                    </div>
+                    <div class="row ">
+                        <div class="col-md-2 card">
+                            <p><strong class="right" class="pt-md-2"> وضاحت :  </strong> </p>
+                        </div>
+                        <div class="col-md-10 card">
+                            <p><span id="Description"></span></p>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="modal-footer bg-danger text-white">
+                    <button type="button" class="btn btn-secondary pe-2" data-bs-dismiss="modal">شا تګ</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script src="~/Scripts/jquery-3.7.0.min.js"></script>
+
+<script type="text/javascript"></script>
+<script>
+    $(document).ready(function () {
+           //this is deletion section
+       $('.btn-delete').click(function () {
+         var id = $(this).data('id');
+           $.ajax({
+
+            url: '@Url.Action("Delete","IncomeTables")',
+            type: 'POST',
+            data: { id: id },
+            success: function (response) {
+                if (response.success) {
+                    $('#input').val(response.data.IncomeID);
+                    $('#DIncomeID').text(response.data.IncomeID);
+                    $('#DItemName').text(response.data.Name);
+                    $('#DAmount').text(response.data.Amount);
+                    $('#DPrice').text(response.data.price);
+                    $('#DDiscount').text(response.data.Discount);
+                    $('#DNetAmount').text(response.data.NetAmount);
+                    $('#DStaff').text(response.data.staff);
+                    $('#DDate').text(response.data.date);
+                    $('#DDescription').text(response.data.Description);
+
+                    //modal show
+                    $('#deleteModal').modal('show');
+                } else {
+                    $("#resultMessage").html("<div class='alert alert-success'>" + response.msg + "</div>");
+                }
+            },
+            error: function () {
+              alert("errore")
+            }
+        });
+
+       });
+       //------------------------------ConfirmDeletion
+       $('#submitbtn').click(function (e) {
+          e.preventDefault();  // Prevent the default form submission
+          var id=parseInt($('#input').val());
+           $.ajax({
+               url: '@Url.Action("ConDelete", "IncomeTables")',
+               type: 'POST',
+               data: { id: id },  // Send the serialized data
+               success: function (response) {
+                 $("#resultMessage").html("<div class='alert alert-success'>" + response.msg + "</div>");
+                 window.location.href = response.redirectUrl;
+        },
+        error: function () {
+            alert("error occured");
+        }
+    });
+});
+ //this is for detail----------------------------------
+        $('.btn-Details').click(function () {
+            var id = $(this).data('id');
+            $.ajax({
+                url: '@Url.Action("Details", "IncomeTables")',
+                type: 'POST',
+                data: { id: id },
+                success: function (response) {
+                    if (response.success) {
+                        $('#header').text(response.data.Name);
+                        $('#IncomeID').text(response.data.IncomeID);
+                        $('#ItemName').text(response.data.Name);
+                        $('#Amount').text(response.data.Amount);
+                        $('#Price').text(response.data.price);
+                        $('#Discount').text(response.data.Discount);
+                        $('#NetAmount').text(response.data.NetAmount);
+                        $('#Staff').text(response.data.staff);
+                        $('#Date').text(response.data.date);
+                        $('#Description').text(response.data.Description);
+                        // Show the modal
+                        $('#detailsModal').modal('show');
+                    } else {
+                        alert("errore occurd")
+                    }
+                },
+                error: function () {
+                    alert('An error occurred while fetching the details.');
+                }
+            });
+        });
+});
+</script>

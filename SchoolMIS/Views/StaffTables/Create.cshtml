@@ -1,0 +1,297 @@
+﻿@model SchoolMIS.Models.StaffTable
+
+<head>
+    <link href="~/Content/custom/customCSS.css" rel="stylesheet" />
+    <script src="~/Content/MdBootstrapPersianDateTimePicker/jquery.min.js"></script>
+    <script src="~/Content/MdBootstrapPersianDateTimePicker/persian-date.min.js"></script>
+    <script src="~/Content/MdBootstrapPersianDateTimePicker/persian-datepicker.min.js"></script>
+</head>
+<body>
+    <div class="container-fluid p-2">
+        <div class="row">
+            <div class="d-flex justify-content-md-between pt-2 pb-4">
+                <h4><b>د استعمالوونکی معلومات اضافه کول</b></h4>
+                <h4><b>Create New User Information</b></h4>
+
+            </div>
+        </div>
+
+        @*this is alert section*@
+        <div id="resultMessage"></div>
+        <div class="card p-4">
+            <form id="StaffForm" enctype="multipart/form-data">
+                @Html.AntiForgeryToken()
+                <div class="row">
+                    <div class="col-4">
+
+                        <div class="form-group">
+                            <p class="control-label me-3  mb-0">نوم</p>
+                            <div class="col-md-12">
+                                <input type="text" name="Name" id="Name" class="form-control" style="width:100%" />
+
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <p class="control-label me-3  mb-0">پلار نوم</p>
+                            <div class="col-md-12">
+                                <input type="text" name="FatherName" id="FatherName" class="form-control" style="width:100%" />
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <p class="control-label me-3  mb-0">اداری ډول</p>
+                            <div class="col-md-12">
+                                @Html.DropDownList("StaffTypeID", null, htmlAttributes: new { @class = "form-control" })
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <p class="control-label me-3 mb-0">اوسنی استوګنځی</p>
+                            <div class="col-md-12">
+                                <input type="text" name="CurrentAddress" id="CurrentAddress" class="form-control" style="width:100%" />
+                            </div>
+                        </div>
+
+
+                        <div class="form-group " style="width:100%">
+                            <p class="control-label me-3  mb-0">ایمیل</p>
+                            <div class="col-md-12">
+                                <input type="email" name="Email" id="Email" class="form-control" style="width:100%" />
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <p class="control-label me-3  mb-0">تذکری نمبر</p>
+                            <div class="col-md-12">
+
+                                <input type="text" id="IdentityCardID" name="IdentityCardID" accept="image/*" class="form-control" style="width:100%" onchange="loadImage(this)" /><br>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-4">
+                        <div class="form-group">
+                            <p class="control-label me-3  mb-0">صلاحیت</p>
+                            <div class="col-md-12">
+                                @Html.DropDownList("UserTypeID", null, htmlAttributes: new { @class = "form-control" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <p class="control-label me-3  mb-0">تاریخ</p>
+                            <div class="col-md-12">
+                                @*<input type="date" name="RegistrationDate" id="RegistrationDate" class="form-control" onchange="loadImage(this)" style="width:100%" />*@
+
+                                <input type="text" id="RegistrationDate" name="RegistrationDate" class="form-control" />
+
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <p class="control-label me-3  mb-0">تعلیم درجه</p>
+                            <div class="col-md-12">
+                                <input type="text" name="Grade" id="Grade" class="form-control" style="width:100%" />
+
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <p class="control-label me-3 mb-0">اصلی استوګنځی</p>
+                            <div class="col-md-12">
+                                <input type="text" name="PermenentAddress" id="PermenentAddress" class="form-control" style="width:100%" />
+
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <p class="control-label me-3 mb-0">اړیکی شمیره</p>
+                            <div class="col-md-12">
+                                <input type="text" name="Contact" id="Contact" class="form-control" style="width:100%" />
+
+                            </div>
+                        </div>
+                        <div class="form-group" style="width:200px">
+                            <p class="control-label me-3 mb-0">تحصیل څانګه</p>
+                            <div class="col-md-12">
+                                <input type="text" id="Department" name="Department" accept="image/*" class="form-control" style="width:100%" onchange="loadImage(this)" /><br>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-4">
+
+                        <div class="form-group ">
+                            <p class="control-label me-3 pb-0 mb-0">تصویر</p>
+                            <div class="col-md-12 ">
+                                <input type="file" name="Image" id="Image" class="form-control" onchange="loadImage(this)" style="width:100%" />
+
+                            </div>
+                        </div>
+                        <div class="form-group d-flex flex-row justify-content-around mb-0 pb-0">
+                            <lable class="d-flex flex-column">
+                                <input type="radio" value="male" name="gender" id="gender" style="width:20px" />
+                                <p>نارینه</p>
+                            </lable>
+                            <lable class="d-flex flex-column">
+                                <input type="radio" value="female" name="gender" id="gender" style="width:20px" />
+                                <p>ښځینه</p>
+                            </lable>
+                            <lable class="d-flex flex-column">
+                                <input type="checkbox" name="isActive" id="isActive" style="width:20px" />
+                                <p>فعال یاغیر فعال</p>
+                            </lable>
+
+                        </div>
+                        <div class="form-group">
+                            <p class="control-label me-3  mb-0"> معاش اندازه</p>
+                            <div class="col-md-12">
+
+                                <input type="text" id="salary" name="salary" class="form-control" style="width:100%" /><br>
+                            </div>
+                        </div>
+
+                        <div class="form-group mt-0 pt-0">
+                            <div class="btn-group  col-12 " style="width:92%">
+                                <a href="@Url.Action("Index","StaffTables")" class="btn t btn-outline-success border-bottom-success">  شاتګ</a>
+                                <button type="submit" class="btn btn-primary"> اضافه کړئ</button>
+                            </div>
+
+                        </div>
+                        <div class="row me-3">
+                            <img src="" id="showImage" style="width: 85%; height: 138px; display: none; border-radius: 5%; border: 1px solid Gray" />
+                            <img src="~/Content/image/userIcon.png" id="hideImage" style="width: 85%; height: 138px; border-radius: 5%; border: 1px solid Gray " />
+                        </div>
+
+                    </div>
+
+                </div>
+            </form>
+        </div>
+
+    </div>
+    <script src="~/Content/MdBootstrapPersianDateTimePicker/jquery.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/Content/MdBootstrapPersianDateTimePicker/persian-date.min.js"></script>
+    <script src="~/Content/MdBootstrapPersianDateTimePicker/persian-datepicker.min.js"></script>
+    <script type="text/javascript"></script>
+    @section Scripts {
+        @Scripts.Render("~/bundles/persianDatepicker")
+
+        <script>
+            $(document).ready(function () {
+             
+
+                $("#RegistrationDate").persianDatepicker({
+                    format: 'YYYY/MM/DD',
+                    autoClose: true
+                });
+            });
+        </script>
+    }
+    <script>
+    $(document).ready(function () {
+
+
+
+
+
+        $("#StaffForm").validate({
+            rules: {
+                Name: {
+                    required: true,
+                    minlength: 3,
+                    maxlength: 20
+                },
+                FatherName: {
+                    required: true,
+                    minlength: 3,
+                    maxlength: 20
+                },
+                Email: {
+                    required: true,
+                    email: true,
+                },
+                IdentityCardID: {
+                    required: true,
+                    number: true,
+                },
+                Grade: {
+                    required: true,
+                },
+                Department: {
+                    required: true,
+                },
+                CurrentAddress: {
+                    required: true,
+                },
+                PermenentAddress: {
+                    required: true,
+                },
+                gender: {
+                    required: true,
+                },
+                isActive: {
+                    required: true,
+                },
+                Contact: {
+                    required: true,
+                    minlength: 10,
+                    maxlength: 14,
+                    number:true
+                }
+
+            },
+            submitHandler: function (form) {
+
+                var formData = new FormData(form);
+                formData.append("Image", $("#Image")[0].files[0]);
+                if ($("#isActive").is(":checked")) {
+
+                    formData.set("isActive", true);
+                } else {
+
+                    formData.append("isActive", false);
+                }
+                formData.gender = $('input[name="gender"]:checked').val();
+
+
+
+                $.ajax({
+                    url: '@Url.Action("Create", "StaffTables")',
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        if (response.success) {
+                            $("#resultMessage").html("<div class='alert alert-success'>" + response.msg + "</div>");
+                            $("#StaffForm")[0].reset();
+                            window.location.href = response.redirectUrl;
+                        } else {
+                            $("#resultMessage").html("<div class='alert alert-danger'>" + response.msg + "</div>");
+                        }
+                    },
+                    error: function () {
+                        $("#resultMessage").html("<div class='alert alert-danger'>An error occurred.</div>");
+                    }
+
+                });
+            }
+        });
+    });
+
+    function loadImage(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader()
+            reader.onload = function (e) {
+                $("#showImage").attr("src", e.target.result);
+                $("#showImage").show();
+                $("#hideImage").hide();
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+    </script>
+</body>

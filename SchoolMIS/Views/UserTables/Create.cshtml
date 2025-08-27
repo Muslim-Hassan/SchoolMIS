@@ -1,0 +1,152 @@
+﻿@model SchoolMIS.Models.UserTable
+
+
+<link href="~/Content/custom/customCSS.css" rel="stylesheet" />
+<body>
+    <div class="container-fluid p-2">
+        <div class="row">
+            <div class="d-flex justify-content-md-between pt-2 pb-4">
+                <h4><b>د استعمالوونکی معلومات اضافه کول</b></h4>
+                <h4><b>Create New User Information</b></h4>
+
+            </div>
+        </div>
+
+
+        @*this is alert section*@
+        <div id="resultMessage"></div>
+        <div class="card">
+            <form enctype="multipart/form-data" id="userForm">
+                <div class="row d-flex flex-row p-3 pt-5">
+                    @Html.AntiForgeryToken()
+                    <div class="col-8">
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <p class="control-label me-3 mb-0">استعمالونکی ډول</p>
+                                    <div class="col-md-12">
+
+                                        @Html.DropDownList("userTypeID", null, htmlAttributes: new { id = "StudentID", @class = "form-control" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <p class="control-label me-3  mb-0">نوم</p>
+                                    <div class="col-md-12">
+                                        <input type="text" name="UserName" id="UserName" class="form-control" style="width:100%" />
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <p class="control-label me-3  mb-0">کوډ</p>
+                                    <div class="col-md-12">
+                                        <input type="text" name="Password" id="Password" class="form-control" style="width:100%" />
+
+                                    </div>
+                                </div>
+
+                                <div class="form-group" style="width:200px">
+                                    <p class="control-label me-3 mb-0">تصویر</p>
+                                    <div class="col-md-12">
+
+                                        <input type="file" id="Image" name="Image" accept="image/*" class="form-control" style="width:100%" onchange="loadImage(this)" /><br>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group ">
+                                <div class="col-12 btn-group ">
+                                    <a href="@Url.Action("Index","UserTables")" class="btn t btn-outline-success border-bottom-success">لیست ته شاتګ</a>
+                                    <button type="submit" class="btn btn-primary">معلومات اضافه کړئ</button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <div class="col-4 mt-4">
+
+                        <img src="~/Content/image/UserIcon.png" id="showImage" style="width:100%;border-radius:3%;height:200px; " />
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <script src="~/Scripts/jquery-3.7.0.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script type="text/javascript"></script>
+    <script>
+    $(document).ready(function () {
+
+        $("#userForm").validate({
+            rules: {
+                UserName: {
+                    required: true,
+                    minlength: 3,
+                    maxlength: 12
+                },
+                Password: {
+                    required: true,
+                    minlength: 4,
+                     maxlength: 8
+                },
+                UserTypeID: {
+                    required: true,
+
+                },
+
+               Image: "required"
+            },
+            submitHandler: function (form) {
+                var formData = new FormData(form);
+                formData.append("Image", $("#Image")[0].files[0]);
+
+                $.ajax({
+                    url: '@Url.Action("Create", "UserTables")',
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        if (response.success) {
+                            $("#resultMessage").html("<div class='alert alert-success'>" + response.msg + "</div>");
+                            $("#userForm")[0].reset();
+                            window.location.href = response.redirectUrl;
+                        } else {
+                            $("#resultMessage").html("<div class='alert alert-danger'>" + response.msg + "</div>");
+                        }
+                    },
+                    error: function () {
+                        $("#resultMessage").html("<div class='alert alert-danger'>An error occurred.</div>");
+                    }
+
+                });
+            }
+        });
+    });
+
+
+
+
+
+    function loadImage(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader()
+            reader.onload = function (e) {
+                $("#showImage").attr("src", e.target.result);
+                $("#showImage").show();
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+    </script>
+</body>

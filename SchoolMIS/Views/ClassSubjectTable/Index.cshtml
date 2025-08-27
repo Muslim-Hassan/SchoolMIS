@@ -1,0 +1,241 @@
+﻿@model IEnumerable<SchoolMIS.Models.ClassSubjectTable>
+
+
+<div class="d-flex justify-content-md-between pt-2 ">
+    <h4><b>د صنفونو مضامینو معلومات</b></h4>
+
+    <p class="btn btn-group">
+
+        @Html.ActionLink("   کور صفحه ", "Dashboard", "Home", null, new { @class = "btn btn-primary" })
+        @Html.ActionLink(" نوی معلومات اضافه کړئ", "Create", null, new { @class = "btn btn-success" })
+    </p>
+    <h4><b>Class Subject  Information</b></h4>
+
+</div>
+<style>
+    .left {
+        float: left;
+    }
+
+    .right {
+        float: right;
+    }
+</style>
+
+<div class="card shadow  pre-scrollable">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="0">
+                <thead class="table-active">
+                    <tr>
+                        <th>شماره</th>
+                        <th>صنف</th>
+                        <th>مضمون</th>
+                     
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tfoot class="table-active">
+                    <tr>
+                        <th>شماره</th>
+                        <th>صنف</th>
+                        <th>مضمون</th>
+
+                        <th>Action</th>
+                    </tr>
+                </tfoot>
+                <tbody id="tbody">
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ClassSubjectID)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ClassTable.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.SubjectTable.Name)
+                            </td>
+                         
+                            <td>
+                                <div class="btn-group">
+                                    @Html.ActionLink(" ", "Edit", "ClassSubjectTables", new { id = item.ClassSubjectID }, new { @class = "btn btn-primary fa fa-edit" })
+                                    @*<button class="btn btn-info btn-Details" data-id="@item.UserID"><i class="fa fa-info"></i></button>*@
+                                    <button class="btn btn-danger btn-delete" data-id="@item.ClassSubjectID"><i class="fa fa-trash"></i></button>
+                                </div>
+                            </td>
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@* delete model*@
+<div id="deleteModal" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white d-flex justify-content-between align-content-center border-dark">
+
+                <img src="~/Content/image/logo1.jpg" style="width:40px;border-radius:50%;" />
+                <h4 class="modal-title text-center px-2"><b> ایا غواړی چی صنف مضامین لمنځه یوسی؟</b></h4>
+
+
+            </div>
+            <div class="modal-body px-4">
+                @* this is alert section*@
+                <div id="resultMessage"></div>
+                <div class="row">
+
+                    <div class="col-md-12 ">
+
+                        <p><span id="ClassSubjectID" class="left"></span><strong class="right">شماره :</strong> </p>
+                        <hr /><br />
+                        <p><span id="ClassName" class="left"></span><strong class="right">صنف :</strong> </p>
+                        <hr /><br />
+                        <p> <span id="SubjectName" class="left"></span><strong class="right">مضمون :</strong></p>
+                
+
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer bg-danger text-white">
+                <form id="deleteForm">
+                    <input type="hidden" id="input" />
+                    <button type="submit" class="btn btn-primary" id="submitbtn">هو</button>
+                </form>
+                <button type="button" class="btn btn-secondary pe-2" data-bs-dismiss="modal"> نه</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@* details modal*@
+@*<div id="detailsModal" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white d-flex justify-content-between align-content-center border-dark">
+                    <img src="~/Content/image/logo1.jpg" style="width:40px;border-radius:50%;" />
+
+                    <h4 class="modal-title text-center px-2"><b><span id="header"></span> معلومات</b></h4>
+
+
+                </div>
+                <div class="modal-body px-4" id="modelBody">
+
+                    <div class="row">
+                        <div class="col-5 ">
+                            <img src="" style="width:150px;height:150px;border-radius:10%;border:1px solid black" id="imgShow1" />
+                        </div>
+                        <div class="col-7 pe-2 ">
+
+
+                            <p><span id="UserName"></span><strong style="float:right;"> :نوم</strong> </p>
+                            <hr />
+                            <p> <span id="Password"></span><strong style="float:right"> :کوډ</strong></p>
+                            <hr />
+                            <p><span id="type"></span><strong style="float:right"> :ډول</strong> </p>
+
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <div class="modal-footer bg-danger text-white">
+                    <button type="button" class="btn btn-secondary pe-2" data-bs-dismiss="modal">شا تګ</button>
+                </div>
+            </div>
+        </div>
+    </div>*@
+
+<script src="~/Scripts/jquery-3.7.0.min.js"></script>
+
+<script type="text/javascript"></script>
+<script>
+    $(document).ready(function () {
+           //this is deletion section
+       $('.btn-delete').click(function () {
+         var id = $(this).data('id');
+           $.ajax({
+
+            url: '@Url.Action("Delete","ClassSubjectTables")',
+            type: 'POST',
+            data: { id: id },
+            success: function (response) {
+                if (response.success) {
+                    $('#ClassSubjectID').text(response.data.ClassSubjectID);
+                    $('#ClassName').text(response.data.ClassName);
+                    $('#SubjectName').text(response.data.SubjectName);
+                    $('#input').val(response.data.ClassSubjectID);
+                   
+                    //modal show
+                    $('#deleteModal').modal('show');
+                } else {
+                    $("#resultMessage").html("<div class='alert alert-success'>" + response.msg + "</div>");
+                }
+            },
+            error: function () {
+              alert("errore")
+            }
+        });
+
+       });
+       //------------------------------ConfirmDeletion
+       $('#submitbtn').click(function (e) {
+          e.preventDefault();  // Prevent the default form submission
+          var id=parseInt($('#input').val());
+           $.ajax({
+               url: '@Url.Action("ConDelete", "ClassSubjectID")',
+               type: 'POST',
+               data: { id: id },  // Send the serialized data
+               success: function (response) {
+                   $("#resultMessage").html("<div class='alert alert-success'>" + "معلومات په کامیابۍ سره ختم شول" + "</div>");
+                 window.location.href = response.redirectUrl;
+        },
+        error: function () {
+            alert("error occured");
+        }
+    });
+});
+ //this is for detail----------------------------------
+        @*$('.btn-Details').click(function () {
+            var id = $(this).data('id');
+            $.ajax({
+                url: '@Url.Action("Details", "UserTables")',
+                type: 'POST',
+                data: { id: id },
+                success: function (response) {
+                    if (response.success) {
+                        $('#header').text(response.data.UserName);
+                        $('#UserName').text(response.data.UserName);
+                        $('#Password').text(response.data.Password);
+                        $('#type').text(response.data.Usertype);
+
+                        $('#imgShow1').attr('src', response.data.Image);
+
+
+
+
+                        // Show the modal
+                        $('#detailsModal').modal('show');
+                    } else {
+                        alert("errore occurd")
+                    }
+                },
+                error: function () {
+                    alert('An error occurred while fetching the details.');
+                }
+            });
+        });*@
+});
+</script>
+
+
+
+
+

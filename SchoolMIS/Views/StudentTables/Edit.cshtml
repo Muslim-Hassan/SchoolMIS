@@ -1,0 +1,292 @@
+﻿@model SchoolMIS.Models.StudentEditModel
+
+<body>
+    <div class="container-fluid p-2">
+        <div class="row">
+            <div class="d-flex justify-content-md-between pt-2 pb-4">
+                <h4><b>د شاګردانو معلومات بیارغول کول</b></h4>
+                <h4><b>Edit Sudent Information   </b></h4>
+
+            </div>
+        </div>
+
+        @*this is alert section*@
+        <div id="resultMessage"></div>
+        <div class="card p-4">
+            <form id="StudentForm" enctype="multipart/form-data">
+                @Html.AntiForgeryToken()
+                <div class="row">
+                    <div class="col-4">
+                        @Html.HiddenFor(model => model.StudentID, new { @type = "hidden" })
+                        <div class="form-group">
+                            <p class="control-label me-3  mb-0">اساس</p>
+                            <div class="col-md-12">
+                                @Html.EditorFor(model => model.RollNO, new { htmlAttributes = new { @id = "RollNO", @name = "RollNO", @class = "form-control", @style = "width:100%" } })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <p class="control-label me-3  mb-0">نوم</p>
+                            <div class="col-md-12">
+                                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @id = "Name", @name = "Name", @class = "form-control", @style = "width:100%" } })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <p class="control-label me-3  mb-0">پلار نوم</p>
+                            <div class="col-md-12">
+                                @Html.EditorFor(model => model.FatherName, new { htmlAttributes = new { @id = "FatherName", @name = "FatherName", @class = "form-control", @style = "width:100%" } })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <p class="control-label me-3  mb-0">نیکه نوم</p>
+                            <div class="col-md-12">
+                                @Html.EditorFor(model => model.GrandFatherName, new { htmlAttributes = new { @id = "GrandFatherName", @name = "GrandFatherName", @class = "form-control", @style = "width:100%" } })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <p class="control-label me-3 mb-0">جنسیت</p>
+                            <div class="col-md-12">
+                                <select type="text" name="Gender" id="Gender" class="form-control" style="width:100%">
+                                    <option vlaue="@Model.Gender">@Model.Gender</option>
+                                    <option vlaue="نارینه">نارینه</option>
+                                    <option vlaue="ښځینه">ښځینه</option>
+                                </select>
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <p class="control-label me-3 mb-0">اوسنی استوګنځی</p>
+                            <div class="col-md-12">
+                                @Html.EditorFor(model => model.CurrentAddress, new { htmlAttributes = new { @id = "CurrentAddress", @name = "CurrentAddress", @class = "form-control", @style = "width:100%" } })
+
+
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <p class="control-label me-3  mb-0">ورور نوم</p>
+                            <div class="col-md-12">
+                                @Html.EditorFor(model => model.Brother, new { htmlAttributes = new { @id = "Brother", @name = "Brother", @class = "form-control", @style = "width:100%" } })
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-4">
+                        <div class="form-group">
+                            <p class="control-label me-3  mb-0">صنف</p>
+                            <div class="col-md-12">
+                                @Html.DropDownList("ClassID", null, htmlAttributes: new { @class = "form-control" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <p class="control-label me-3  mb-0">ملت</p>
+                            <div class="col-md-12">
+                                @Html.EditorFor(model => model.Nationality, new { htmlAttributes = new { @id = "Nationality", @name = "Nationality", @class = "form-control", @style = "width:100%" } })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <p class="control-label me-3  mb-0">پلار وظیفه</p>
+                            <div class="col-md-12">
+                                <Select type="text" name="FatherJob" id="FatherJob" class="form-control" style="width:100%">
+                                    <option value="@Model.FatherJob">@Model.FatherJob</option>
+                                    <option value="معلم">معلم</option>
+                                    <option value="ډاکټر"> ډاکټر</option>
+                                    <option value="انجنیر">انجنیر</option>
+                                    <option value="غریبکار">غریبکار</option>
+                                    <option value="ملا امام">ملا امام</option>
+                                    <option value="نور">نور</option>
+                                </Select>
+
+                            </div>
+                        </div>
+                        <div class="form-group " style="width:100%">
+                            <p class="control-label me-3  mb-0">مورنۍ ژبه</p>
+                            <div class="col-md-12">
+
+                                <select type="text" name="NativeLanguage" id="NativeLanguage" class="form-control" style="width:100%">
+                                    <option vlaue="@Model.NativeLanguage">@Model.NativeLanguage</option>
+                                    <option vlaue="پښتو">پښتو</option>
+                                    <option vlaue="دری">دری</option>
+                                    <option vlaue="نور">نور</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group " style="width:100%">
+                            <p class="control-label me-3  mb-0">اړیکی شمیره</p>
+                            <div class="col-md-12">
+
+                                @Html.EditorFor(model => model.Contact, new { htmlAttributes = new { @id = "Contact", @name = "Contact", @class = "form-control", @style = "width:100%" } })
+
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <p class="control-label me-3 mb-0">اصلی استوګنځی</p>
+                            <div class="col-md-12">
+                                @Html.EditorFor(model => model.PermenentAddress, new { htmlAttributes = new { @id = "PermenentAddress", @name = "PermenentAddress", @class = "form-control", @style = "width:100%" } })
+                            </div>
+                        </div>
+
+                        <div class="form-group " style="width:100%">
+                            <p class="control-label me-3  mb-0">کاکا نوم</p>
+                            <div class="col-md-12">
+
+                                @Html.EditorFor(model => model.Uncle, new { htmlAttributes = new { @id = "Uncle", @name = "Uncle", @class = "form-control", @style = "width:100%" } })
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="row ">
+                            <div class="col-6 ">
+                                <div class="form-group">
+                                    <p class="control-label  mb-0">پیدایښت  نیټه</p>
+                                    <div class="col-md-12 m-0 p-0">
+                                        @Html.EditorFor(model => model.DOB, new { htmlAttributes = new { @id = "DOB", @name = "DOB", @class = "form-control" } })
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6 ">
+                                <div class="form-group">
+                                    <p class="control-label   mb-0">داخلی نیټه</p>
+                                    <div class="col-md-12 m-0 p-0">
+                                        @Html.EditorFor(model => model.RegistrationDate, new { htmlAttributes = new { @id = "RegistrationDate", @name = "RegistrationDate", @class = "form-control" } })
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="form-group">
+                            <p class="control-label  mb-0">تذکری نمبر</p>
+                            <div class="col-md-12 m-0 p-0">
+                                @Html.EditorFor(model => model.IdentityID, new { htmlAttributes = new { @id = "IdentityID", @name = "IdentityID", @class = "form-control" } })
+
+
+                            </div>
+                        </div>
+                        <div class="form-group " style="width:100%">
+                            <p class="control-label   mb-0">شاکرد ډول</p>
+                            <div class="col-md-12 m-0 p-0">
+                                <select type="text" name="StudentType" id="StudentType" class="form-control" style="width:100%">
+                                    <option vlaue="@Model.StudentType">@Model.StudentType</option>
+                                    <option vlaue="رسمی">رسمی</option>
+                                    <option vlaue="غیر رسمی">غیر رسمی</option>
+
+                                </select>
+
+                            </div>
+                        </div>
+                        <div class="form-group " style="width:100%">
+                            <p class="control-label   mb-0">تصویر</p>
+                            <div class="col-md-12 p-0 m-0">
+                                <input type="file" name="Image" id="Image" class="form-control" onchange="loadImage(this)" style="width:100%" />
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="btn-group mt-2 col-12 m-0 p-0">
+                                <a href="@Url.Action("Index","StudentTables")" class="btn t btn-outline-success border-bottom-success">  شاتګ</a>
+                                <button type="submit" class="btn btn-primary"> اضافه کړئ</button>
+                            </div>
+
+                        </div>
+                        <div class="row border-1 ms-1">
+                            <div class="col-md-12 m-0 p-0">
+
+                                <img src="~/Content/img/@Path.GetFileName(Session["Image"].ToString())" id="showImage" style=" width: 96%; height: 155px; border: 1px solid Gray; border-radius: 3%;" />
+
+                                <img src="~/Content/image/UserIcon.png" id="hideImage" style="width: 96%; height: 155px;display:none; border-radius: 3%; border: 1px solid Gray" />
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="~/Scripts/jquery-3.7.0.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script type="text/javascript"></script>
+    <script>
+  $(document).ready(function () {
+
+      $("#StudentForm").validate({
+          rules: {
+              Name: "required",
+              FatherName:{
+                  required: true,
+
+            },
+              IdentityCardID:{
+                  required: true,
+                  number:true,
+                  },
+              Email: "required",
+              Grade: "required",
+              Deparment: "required",
+              CurrentAddress: "required",
+              PermenentAddress: "required",
+           
+              DOB: "required",
+              Date:"required"
+
+          },
+          submitHandler: function (form) {
+              var formData = new FormData(form);
+
+             
+
+                  if ($("#Image")[0].files[0]) {
+                      formData.append("Image", $("#Image")[0].files[0]);
+                  } else {
+                      formData.append("Image", '@Session["Image"]');
+                  }
+
+              $.ajax({
+                  url: '@Url.Action("Create", "StudentTables")',
+                  type: 'POST',
+                  data: formData,
+                  processData: false,
+                  contentType: false,
+                  success: function (response) {
+                      if (response.success) {
+                          $("#resultMessage").html("<div class='alert alert-success'>" + response.msg + "</div>");
+                          $("#StudentForm")[0].reset();
+                          window.location.href = response.redirectUrl;
+                      } else {
+                          $("#resultMessage").html("<div class='alert alert-danger'>" + response.msg + "</div>");
+                      }
+                  },
+                  error: function () {
+                      $("#resultMessage").html("<div class='alert alert-danger'>An error occurred.</div>");
+                  }
+
+              });
+          }
+      });
+  });
+
+
+
+
+
+   function loadImage(input) {
+       if (input.files && input.files[0]) {
+           var reader = new FileReader()
+           reader.onload = function (e) {
+               src = e.target.result;
+               $("#showImage").attr("src", e.target.result);
+               $("#hideImage").hide();
+               $("#showImage").show();
+           };
+           reader.readAsDataURL(input.files[0]);
+       }
+   }
+
+    </script>
+</body>

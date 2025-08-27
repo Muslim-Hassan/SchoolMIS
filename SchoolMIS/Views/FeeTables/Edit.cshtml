@@ -1,0 +1,214 @@
+﻿@model SchoolMIS.Models.FeeTable
+
+<link href="~/Content/custom/customCSS.css" rel="stylesheet" />
+<body>
+    <div class="container-fluid p-2">
+        <div class="row">
+            <div class="d-flex justify-content-md-between pt-2 pb-4">
+                <h4><b>د فیسونو معلومات بیارغول</b></h4>
+                <h4><b>Edition of  Fee Information</b></h4>
+
+            </div>
+        </div>
+
+        @*this is alert section*@
+        <div id="resultMessage"></div>
+        <div class="card p-4">
+            <form id="FeeForm" enctype="multipart/form-data">
+                @Html.AntiForgeryToken()
+                <div class="row">
+                    <div class="col-md-4">
+
+                        @Html.HiddenFor(model => model.FeeID, new { @type = "hidden" })
+                        <div class="form-group">
+                            <p class="control-label me-3  mb-0">شاګرد</p>
+                            <div class="col-md-12">
+                                @Html.DropDownList("StudentID", null, htmlAttributes: new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <p class="control-label me-3  mb-0">فیس</p>
+                            <div class="col-md-12">
+                                @Html.EditorFor(model => model.Amount, new { htmlAttributes = new { @id = "Amount", @class = "form-control" } })
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <p class="control-label me-3  mb-0">تخفیف</p>
+                            <div class="col-md-12">
+                                @Html.EditorFor(model => model.Discount, new { htmlAttributes = new { @id = "Discount", @class = "form-control" } })
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <p class="control-label me-3  mb-0">باقی</p>
+                            <div class="col-md-12">
+                                @Html.EditorFor(model => model.Remain, new { htmlAttributes = new { @id = "Remain", @class = "form-control", onchange = "GVlaue()" } })
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <p class="control-label me-3  mb-0">استاذ</p>
+                            <div class="col-md-12">
+                                @Html.DropDownList("StaffID", null, htmlAttributes: new { @class = "form-control", onclick = "GVlaue()" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <p class="control-label me-3 mb-0"> تادیی تاریخ</p>
+                            <div class="col-md-12">
+                                @Html.EditorFor(model => model.PaidDate, new { htmlAttributes = new { @id = "Remain", @class = "form-control", onclick = "GVlaue()" } })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <p class="control-label me-3  mb-0">  خالص فیس</p>
+                            <div class="col-md-12 ">
+                                @Html.EditorFor(model => model.NetAmount, new { htmlAttributes = new { @id = "NetAmount", @class = "form-control" } })
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <p class="control-label me-3  mb-0">رسید نمبر</p>
+                            <div class="col-md-12">
+                                @Html.EditorFor(model => model.ReciptNo, new { htmlAttributes = new { @id = "ReciptNo", @class = "form-control" } })
+
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+
+                            <p class="control-label   col-4 mb-0">میاشت</p>
+                            <div class="col-md-12">
+                                <select type="text" name="month" id="month" class="form-control" style="width: 100%; height: 40px">
+                                    @{
+                                        var month = Model.month;
+                                    }
+                                    <option value="@month">@month</option>
+                                    <option value="حمل">حمل</option>
+                                    <option value="ثور">ثور</option>
+                                    <option value="جوزا">جوزا</option>
+                                    <option value="سرطان">سرطان</option>
+                                    <option value="اسد">اسد</option>
+                                    <option value="سنبله">سنبله</option>
+                                    <option value="میزان">میزان</option>
+                                    <option value="عقرب">عقرب</option>
+                                    <option value="قوس">قوس</option>
+                                    <option value="جدی">جدی</option>
+                                    <option value="دلو">دلو</option>
+                                    <option value="حوت">حوت</option>
+
+                                </select>
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="btn-group  col-12 mt-4 ">
+                                <a href="@Url.Action("Index","FeeTables")" class="btn  btn-outline-success border-bottom-success">   شاتګ</a>
+                                <button type="submit" class="btn btn-primary">   نوی کړئ</button>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-4">
+                        <div class="row ms-1 border-1 mt-4">
+                            <img src="~/Content/image/money.png" style="width: 100%; height: 350px; border-radius: 5%; " />
+                        </div>
+                    </div>
+
+                </div>
+            </form>
+         
+
+        </div>
+
+    </div>
+
+    <script src="~/Scripts/jquery-3.7.0.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script>
+   $(document).ready(function () {
+
+       $("#FeeForm").validate({
+           rules: {
+               Amount: {
+                   required: true,
+               },
+               Date: {
+                   required: true,
+               },
+               NetAmount: {
+                   required: true,
+                   number:true
+               },
+               Remain: {
+                   required: true,
+                   
+               },
+
+           },
+           submitHandler: function (form) {
+
+               var formData = new FormData(form);
+
+               if ($("#Status").is(":checked")) {
+
+                   formData.set("Status", true);
+               } else {
+
+                   formData.append("Status", false);
+               }
+
+               $.ajax({
+                   url: '@Url.Action("Create", "FeeTables")',
+                   type: 'POST',
+                   data: formData,
+                   processData: false,
+                   contentType: false,
+                   success: function (response) {
+                       if (response.success) {
+
+                           $("#messageText").text("fee submitted successfully! Click to print a slip").show();
+                           $("#printslip").attr("href", "/FeeTables/printSlip/" + response.feeid).show();
+                           $("#message").show();
+                           //$("#resultMessage").html("<div class='alert alert-success'>" + response.msg + "</div>");
+                           //$("#FeeForm")[0].reset();
+                           window.location.href = response.redirectUrl;
+                       } else {
+                           $("#resultMessage").html("<div class='alert alert-danger'>" + response.msg + "</div>");
+                       }
+                   },
+                   error: function () {
+                       $("#resultMessage").html("<div class='alert alert-danger'>An error occurred.</div>");
+                   }
+
+               });
+           }
+       });
+
+   });
+
+
+        function GVlaue() {
+           
+           var amount =parseFloat($("#Amount").val())||0;
+           var discount = parseFloat($("#Discount").val()) || 0;
+           var Remain = parseFloat($("#Remain").val()) || 0;
+           if (amount > discount) {
+               var netAmount = amount - discount - Remain;
+
+               $("#NetAmount").val(netAmount);
+           } else {
+               alert("not valid")
+           }
+       }
+  
+    </script>
+
+  
+
+</body>
+
+
+

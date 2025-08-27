@@ -1,0 +1,242 @@
+﻿@model SchoolMIS.Models.StaffTable
+
+<body>
+    <div class="container-fluid p-2">
+        <div class="row">
+            <div class="d-flex justify-content-md-between pt-2 pb-4">
+                <h4><b>د استعمالوونکی معلومات اضافه کول</b></h4>
+                <h4><b>Create New User Information</b></h4>
+
+            </div>
+        </div>
+
+        @*this is alert section*@
+        <div id="resultMessage"></div>
+        <div class="card p-4">
+            <form id="StaffForm" enctype="multipart/form-data">
+                @Html.AntiForgeryToken()
+                <div class="row">
+                    <div class="col-4">
+                        @Html.HiddenFor(model => model.StaffID, new { @type = "hidden" })
+                        <div class="form-group">
+                            <p class="control-label me-3  mb-0">نوم</p>
+                            <div class="col-md-12">
+                                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", } })
+
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <p class="control-label me-3  mb-0">پلار نوم</p>
+                            <div class="col-md-12">
+                                @Html.EditorFor(model => model.FatherName, new { htmlAttributes = new { @class = "form-control", } })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <p class="control-label me-3  mb-0">اداری ډول</p>
+                            <div class="col-md-12">
+                                @Html.DropDownList("StaffTypeID", null, htmlAttributes: new { @class = "form-control" })
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <p class="control-label me-3 mb-0">اوسنی استوکنځی</p>
+                            <div class="col-md-12">
+                                @Html.EditorFor(model => model.CurrentAddress, new { htmlAttributes = new { @class = "form-control" } })
+
+
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <p class="control-label me-3  mb-0">ایمیل</p>
+                            <div class="col-md-12">
+                                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @id = "Email", @name = "Email", @class = "form-control", @style = "width:100%" } })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <p class="control-label me-3  mb-0">تذکری نمبر</p>
+                            <div class="col-md-12">
+                                @Html.EditorFor(model => model.IdentityCardID, new { htmlAttributes = new { @id = "IdentityCardID", @name = "IdentityCardID", @class = "form-control", @style = "width:100%" } })
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-4">
+                        <div class="form-group">
+                            <p class="control-label me-3  mb-0">وظیفه</p>
+                            <div class="col-md-12">
+                                @Html.DropDownList("UserTypeID", null, htmlAttributes: new { @class = "form-control" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <p class="control-label me-3  mb-0">تاریخ</p>
+                            <div class="col-md-12">
+                                @Html.EditorFor(model => model.RegistrationDate, new { htmlAttributes = new { @id = "RegistrationDate", @name = "RegistrationDate", @class = "form-control", @style = "width:100%" } })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <p class="control-label me-3  mb-0">تعلیم درجه</p>
+                            <div class="col-md-12">
+                                @Html.EditorFor(model => model.Grade, new { htmlAttributes = new { @id = "Grade", @name = "Grade", @class = "form-control", @style = "width:100%" } })
+
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <p class="control-label me-3 mb-0">اصلی استوګنځی</p>
+                            <div class="col-md-12">
+                                @Html.EditorFor(model => model.PermenentAddress, new { htmlAttributes = new { @id = "PermenentAddress", @name = "PermenentAddress", @class = "form-control", @style = "width:100%" } })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <p class="control-label me-3 mb-0">اړیکی شمیره</p>
+                            <div class="col-md-12">
+                                @Html.EditorFor(model => model.Contact, new { htmlAttributes = new { @id = "Contact", @name = "Contact", @class = "form-control", @style = "width:100%" } })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <p class="control-label me-3 mb-0">تحصیل څانګه</p>
+                            <div class="col-md-12">
+                                @Html.EditorFor(model => model.Department, new { htmlAttributes = new { @id = "Department", @name = "Department", @class = "form-control", @style = "width:100%" } })
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-4">
+                        <div class="form-group d-flex flex-row justify-content-around mb-0 pb-0">
+                            <lable class="d-flex flex-column">
+                                <input type="radio" @Session["male"] value="male" name="gender" id="gender" style="width:20px" />
+                                <p>نارینه</p>
+                            </lable>
+                            <lable class="d-flex flex-column">
+                                <input type="radio" @Session["female"] value="female" name="gender" id="gender" style="width:20px" />
+                                <p>ښځینه</p>
+                            </lable>
+                            <lable class="d-flex flex-column">
+                                <input type="checkbox"  @Session["isActive"] name="isActive" id="isActive" style="width:20px" />
+                                <p>فعال یاغیر فعال</p>
+                            </lable>
+                        </div>
+                        <div class="form-group">
+                            <p class="control-label me-3 mb-0"> معاش اندازه</p>
+                            <div class="col-md-12">
+                                @Html.EditorFor(model => model.salary, new { htmlAttributes = new { @id = "salary", @name = "salary", @class = "form-control", @style = "width:100%" } })
+                            </div>
+                        </div>
+                        <div class="form-group" style="width:100%">
+                            <p class="control-label me-3  mb-0">تصویر</p>
+                            <div class="col-md-12">
+                                <input type="file" name="Image" id="Image" class="form-control" onchange="loadImage(this)" style="width:100%" />
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="btn-group mt-2 col-12 "style="width:92%">
+                                <a href="@Url.Action("Index","StaffTables")" class="btn t btn-outline-success border-bottom-success">  شاتګ</a>
+                                <button type="submit" class="btn btn-primary"> اضافه کړئ</button>
+                            </div>
+
+                        </div>
+                        <div class="row me-3">
+                            <img src="~/Content/img/@Path.GetFileName(Session["StaffImage"].ToString())" id="showImage" style="width: 85%; height: 148px; border: 1px solid Gray; border-radius: 3%;" />
+                            <img src="~/Content/image/UserICon.png" id="hideImage" style="width: 85%; height: 148px; border-radius: 4%; display: none; border: 1px solid Gray; border-radius: 3%; " />
+                        </div>
+
+                    </div>
+                   
+</form>
+        </div>
+    </div>
+    <script src="~/Scripts/jquery-3.7.0.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script type="text/html"></script>
+    <script>
+   $(document).ready(function () {
+
+       $("#StaffForm").validate({
+           rules: {
+               Contact: {
+                   required: true,
+                   minlength: 10,
+                   maxlength: 14,
+                   number: true
+               },
+                  IdentityCardID: {
+                   required: true,
+                   number: true,
+               },
+               Name: "required",
+               FatherName: "required",
+               IdentityCardID: "required",
+               Email: "required",
+               Grade: "required",
+               Deparment: "required",
+               CurrentAddress: "required",
+               PermenentAddress: "required",
+             
+
+           },
+           submitHandler: function (form) {
+               var formData = new FormData(form);
+
+                  if ($("#Image")[0].files[0]) {
+                  formData.append("Image", $("#Image")[0].files[0]);
+               } else {
+                  formData.append("Image", '@Session["StaffImage"]');
+                }
+               if ($("#isActive").is(":checked")) {
+
+                   formData.set("isActive", true);
+               } else {
+
+                   formData.append("isActive", false);
+               }
+               formData.gender = $('input[name="gender"]:checked').val();
+               $.ajax({
+                   url: '@Url.Action("Create", "StaffTables")',
+                   type: 'POST',
+                   data: formData,
+                   processData: false,
+                   contentType: false,
+                   success: function (response) {
+                       if (response.success) {
+                           $("#resultMessage").html("<div class='alert alert-success'>" + response.msg + "</div>");
+                           $("#StaffForm")[0].reset();
+                           window.location.href = response.redirectUrl;
+                       } else {
+                           $("#resultMessage").html("<div class='alert alert-danger'>" + response.msg + "</div>");
+                       }
+                   },
+                   error: function () {
+                       $("#resultMessage").html("<div class='alert alert-danger'>An error occurred.</div>");
+                   }
+
+               });
+           }
+       });
+   });
+
+
+
+
+
+    function loadImage(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader()
+            reader.onload = function (e) {
+                src = e.target.result;
+                $("#showImage").attr("src", e.target.result);
+                $("#hideImage").hide();
+                $("#showImage").show();
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    </script>
+</body>
+
+

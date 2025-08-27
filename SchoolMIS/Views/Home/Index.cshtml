@@ -1,0 +1,324 @@
+﻿@model SchoolMIS.Models.login
+
+
+@{
+    Layout = "~/Views/Shared/_Layout Login.cshtml";
+
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="~/Content/custom/customCSS.css" rel="stylesheet" />
+    <link href="~/Scripts/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/css/sb-admin-2.css" rel="stylesheet" />
+
+    <style>
+        body {
+          
+            padding: 0;
+            margin: 0;
+            background-color: darkred;
+            background: linear-gradient(to top, #cf1717 20%, #cf1717 97%);
+            background-image: url('../../Content/image/school6.jpg');
+            background-repeat: no-repeat;
+            background-size: cover;
+            height: 100vh;
+            font-family: Arial;
+        }
+
+        .div {
+            height: 100vh;
+        }
+    </style>
+</head>
+
+
+<body>
+
+
+
+    <nav class="navbar navbar-expand-md bg-danger  fixed-top">
+        <div class="container-fluid d-flex justify-content-between">
+
+            <img src="~/Content/image/logo1.jpg" style="width:50px;border-radius:50%" />
+            <h1 class="fw-bolder text-white"> <b>چاردیوال خصوصی ښوونځی  معلوماتی سیستم ته ښه راغلاست </b></h1>
+            
+                <button class="btn btn-primary text-white d-flex justify-content-md-center fw-bolder me-1 " id="showModal"><b>سیستم ته داخل شئ</b></button>
+             
+
+        </div>
+    </nav>
+    <div class="div"></div>
+    <!-- carsoul-->
+    @*<div class="container-fluid d-flex justify-content-center">
+            <div class="row ">
+                <div class="col-12 text-center mt-5">
+                    <div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-inner">
+
+                            <div class="carousel-item active" data-bs-interval="5000">
+                                <div class="d-block carousel1 carousel">
+
+                                </div>
+                            </div>
+                            <div class="carousel-item" data-bs-interval="1000">
+                                <div class="d-block w-100 carousel2 carousel">
+
+                                </div>
+                            </div>
+                            <div class="carousel-item">
+                                <div class="d-block w-100 carousel3 carousel">
+
+                                </div>
+                            </div>
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+
+                    </div>
+                </div>
+
+
+            </div>
+        </div>*@
+    <!-- carsoul-->
+    @*this is login model*@
+    <div id="loginModal" class="modal " tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content" style="height:70vh">
+                <div class="modal-header   text-center bg-danger   text-white">
+                    <img src="~/Content/image/logo1.jpg" style="width:55px;border-radius:50%" />
+                    <h2 class="fw-bolder"><b>سیستم ته لمړی داخل شئ</b></h2>
+                    <img src="~/Content/image/aei.jpg" style="width: 55px; border-radius: 50%" />
+                </div>
+
+                <div class="modal-body mt-3">
+                    <div class="row">
+                        @*this is alert section*@
+                        <p class="alert alert-light text-center fw-bolder font-weight-bolder-800">چاردیوال خصوصی ښوونځی ته ښه راغلاست</p>
+                    </div>
+                    <div class="row d-flex justify-content-center">
+                        <div class="col-6 border shadow text-center rounded-2 ">
+                            <img src="~/Content/image/login_icon.jpg" style="width:180px" />
+                        </div>
+                        <div class="col-6 rounded-2 shadow d-flex text-center  ">
+                            <form id="loginForm">
+                                <div class="col-12 my-3">
+
+                                    <input type="text" name="username" id="username" class="form-control" placeholder=" .....استعمالونکی نوم داخل کړئ" />
+
+                                </div>
+                                <div class="col-12 my-3">
+
+
+                                    <input type="password" name="password" id="password" class="form-control" placeholder=".....استعمالونکی کوډ داخل کړئ" />
+
+                                </div>
+                                <div class=" col-12">
+                                    <button type="submit" class=" w-100 btn-danger mt-2 btn text-white" id="submitBtn"><h6 class="fw-bold"><b>داخلیدل</b></h6></button>
+                                </div>
+
+                            </form>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="modal-footer bg-danger  ">
+                    <button type="button" class=" btn btn-primary"  data-bs-dismiss="modal"><h6 class="fw-bold"><b>لغوه کول</b></h6></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    @*this is register model*@
+    <!--<div id="RegModal" class="modal " tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content" style="height:83vh">
+                <div class="modal-header   text-center bg-danger   text-white">
+                    <img src="~/Content/image/logo1.jpg" style="width:55px;border-radius:50%" />
+                    <h2 class="fw-bolder"><b>سیستم ته ځان ثبت کړئ</b></h2>
+                    <img src="~/Content/image/aei.jpg" style="width: 55px; border-radius: 50%" />
+                </div>
+
+                <div class="modal-body mt-1" style="height:100px">
+                    <div class="row">-->
+                        @*this is alert section*@
+                        @*<div id="resultMessage" class="text-center ">چاردیوال خصوصی ښوونځی ته ښه راغلاست</div>*@
+                        <!--<p class="alert alert-light text-center fw-bolder font-weight-bolder-800">چاردیوال خصوصی ښوونځی ته ښه راغلاست</p>
+                    </div>
+                    <div class="row d-flex justify-content-center">
+                        <div class="col-6 border shadow rounded-2 ">
+                            <img src="~/Content/image/login_icon.jpg" id="showImage" style="width: 100%; border-radius: 3%;height:220px " />
+
+
+                        </div>
+                        <div class="col-6 rounded-2 shadow d-flex text-center  ">
+                            <form id="ReguserForm" enctype="multipart/form-data">-->
+                                @*@Html.AntiForgeryToken()*@
+
+                                <!--<div class="col-12 my-2 mt-3">-->
+                                    @*@Html.DropDownList("UserTypeID", ViewBag.UserType as SelectList, new { @class = "form-control hidden" })*@
+
+
+                                <!--</div>
+                                <div class="col-12 my-2">
+
+                                    <input type="text" name="UserName" id="UserName" class="form-control" placeholder=" .....استعمالونکی نوم داخل کړئ" />
+
+                                </div>
+                                <div class="col-12 my-2">
+
+
+                                    <input type="password" name="Password" id="Password" class="form-control" placeholder=".....استعمالونکی کوډ داخل کړئ" />
+
+                                </div>
+                                <div class="col-12 mt-2">
+
+
+                                    <input type="file" id="Image" name="Image" accept="image/*" class="form-control" onchange="loadImage(this)" />
+
+                                </div>
+                                <div class=" col-12 my-3">
+                                    <button type="submit" class=" w-100 btn-danger  btn text-white" id="RegsubmitBtn"><h6 class="fw-bold"><b>داخلیدل</b></h6></button>
+                                </div>
+
+                            </form>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="modal-footer bg-danger  ">
+                    <button type="button" class=" btn btn-secondary" data-bs-dismiss="modal"><h6 class="fw-bold"><b>لغوه کول</b></h6></button>
+                </div>
+            </div>
+        </div>
+    </div>-->
+
+   
+
+    <script src="~/Scripts/jquery-3.7.0.min.js"></script>
+    <script type="text/javascript"></script>
+    <script>
+        $(document).ready(function () {
+            $('#showModal').click(function () {
+                $('#loginModal').modal('show');
+            });
+            //$('#RegshowModal').click(function () {
+            //    $('#RegModal').modal('show');
+            //});
+
+
+
+            @*$("#ReguserForm").submit(function (e) {
+                e.preventDefault();
+                var formData = new FormData(this);
+
+                       $.ajax({
+                      url: '@Url.Action("Create", "UserTables")',
+                      type: 'POST',
+                      data: formData,
+                      processData: false,
+                      contentType: false,
+                     success: function (response) {
+                         if (response.success) {
+                             $(".alert").removeClass("alert-light").text(response.message);
+                             $(".alert").addClass("alert-success").text("استعمالوونکی په کامیابۍ سره ثبت شو" );
+                            
+                         } else {
+                             $(".alert").removeClass("alert-light").text(response.message);
+                             $(".alert").addClass("alert-danger").text("استعمالوونکی په سیستم کی موجود دی");
+
+                             $("#ReguserForm")[0].reset();
+                         }
+                     },
+     error: function () {
+         $("#resultMessage").html("<div class='alert alert-danger'>An error occurred.</div>")
+     }
+
+ })
+            })*@
+
+
+
+
+
+        $('#submitBtn').click(function (e) {
+            e.preventDefault();
+            const username = $('#username').val();
+            const password = $('#password').val();
+
+            $.ajax({
+                url: '@Url.Action("Authenticate", "Home")',
+                type: 'POST',
+                data: { username: username, password: password },
+                success: function (response) {
+                    if (response.success) {
+                        window.location.href = response.redirectUrl;
+                    } else {
+                        $(".alert").removeClass("alert-light").text(response.message);
+                        $(".alert").addClass("alert-danger").text(response.message);
+
+                        $("#loginForm")[0].reset();
+                    }
+                },
+                error: function () {
+
+                    alert(" system errore");
+                }
+            });
+        });
+
+
+    });
+
+
+
+
+
+        //function loadImage(input) {
+        //    if (input.files && input.files[0]) {
+        //        var reader = new FileReader()
+        //        reader.onload = function (e) {
+        //            $("#showImage").attr("src", e.target.result);
+        //            $("#showImage").show();
+        //        };
+        //        reader.readAsDataURL(input.files[0]);
+        //    }
+        //}
+
+
+
+    </script>
+
+    <script src="~/Scripts/bootstrap.min.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

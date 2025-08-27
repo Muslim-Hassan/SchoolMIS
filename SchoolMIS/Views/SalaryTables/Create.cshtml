@@ -1,0 +1,285 @@
+﻿@model SchoolMIS.Models.SalaryTable
+
+
+<link href="~/Content/custom/customCSS.css" rel="stylesheet" />
+<div class="container-fluid p-2">
+    <div class="row">
+        <div class="d-flex justify-content-md-between pt-2 pb-4">
+            <h4><b> معاشاتو معلومات اضافه کول</b></h4>
+            <h4><b>Create New Salary  Information</b></h4>
+
+        </div>
+    </div>
+
+    @*this is alert section*@
+    <div id="message" style="display:flex;justify-content:center;display:none" class="alert alert-success">
+        <div id="messageText"></div>
+        <a id="printslip" href="#" style="display:none" target="_blank"> printSlip</a>
+    </div>
+
+    <div id="resultMessage"></div>
+
+
+    <div class="card p-4">
+        <div class="col-md-12 alert alert-success p-2">د استاد ددی میاشتی د غیر حاضری پر سر کټ شوی معاش اندازه ورځی     [<span class="fw-bold" id="absentDay"></span>] کټ شوی معاش اندازه [<span class="fw-bold" id="cutSalary"></span>] </div>
+       
+        <form id="SalaryForm" enctype="multipart/form-data">
+            @Html.AntiForgeryToken()
+            <div class="row">
+                <div class="col-4">
+                    <div class="form-group">
+                        <p class="control-label   col-4 mb-0">استاذ</p>
+                        <div class="col-md-12">
+                            @Html.DropDownList("StaffID", null, htmlAttributes: new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+
+                        <p class="control-label   col-4 mb-0">میاشت</p>
+                        <div class="col-md-12">
+                            <select type="text" name="Month" id="Month" class="form-control" style="width: 100%;  height: 40px" onchange="Genarate(this)">
+                                <option value="حمل">حمل</option>
+                                <option value="ثور">ثور</option>
+                                <option value="جوزا">جوزا</option>
+                                <option value="سرطان">سرطان</option>
+                                <option value="اسد">اسد</option>
+                                <option value="سنبله">سنبله</option>
+                                <option value="میزان">میزان</option>
+                                <option value="عقرب">عقرب</option>
+                                <option value="قوس">قوس</option>
+                                <option value="جدی">جدی</option>
+                                <option value="دلو">دلو</option>
+                                <option value="حوت">حوت</option>
+
+                            </select>
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <p class="control-label   col-4 mb-0">  معاش اندازه</p>
+                        <div class="col-md-12">
+                            <input type="text" value="@Session["salary"]" name="Amount" id="Amount" class="form-control" style="width: 100%; height: 40px" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <p class="control-label   col-6 mb-0"> تادیه شوی معاش</p>
+                        <div class="col-md-12">
+                            <input type="text" name="paidAmount" id="paidAmount" class="form-control" style="width: 100%; height: 40px" onchange="NetAnount(this)" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="form-group">
+                        <p class="control-label   col-4 mb-0"> باقی</p>
+                        <div class="col-md-12">
+                            <input type="text" name="remain" id="remain" class="form-control" style="width: 100%; height: 40px" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <p class="control-label col-md-4 mb-0"> تادیی تاریخ</p>
+                        <div class="col-md-12">
+                            <input type="text" name="PaidDate" id="PaidDate" class="form-control" style="width: 100%; height: 40px" onchange="Genarate(this)" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <p class="control-label  col-6 mb-0">  رسید نمبر</p>
+                        <div class="col-md-12">
+                            <input type="text" name="ReciptNo" id="ReciptNo" class="form-control" style="width: 100%; height: 40px" />
+                        </div>
+                    </div>
+                    <div class="form-group mt-4 pt-3">
+                        <div class="btn-group  col-12 ">
+                            <a href="@Url.Action("Index","SalaryTables")" class="btn btn-outline-success border-bottom-success">لیست ته شاتګ </a>
+                            <button type="submit" class="btn btn-primary">معلومات اضافه کول</button>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-4">
+                    <div class="row ms-1 border-1 mt-4 ">
+                        <img src="~/Content/image/money.png" style="width: 100%; height: 276px; border-radius: 5%; " />
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+
+<script src="~/Scripts/jquery-3.7.0.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script type="text/javascript"></script>
+@section Scripts {
+    @Scripts.Render("~/bundles/persianDatepicker")
+
+    <script>
+        $(document).ready(function () {
+         
+
+            $("#PaidDate").persianDatepicker({
+                format: 'YYYY/MM/DD',
+                autoClose: true
+            });
+        });
+    </script>
+}
+<script>
+          $(document).ready(function () {
+      $("#StaffID").on('change', function () {
+
+          var staffID = $("#StaffID").val();
+
+
+          if (staffID) {
+              $.ajax({
+                  url: '@Url.Action("salary", "SalaryTables")',
+                  type: "POST",
+                  data: { id: staffID },
+                  success: function (response) {
+
+                      $("#Amount").val(response.data.conSalary)
+
+                  },
+                  error: function () {
+                      alert("errore");
+                  }
+
+
+              })
+          } else {
+              alert("also erroer");
+          }
+
+
+      })
+
+              $("#Month").on('change', function () {
+
+                  var staffID = $("#StaffID").val();
+                  var Month = $("#Month").val();
+
+
+     if (staffID) {
+         $.ajax({
+             url: '@Url.Action("calculatesalary", "SalaryTables")',
+             type: "POST",
+             data: { staffid: staffID,month:Month },
+             success: function (response) {
+
+                 $("#cutSalary").val(response.data.totalCutSalary).text(response.data.totalCutSalary)
+                 $("#absentDay").val(response.data.absent).text(response.data.absent)
+
+             },
+             error: function () {
+                 alert("errore");
+             }
+
+
+         })
+     } else {
+         alert("also erroer");
+     }
+
+
+ })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+              $("#SalaryForm").validate({
+          rules: {
+              Amount: {
+                  required: true,
+              },
+              PaidDate: {
+                  required: true,
+              },
+
+
+          },
+          submitHandler: function (form) {
+
+              var formData = new FormData(form);
+
+
+
+              $.ajax({
+                  url: '@Url.Action("Create", "SalaryTables")',
+                  type: 'POST',
+                  data: formData,
+                  processData: false,
+                  contentType: false,
+                  success: function (response) {
+                      if (response.success) {
+
+                          $("#messageText").text("salary submitted successfully! Click to print a slip").show();
+                          $("#printslip").attr("href", "/SalaryTables/printSlip/" + response.feeid).show();
+                          $("#message").show();
+                          //$("#resultMessage").html("<div class='alert alert-success'>" + response.msg + "</div>");
+                          //$("#FeeForm")[0].reset();
+                          window.location.href = response.redirectUrl;
+                      } else {
+                          $("#resultMessage").html("<div class='alert alert-danger'>" + response.msg + "</div>");
+                      }
+                  },
+                  error: function () {
+                      $("#resultMessage").html("<div class='alert alert-danger'>An error occurred.</div>");
+                  }
+
+              });
+          }
+      });
+
+  });
+
+
+    function NetAnount() {
+        let NetAmount;
+
+        let amount= $("#Amount").val();
+        let paidamount = $("#paidAmount").val();
+        NetAmount = amount - paidamount;
+        $("#remain").val(NetAmount);
+
+
+
+    }
+
+    function Genarate() {
+        let char = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
+        let recipt = "";
+        for (let i = 0; i < 8; i++) {
+            recipt += char.charAt(Math.floor(Math.random() * char.length))
+        }
+        $("#ReciptNo").val(recipt);
+
+
+
+    }
+</script>
+
+

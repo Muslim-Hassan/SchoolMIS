@@ -1,0 +1,665 @@
+﻿<!DOCTYPE html>
+<html dir="rtl" >
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>CPS MIS</title>
+
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+    <link href="~/Content/vendor/fontawesome-free/css/all.css" rel="stylesheet" />
+    <link href="~/Content/custom/customCSS.css" rel="stylesheet" />
+    <link href="~/Content/css/sb-admin-2.css" rel="stylesheet" />
+    <link href="~/Content/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" />
+
+    <!-- Persian Datepicker CSS -->
+    <link href="~/Content/persian-datepicker.min.css" rel="stylesheet" />
+
+    <style>
+        #page-top {
+            font-family: Arial;
+        }
+    </style>
+</head>
+<!--<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>CPS MIS</title>-->
+    @*@Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")*@
+
+    <!-- Custom fonts for this template -->
+
+   
+    <!--<link href="~/Content/vendor/fontawesome-free/css/all.css" rel="stylesheet" />-->
+    <!-- Custom styles for this template -->
+    <!--<link href="~/Content/custom/customCSS.css" rel="stylesheet" />
+    <link href="~/Content/css/sb-admin-2.css" rel="stylesheet" />-->
+    <!-- Custom styles for this page -->
+    <!--<link href="~/Content/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+
+    <style>
+        #page-top {
+            font-family: Arial;
+        }
+    </style>
+</head>-->
+<body id="page-top" >
+
+    @{
+
+        String Advancement = "hidden";
+        String Transfer = "hidden";
+        String Fee = "hidden";
+        String AllStaff = "hidden";
+        String Salary = "hidden";
+        String StaffAttendency = "hidden";
+        String StaffType = "hidden";
+        String SubjectReport = "hidden";
+        String Class = "hidden";
+        String  Schedule = "show";
+        String StudentReport = "hidden";
+        String AllUsers = "hidden";
+        String StaffReport = "hidden";
+        String ExpencesReport = "hidden";
+        String StudentAttendencyReport = "hidden";
+        String FeeReport = "hidden";
+        String allStaff = "hidden";
+        String StaffAttendencyReport = "hidden";
+        String SalaryReport = "hidden";
+        String ClassReport = "hidden";
+        String IncomeReport = "hidden";
+        String AdvancementAll = "hidden";
+
+
+
+
+        if (Session["UserId"] == null)
+        {
+            Response.Redirect("~/Home/Index");
+        }
+        else
+        {
+
+            if (Session["UserType"].ToString() == "admin"|| Session["UserType"].ToString() == "Admin"|| Session["UserType"].ToString() == "ادمین"|| Session["UserType"].ToString() == "اډمین")
+            {
+
+                Class = "show";
+                Advancement = "show";
+                Transfer = "show";
+                Fee = "show";
+                AllStaff = "show";
+                Salary = "show";
+                StaffAttendency = "show";
+                StaffType = "show";
+                SubjectReport = "show";
+
+                IncomeReport = "show";
+                StudentReport = "show";
+                AllUsers = "show";
+                StaffReport = "show";
+                ExpencesReport = "show";
+                StudentAttendencyReport = "show";
+                FeeReport = "show";
+                allStaff = "show";
+                StaffAttendencyReport = "show";
+                SalaryReport = "show";
+                SubjectReport = "show";
+                ClassReport = "show";
+                Schedule = "show";
+                AdvancementAll = "show";
+
+
+
+            }
+            else
+            {
+
+
+                allStaff = "show";
+                AllStaff = "show";
+                StaffAttendency = "show";
+
+                Class = "show";
+                Schedule = "show";
+
+
+
+
+            }
+
+        }
+
+    }
+
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <ul class="navbar-nav pr-2  sidebar sidebar-dark accordion" id="accordionSidebar" dir="rtl">
+
+            <!-- Sidebar - Brand -->
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="@Url.Action("Dashboard","Home")">
+                <div class="ms-2">
+                    <img src="~/Content/image/logo1.jpg" style="width:70px; height:60px;border-radius:50%" />
+                </div>
+                <div class="mt-2 sidebar-brand-text">
+                    <div class="sidebar-brand-text mb-0 pb-0"><h3 class="m-0 p-0"><b class="m-0 p-0">چاردیوال</b></h3></div>
+                    <span style="font-weight:bold;font-size:10px;margin-top:0"><b> خصوصی  ښوونځی</b></span>
+                </div>
+            </a>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider my-0" />
+
+            <!-- Nav Item - Dashboard -->
+            <li class="nav-item">
+                <a class="nav-link" href="@Url.Action("Dashboard","Home")">
+                    <i class="fas fa-fw fa-home"></i>
+                    <span><b>کور پاڼه</b></span>
+                </a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider" />
+
+            <!-- Heading -->
+            <div class="sidebar-heading me-3">
+                <h6> <b>مخ  پاڼه</b> </h6>
+            </div>
+
+            <!-- Nav Item - Pages Collapse Menu -->
+            <li class="nav-item">
+                <a class="nav-link collapsed " href="#" data-toggle="collapse" data-target="#AllStudent"
+                   aria-expanded="true" aria-controls="AllStudent">
+                    <i class="fas fa-fw fa-user"></i>
+                    <span><b>شاګرد په اړه</b></span>
+
+                </a>
+                <div id="AllStudent" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">شاګرد په اړه:</h6>
+                        <a href="@Url.Action("Index", "StudentTables")" class="collapse-item  ">ټول شاګردان</a>
+                        <a href="@Url.Action( "Index", "StudentAttendencyTables")" class="collapse-item ">د شاګردانو حاضری </a>
+                        <a href="@Url.Action("Index", "AdvancementTables")" class="collapse-item  @Advancement">د یو شاګرد ارتقا</a>
+                        <a href="@Url.Action("Index", "TransferStdTables")" class="collapse-item @Transfer ">د شاګردانو سه پرچه</a>
+                        <a href="@Url.Action("Index", "FeeTables")" class="collapse-item @Fee">د شاګردانو فیسونه</a>
+                        <a href="@Url.Action( "allStudentReports", "StudentTables")" class="collapse-item @StudentReport ">د شاګردانو  راپور</a>
+                        <a href="@Url.Action( "StudentsByClassReport", "StudentTables")" class="collapse-item @StudentReport ">د شاګردانو راپور د صنف په اساس</a>
+                        <a href="@Url.Action("stdAttendency","StudentAttendencyTables")" class="collapse-item @StudentAttendencyReport ">   شاګردانو حاضری راپور </a>
+                        <a href="@Url.Action("feeReport", "FeeTables")" class="collapse-item  @FeeReport">د فیسونو راپور</a>
+                        <a href="@Url.Action("stdPaidAndUnpaidFee", "FeeTables")" class="collapse-item @FeeReport "> د  صنف په اساس د فیسونو راپور</a>
+
+                    </div>
+                </div>
+            </li>
+
+            <!-- Nav Item - Utilities Collapse Menu -->
+            <li class="nav-item @allStaff">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#AllStaff"
+                   aria-expanded="true" aria-controls="AllStaff">
+                    <i class="fas fa-fw fa-user"></i>
+                    <span><b>اداری کارمندان</b></span>
+                </a>
+                <div id="AllStaff" class="collapse" aria-labelledby="headingUtilities"
+                     data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h3 class="collapse-header">اداری کارمندان</h3>
+
+
+                        <a href="@Url.Action( "Index", "StaffTables")" class="collapse-item  ">اداری کارمندان</a>
+                        <a href="@Url.Action( "Index", "StaffTypeTables")" class="collapse-item @StaffType">د اداری کارمند ډول </a>
+                        <a href="@Url.Action("Index", "SalaryTables")" class="collapse-item @Salary"> د اداری  کارمند معاش </a>
+                        <a href="@Url.Action("Index", "StaffAttendencyTables")" class="collapse-item  @StaffAttendency">د اداری کارمند حاضری</a>
+                        <a href="@Url.Action("staffReport", "StaffTables")" class="collapse-item @StaffReport ">اداری کارمندانو راپور</a>
+                        <a href="@Url.Action("stfAttendency","StaffAttendencyTables")" class="collapse-item @StaffAttendencyReport "> کارمند حاضری راپور </a>
+                        <a href="@Url.Action("salaryByMonthReport", "SalaryTables")" class="collapse-item @SalaryReport"> د میاشتی په اساس د معاش راپور  </a>
+
+
+
+
+                    </div>
+                </div>
+            </li>
+            <li class="nav-item @AllUsers ">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#AllUser"
+                   aria-expanded="true" aria-controls="AllUser">
+                    <i class="fas fa-fw fa-user"></i>
+                    <span><b>استعمالوونکی</b> </span>
+                </a>
+                <div id="AllUser" class="collapse" aria-labelledby="headingUtilities"
+                     data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+
+                        <h6 class="collapse-header">استعمالوونکی:</h6>
+                        <a href="@Url.Action("Index","UserTables")" class="collapse-item  ">  استعمالوونکي </a>
+                        <a href="@Url.Action("Index", "UserTypeTables")" class="collapse-item "> استعمالوونکی ډول  </a>
+                        <a href="@Url.Action("userReport", "UserTables")" class="collapse-item ">  استعمالوونکو راپور  </a>
+
+                    </div>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#Classes"
+                   aria-expanded="true" aria-controls="Classes">
+                    <i class="fas fa-fw fa-building"></i>
+                    <span><b> ټولګی</b></span>
+                </a>
+                <div id="Classes" class="collapse" aria-labelledby="headingUtilities"
+                     data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header"> ټولګی :</h6>
+
+                        <a href="@Url.Action("Index", "ClassTables")" class="collapse-item ">  ټولګی </a>
+                        <a href="@Url.Action("advancementAtOnce", "AdvancementTables")" class="collapse-item @AdvancementAll ">د  ټولګی ارتقا په یو بټن سره </a>
+                        <a href="@Url.Action("Index", "ClassTables")" class="collapse-item @ClassReport">  ټولګیو راپور </a>
+
+                    </div>
+                </div>
+            </li>
+            <li class="nav-item" @Schedule>
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#timeTable"
+                   aria-expanded="true" aria-controls="timeTable">
+                    <i class="fas fa-fw fa-calendar"></i>
+                    <span><b>تقسیم اوقات </b></span>
+                </a>
+                <div id="timeTable" class="collapse" aria-labelledby="headingUtilities"
+                     data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">تقسیم اوقات  :</h6>
+
+                        <a href="@Url.Action("Index", "ScheduleTables")" class="collapse-item ">تقسیم اوقات</a>
+                        <a href="@Url.Action("teacherTimeTable","ScheduleTables")" class="collapse-item  "> داستادانو تقسیم اوقات </a>
+                        <a href="@Url.Action("classTimeTable","ScheduleTables")" class="collapse-item  "> ټولګیو تقسیم اوقات </a>
+
+
+
+
+                    </div>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#Exams"
+                   aria-expanded="true" aria-controls="Exams">
+                    <i class="fas fa-fw fa-pager"></i>
+                    <span><b>امتحانات</b></span>
+                </a>
+                <div id="Exams" class="collapse" aria-labelledby="headingUtilities"
+                     data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">امتحانات :</h6>
+
+                        <a href="@Url.Action( "Index", "ExamTables")" class="collapse-item  ">امتحانونه </a>
+                        <a href="@Url.Action("examPaper","ExamTables")" class="collapse-item  " >   د امتحان شقی   </a>
+                        <a href="@Url.Action("devoidStudent", "StudentAttendencyTables")" class="collapse-item "> د صنف په اساس د محرومانو راپور</a>
+                        <a href="@Url.Action("markSheet","marksReport")" class="collapse-item  " >  شاګردانو ټولی نمری</a>
+                        <a href="@Url.Action("marksByClass","marksReport")" class="collapse-item  " > د ټولګی په اساس نمری </a>
+
+
+
+
+                    </div>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#Subject"
+                   aria-expanded="true" aria-controls="Subject">
+                    <i class="fas fa-fw fa-book"></i>
+                    <span><b> مضامین</b></span>
+                </a>
+                <div id="Subject" class="collapse" aria-labelledby="headingUtilities"
+                     data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header"> مضامین :</h6>
+
+
+                        <a href="@Url.Action("Index", "SubjectTables")" class="collapse-item  "> مضامین</a>
+                        <a href="@Url.Action("Index", "ClassSubjectTables")" class="collapse-item  "> صنفونو مضامین</a>
+                        <a href="@Url.Action("subjectReport", "SubjectTables")" class="collapse-item  @SubjectReport"> مضامین راپور</a>
+
+
+
+
+
+                    </div>
+                </div>
+            </li>
+            <li class="nav-item" @ExpencesReport ">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#Expences"
+                   aria-expanded="true" aria-controls="Expences">
+                    <i class="fas fa-fw fa-dollar-sign"></i>
+                    <span><b>مصارف</b></span>
+                </a>
+                <div id="Expences" class="collapse" aria-labelledby="headingUtilities"
+                     data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">مصارف :</h6>
+
+                        <a href="@Url.Action( "Index", "ExpencesTables")" class="collapse-item ">  مصارف   </a>
+
+                        <a href="@Url.Action("expencesReport", "ExpencesTables")" class="collapse-item"> د تاریخ په اساس د مصارفو راپور </a>
+
+
+
+
+                    </div>
+                </div>
+            </li>
+            <li class="nav-item" @ExpencesReport>
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#income"
+                   aria-expanded="true" aria-controls="income">
+                    <i class="fas fa-fw fa-dollar-sign"></i>
+                    <span><b> عایدات</b></span>
+                </a>
+                <div id="income" class="collapse" aria-labelledby="headingUtilities"
+                     data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h3 class="collapse-header"> عایدات</h3>
+
+
+                        <a href="@Url.Action( "Index", "IncomeTables")" class="collapse-item  "> عاید</a>
+                        <a href="@Url.Action("incomeReport", "IncomeTables")" class="collapse-item "> د  تاریخ په اساس د عاید راپور </a>
+
+
+                    </div>
+                </div>
+            </li>
+            <!-- Divider -->
+            <hr class="sidebar-divider" />
+
+            <!-- Divider -->
+            <hr class="sidebar-divider d-none d-md-block" />
+
+            <!-- Sidebar Toggler (Sidebar) -->
+            <div class="text-center  d-md-inline">
+                <button class="rounded-circle border-0" id="sidebarToggle"></button>
+            </div>
+
+        </ul>
+        <!-- End of Sidebar -->
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content">
+
+                <!-- Topbar -->
+                <nav class="navbar navbar-expand  topbar mb-4 p-0 static-top shadow d-flex justify-content-end ms-0">
+
+
+
+                    <!-- Topbar Navbar -->
+                    <ul class="navbar-nav me-lg-4 float-md-start">
+
+
+                        <div class="topbar-divider d-none d-sm-block"></div>
+
+                        <!-- Nav Item - User Information -->
+                        <li class="nav-item dropdown no-arrow ">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="mr-2 ms-1  d-lg-inline text-white small">نوم: @Session["UserName"]</span>
+
+                                <div class="topbar-divider  d-sm-block"></div>
+                                <span class="mr-2  d-lg-inline text-white small">صلاحیت: @Session["UserType"]</span>
+                                <div class="topbar-divider  d-sm-block"></div>
+                                <div class="d-flex flex-column text-center justify-content-center">
+                                    <img class="ms-1" src="@Session["ProfileImage"]" style="width:30px;border-radius:50%" />
+                                    <span style="font-size:6px">click view profile</span>
+                                </div>
+                            </a>
+                            <!-- Dropdown - User Information -->
+
+
+
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                 aria-labelledby="userDropdown" style="width:10px">
+                                <div style="width:30px">
+                                    <img src="@Session["ProfileImage"]" style="width:236px;height:155px" />
+                                </div>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400 fw-bold"></i>
+                                    د سیستم څخه وتل
+                                </a>
+                            </div>
+                        </li>
+
+                    </ul>
+                </nav>
+
+                <!-- End of Topbar -->
+                <div class="container-fluid">
+                    @RenderBody()
+
+
+                    <!-- دلته loader داخل کړه -->
+                    <div id="globalLoader" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%;
+                     background:rgba(255,255,255,0.7); z-index:9999; text-align:center; padding-top:20%;">
+                        <div class="spinner-border text-danger" style="width:3rem; height:3rem;" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                        <p>مهرباني وکړئ انتظار وباسئ...</p>
+                    </div>
+                </div>
+
+                @*this is char section for student*@
+                <!--<div class="container-fluid">-->
+                <!-- Page Heading -->
+                <!--<h1 class="h3 mb-2 text-gray-800">Charts</h1>
+            <p class="mb-4">
+                Chart.js is a third party plugin that is used to generate the charts in this theme.
+                The charts below have been customized - for further customization options, please visit the <a target="_blank" href="https://www.chartjs.org/docs/latest/">
+                    official Chart.js
+                    documentation
+                </a>.
+            </p>-->
+                <!-- Content Row -->
+                <!--<div class="row">
+
+                <div class="col-xl-8 col-lg-7">-->
+                <!-- Area Chart -->
+                <!--<div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Area Chart</h6>
+                </div>
+                <div class="card-body">
+                    <div class="chart-area">
+                        <canvas id="myAreaChart"></canvas>
+                    </div>
+                    <hr>
+                    Styling for the area chart can be found in the
+                    <code>/js/demo/chart-area-demo.js</code> file.
+                </div>
+            </div>-->
+                <!-- Bar Chart -->
+                <!--<div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Bar Chart</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="chart-bar">
+                            <canvas id="myBarChart"></canvas>
+                        </div>
+                        <hr>
+                        Styling for the bar chart can be found in the
+                        <code>/js/demo/chart-bar-demo.js</code> file.
+                    </div>
+                </div>
+
+            </div>-->
+                <!-- Donut Chart -->
+                <!--<div class="col-xl-4 col-lg-5">
+                <div class="card shadow mb-4">-->
+                <!-- Card Header - Dropdown -->
+                <!--<div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Donut Chart</h6>
+            </div>-->
+                <!-- Card Body -->
+                <!--<div class="card-body">
+                                <div class="chart-pie pt-4">
+                                    <canvas id="myPieChart"></canvas>
+                                </div>
+                                <hr>
+                                Styling for the donut chart can be found in the
+                                <code>/js/demo/chart-pie-demo.js</code> file.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>-->
+
+
+
+
+                <div class=" row sticky-footer bg-primary  text-white py-2 mt-5 d-flex flex-row">
+
+
+
+                    <div class="col-md-8 col-sm-12 text-center">
+                        <h4 class="fw-bold"><b>     ادرس</b></h4>
+                        <h5>ننګرهار ولایت بټی کوټ ولسوالی چاردهی برکلی د مظهرالعلوم مدرسی تر څنګ</h5>
+                        <h4>چاردیوال خصوصی ښوونځی</h4>
+
+
+                    </div>
+
+                    <div class="col-md-4 col-sm-12 border-end ">
+                        <h4 class="fw-bold text-center mb-3"><b>موخی او اهداف</b></h4>
+                        <ul class="text-right ">
+                            <li> د نوی نسل سالمه روزنه</li>
+                            <li> ګران هیواد ته د تعلیم په مټ خدمت کول </li>
+                            <li> د تعلیم په  مرسته د ټولنی </li>
+                            <li> د نوی نسل سالمه روزنه</li>
+                        </ul>
+
+                    </div>
+                    <div class="col-md-12 col-sm-12 border-start ">
+                        <h4 class="text-center mb-3 pr-0"><b> زموږ سره اړیکه</b></h4>
+                        <div class=" d-flex flex-row justify-content-around ">
+                            <p class="fa fa-phone-alt  text-white">  <b> موبایل :</b><strong> 0779754189</strong></p>
+                            <p class="fab fa-whatsapp  text-white">   <b> واټساپ :</b><strong> 0780073091 </strong></p>
+                            <p class="fab fa-facebook  text-white">   <b> فیسبوک :</b><strong> Chardiwal Private School </strong></p>
+
+                            <p class="fa fa-envelope-square   text-white">    <b>ایمیل  :</b><strong> Chardiwal_P_School@gmail.com </strong></p>
+                        </div>
+
+                    </div>
+                </div>
+            
+                <!-- End of Footer -->
+
+            </div>
+            <!-- End of Content Wrapper -->
+
+        </div>
+        <!-- End of Page Wrapper -->
+        <!-- Scroll to Top Button-->
+        <a class="scroll-to-top rounded" href="#page-top">
+            <i class="fas fa-angle-up"></i>
+        </a>
+
+        <!-- Logout Modal-->
+        <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header ">
+
+
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            X
+                        </button>
+                        <h4 id="exampleModalLabel"> Exit From System</h4>
+                    </div>
+                    <div class="modal-body float-end"><h3>ایا غواړۍ چی د سیستم څخه ووځۍ؟</h3></div>
+                    <div class="modal-footer">
+                        <button class="btn btn-dark" type="button" data-dismiss="modal">نه خیر</button>
+
+                        @Html.ActionLink("هو", "Logout", "Home", null, new { @class = "btn btn-danger" })
+                    </div>
+                </div>
+            </div>
+        </div>
+        @*@Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/bootstrap")
+        @RenderSection("scripts", required: false)*@
+        <!-- Bootstrap core JavaScript-->
+        <!--<script src="~/Content/vendor/jquery/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $(document).ajaxStart(function () {
+                $("#globalLoader").fadeIn();
+            });
+
+            $(document).ajaxStop(function () {
+                $("#globalLoader").fadeOut();
+            });
+            $(document).ready(function () {
+                $("#globalLoader").fadeOut();
+            });
+
+        });
+    </script>
+
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Content/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/Content/vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="~/Content/js/sb-admin-2.min.js"></script>
+    <script src="~/Content/vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/Content/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+    <script src="~/Content/js/demo/datatables-demo.js"></script>
+
+    <script src="~/Content/vendor/chart.js/Chart.bundle.min.js"></script>
+    <script src="~/Content/vendor/chart.js/Chart.js"></script>
+    <script src="~/Content/vendor/chart.js/Chart.min.js"></script>-->
+
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/bootstrap")
+        @RenderSection("scripts", required: false)
+
+        <script src="~/Content/vendor/jquery/jquery.min.js"></script>
+
+        <script>
+            $(document).ready(function () {
+                $(document).ajaxStart(function () {
+                    $("#globalLoader").fadeIn();
+                });
+
+                $(document).ajaxStop(function () {
+                    $("#globalLoader").fadeOut();
+                });
+
+                $("#globalLoader").fadeOut();
+            });
+        </script>
+
+        <script src="~/Scripts/jquery.validate.min.js"></script>
+        <script src="~/Content/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <script src="~/Content/vendor/jquery-easing/jquery.easing.min.js"></script>
+        <script src="~/Content/js/sb-admin-2.min.js"></script>
+        <script src="~/Content/vendor/datatables/jquery.dataTables.min.js"></script>
+        <script src="~/Content/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+        <script src="~/Content/js/demo/datatables-demo.js"></script>
+        <script src="~/Content/vendor/chart.js/Chart.bundle.min.js"></script>
+        <script src="~/Content/vendor/chart.js/Chart.js"></script>
+        <script src="~/Content/vendor/chart.js/Chart.min.js"></script>
+
+        <!-- Persian Datepicker JS -->
+        <script src="~/Scripts/persian-date.min.js"></script>
+        <script src="~/Scripts/persian-datepicker.min.js"></script>
+
+</body>
+</html>

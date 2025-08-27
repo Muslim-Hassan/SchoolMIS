@@ -1,0 +1,276 @@
+﻿@model IEnumerable<SchoolMIS.Models.StaffAttendencyTable>
+@{
+    String Actions = "hidden";
+    String creation = "hidden";
+
+
+    if (Session["UserId"] == null)
+    {
+        Response.Redirect("~/Home/Index");
+    }
+    else
+    {
+
+        if (Session["UserType"].ToString() == "admin" || Session["UserType"].ToString() == "Admin" || Session["UserType"].ToString() == "ادمین" || Session["UserType"].ToString() == "اډمین")
+        {
+
+
+            creation = "show";
+            Actions = "show";
+
+        }
+
+    }
+}
+<style>
+    .left {
+        float: left;
+    }
+
+    .right {
+        float: right;
+    }
+</style>
+<div class="d-flex justify-content-md-between pt-2">
+
+    <h4><b>د اداری کارکوونکو حاضری </b></h4>
+    <p class="btn btn-group">
+        <a href="@Url.Action("Dashboard","Home")" class="btn btn-primary"> کور صفحه</a>
+        <a href="@Url.Action("Create","StaffAttendencyTables")" class="btn btn-success @creation"> نوی معلومات اضافه کړئ</a>
+
+    </p>
+    <h4><b>Attendency of Staff </b></h4>
+</div>
+
+<div class="card shadow  pre-scrollable ">
+
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover " id="dataTable" width="100%" cellspacing="0">
+                <thead class="table-active">
+                    <tr>
+                        <th>استاذ</th>
+
+                        <th>میاشت </th>
+                        <th>رسمی ورځی </th>
+                        <th>حاضر </th>
+                        <th>تاریخ</th>
+                        <th class="@Actions">Action </th>
+                    </tr>
+                </thead>
+                <tfoot class="table-active">
+                    <tr>
+                        <th>استاذ</th>
+                        <th>میاشت </th>
+                        <th>رسمی ورځی </th>
+                        <th>حاضر </th>
+                        <th>تاریخ</th>
+                        <th class="@Actions">Action </th>
+                    </tr>
+                </tfoot>
+                <tbody id="tbody">
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.StaffTable.Name)
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Month)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.FormalDays)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Present)
+                            </td>
+                            <td>
+                                @SchoolMIS.Models.Converssion.ToShamsi(item.Date)
+                            </td>
+                            <td class="@Actions">
+                                <div class="btn-group">
+                                    @Html.ActionLink(" ", "Edit", "StaffAttendencyTables", new { id = item.StaffAttendencyID }, new { @class = "btn btn-primary fa fa-edit" })
+                                    @*<button class="btn btn-info btn-Details" data-id="@item.StaffAttendencyID"><i class="fa fa-info"></i></button>*@
+                                    <button class="btn btn-danger btn-delete" data-id="@item.StaffAttendencyID"><i class="fa fa-trash"></i></button>
+                                </div>
+                            </td>
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+@* delete model*@
+<div id="deleteModal" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white d-flex justify-content-between align-content-center border-dark">
+                <img src="~/Content/image/logo1.jpg" style="width:40px;border-radius:50%;" />
+
+                <h4 class="modal-title text-center px-2"><b> ایا غواړی د اداری کارکوونکی  حاضری  لمنځه یوسی؟</b></h4>
+
+
+            </div>
+            <div class="modal-body">
+                @* this is alert section*@
+                <div id="resultMessage"></div>
+                <div class="row">
+
+                    <div class="col-6 card p-3 shadow">
+
+                        <p><span id="DStaff"  class="left"></span><strong class="right">استاذ :</strong> </p>
+                        <hr class="m-0 p-0" />
+                        <p><span id="DMonth"  class="left"></span><strong class="right">میاشت : </strong> </p>
+                        <hr class="m-0 p-0" />
+                        <p><span id="DDate"  class="left"></span><strong class="right">تاریخ :</strong> </p>
+
+                    </div>
+                    <div class="col-6 card p-3 shadow">
+                        <p><span id="DStaffID"  class="left"></span><strong class="right">شماره :</strong> </p>
+                        <hr class="m-0 p-0" />
+                        <p><span id="DFormalDay"  class="left"></span><strong class="right">رسمی ورځی :  </strong> </p>
+                        <hr class="m-0 p-0" />
+                        <p> <span id="DPresent"  class="left"></span><strong class="right">حاضری ورځی : </strong></p>
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="modal-footer bg-danger text-white">
+                <form id="deleteForm">
+                    <input type="hidden" id="input" />
+                    <button type="submit" class="btn btn-primary" id="submitbtn">هو</button>
+                </form>
+                <button type="button" class="btn btn-secondary pe-2" data-bs-dismiss="modal"> نه</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@* details modal*@
+@*<div id="detailsModal" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white d-flex justify-content-between align-content-center border-dark">
+                    <img src="~/Content/image/logo1.jpg" style="width:40px;border-radius:50%;" />
+
+                    <h4 class="modal-title text-center px-2"><b><span id="header"></span>حاضری معلومات</b></h4>
+
+
+                </div>
+                <div class="modal-body " id="modelBody">
+                    <div class="row">
+                        <div class="col-6 card p-3 shadow">
+
+                            <p><span id="Staff"></span><strong class="right"> :استاذ</strong> </p>
+                            <hr class="m-0 p-0" />
+                            <p><span id="Month"></span><strong class="right"> : میاشت</strong> </p>
+                            <hr class="m-0 p-0" />
+                            <p><span id="Date"></span><strong class="right"> :تاریخ</strong> </p>
+
+                        </div>
+                        <div class="col-6 card p-3 shadow">
+                            <p><span id="StaffID"></span><strong class="right"> :شماره</strong> </p>
+                            <hr class="m-0 p-0" />
+                            <p><span id="FormalDay"></span><strong class="right"> :  رسمی ورځی</strong> </p>
+                            <hr class="m-0 p-0" />
+                            <p> <span id="Present"></span><strong class="right"> : حاضری ورځی</strong></p>
+                        </div>
+                    </div>
+
+
+
+                </div>
+
+                <div class="modal-footer bg-danger text-white">
+                    <button type="button" class="btn btn-secondary pe-2" data-bs-dismiss="modal">شا تګ</button>
+                </div>
+            </div>
+        </div>
+    </div>*@
+
+<script src="~/Scripts/jquery-3.7.0.min.js"></script>
+
+<script type="text/javascript"></script>
+<script>
+    $(document).ready(function () {
+           //this is deletion section
+       $('.btn-delete').click(function () {
+         var id = $(this).data('id');
+           $.ajax({
+
+            url: '@Url.Action("Delete","StaffAttendencyTables")',
+            type: 'POST',
+            data: { id: id },
+            success: function (response) {
+                if (response.success) {
+                    $('#input').val(response.data.StaffAttendencyID);
+                    $('#DStaffID').text(response.data.StaffAttendencyID);
+                    $('#DStaff').text(response.data.staff);
+                    $('#DFormalDay').text(response.data.FormalDays);
+                    $('#DPresent').text(response.data.Present);
+                    $('#DDate').text(response.data.date);
+                    $('#DMonth').text(response.data.Month);
+
+                    //modal show
+                    $('#deleteModal').modal('show');
+                } else {
+                    $("#resultMessage").html("<div class='alert alert-success'>" + response.msg + "</div>");
+                }
+            },
+            error: function () {
+              alert("errore")
+            }
+        });
+
+       });
+       //------------------------------ConfirmDeletion
+       $('#submitbtn').click(function (e) {
+          e.preventDefault();  // Prevent the default form submission
+          var id=parseInt($('#input').val());
+           $.ajax({
+               url: '@Url.Action("ConDelete", "StaffAttendencyTables")',
+               type: 'POST',
+               data: { id: id },  // Send the serialized data
+               success: function (response) {
+                 $("#resultMessage").html("<div class='alert alert-success'>" + response.msg + "</div>");
+                 window.location.href = response.redirectUrl;
+        },
+        error: function () {
+            alert("error occured");
+        }
+    });
+});
+ //this is for detail----------------------------------
+        @*$('.btn-Details').click(function () {
+            var id = $(this).data('id');
+            $.ajax({
+                url: '@Url.Action("Details", "StaffAttendencyTables")',
+                type: 'POST',
+                data: { id: id },
+                success: function (response) {
+                    if (response.success) {
+                        $('#header').text(response.data.staff);
+                        $('#StaffID').text(response.data.StaffAttendencyID);
+                        $('#Staff').text(response.data.staff);
+                        $('#FormalDay').text(response.data.FormalDays);
+                        $('#Present').text(response.data.Present);
+                        $('#Date').text(response.data.date);
+                        $('#Month').text(response.data.Month);
+
+                        // Show the modal
+                        $('#detailsModal').modal('show');
+                    } else {
+                        alert("errore occurd")
+                    }
+                },
+                error: function () {
+                    alert('An error occurred while fetching the details.');
+                }
+            });
+        });*@
+});
+</script>

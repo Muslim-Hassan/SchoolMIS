@@ -1,0 +1,39 @@
+﻿@model IEnumerable<SchoolMIS.Models.ClassSubjectTable>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.ClassTable.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SubjectTable.Name)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.ClassTable.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SubjectTable.Name)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.ClassSubjectID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.ClassSubjectID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.ClassSubjectID })
+        </td>
+    </tr>
+}
+
+</table>

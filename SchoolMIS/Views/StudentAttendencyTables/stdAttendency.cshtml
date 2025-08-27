@@ -1,0 +1,232 @@
+﻿@model IEnumerable<SchoolMIS.Models.StudentAttendencyTable>
+@{
+
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+
+<html dir="rtl">
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link href="~/Content/custom/customCSS.css" rel="stylesheet" />
+    <link href="~/Content/css/sb-admin-2.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-3.7.0.min.js"></script>
+    <title>marksByClass</title>
+</head>
+<body class="pashtoFont p-4">
+    <div class="container-fluid">
+        <div class="col-12 d-flex flex-row justify-content-between  mb-3 p-3">
+
+            <img src="~/Content/image/logo1.jpg" style="width:150px ;height:85px" />
+            <div class="text-center">
+                <h2><b>چاردیوال خصوصی ښوونځی </b></h2>
+                <h4><b>د صنف او میاشتی اساس  د شاکردانو حاضری راپور   </b></h4>
+            </div>
+            <img src="~/Content/image/aei.jpg" style="width: 110px; height: 80px" />
+
+        </div>
+
+        <form action="/StudentAttendencyTables/stdAttendency " method="post">
+            <div class="row mb-4">
+                <div class="col-md-4 d-flex flex-row  ">
+                    <label class="text-center ms-2 mt-2"><b>شاګرد </b></label>
+                    @Html.DropDownList("StudentID", null, htmlAttributes: new { @class = "form-control" })
+                </div>
+                <div class="col-md-4  d-flex flex-row ">
+                    <label class="text-center ms-2 mt-2"><b>صنف </b></label>
+                    @Html.DropDownList("ClassID", null, htmlAttributes: new { @class = "form-control" })
+                </div>
+                <div class="col-md-3  d-flex flex-row ">
+                    <label class="text-center  ms-2 mt-2"><b>میاشت </b></label>
+                    <select type="text" name="Month" id="Month" class="form-control hideInPrint" style="width: 100%; height: 40px">
+                        <option value="All">ټول</option>
+                        <option value="حمل">حمل</option>
+                        <option value="ثور">ثور</option>
+                        <option value="جوزا">جوزا</option>
+                        <option value="سرطان">سرطان</option>
+                        <option value="اسد">اسد</option>
+                        <option value="سنبله">سنبله</option>
+                        <option value="میزان">میزان</option>
+                        <option value="عقرب">عقرب</option>
+                        <option value="قوس">قوس</option>
+                        <option value="جدی">جدی</option>
+                        <option value="دلو">دلو</option>
+                        <option value="حوت">حوت</option>
+
+                    </select>
+                </div>
+                <div class="col-md-1 p-0" >
+                    <button type="submit" style="width:90%" class="btn btn-primary hideInPrint"> جوړ کړئ</button>
+
+
+                </div>
+            </div>
+
+
+        </form>
+
+
+        @{
+
+            ViewBag.tFormalDay = Model.Sum(f => f.FormalDays);
+            ViewBag.Present = Model.Sum(f => f.Present);
+            ViewBag.absent = ViewBag.tFormalDay - ViewBag.Present;
+
+            var stutas = "";
+            long colculation = 0;
+            if (ViewBag.tFormalDay != 0)
+            {
+              colculation = (ViewBag.absent * 100) / ViewBag.tFormalDay;
+            }
+
+            if (colculation > 25)
+            {
+                stutas = "محروم";
+            }
+            else
+            {
+                stutas = " محروم نه دی";
+            }
+
+
+
+            foreach (var item in Model)
+            {
+                ViewBag.name = item.StudentTable.Name;
+                ViewBag.fName = item.StudentTable.FatherName;
+                ViewBag.gfName = item.StudentTable.GrandFatherName;
+                ViewBag.ClassName = item.StudentTable.ClassTable.Name;
+                ViewBag.image = item.StudentTable.Image;
+
+            }
+        }
+        <table class="table table-bordered ">
+            <thead class="">
+                <tr>
+                    <th colspan="2" class="bg-light text-center">
+                        نوم :
+                        @ViewBag.name
+
+                    </th>
+
+                    <th class="bg-light text-center">
+                        پلار نوم :
+
+                        @ViewBag.fName
+
+
+                    </th>
+
+                    <th class="bg-light text-center">
+                        نیکه نوم :
+                        @ViewBag.gfName
+                    </th>
+                    <th class="bg-light text-center">
+                        صنف :
+                        @ViewBag.ClassName
+                    </th>
+
+                </tr>
+            </thead>
+
+
+        </table>
+        @*this is second table for loop iteration*@
+        <table class="table table-bordered">
+            <thead class="table-active">
+                <tr>
+                    <th>میاشت</th>
+                    <th> رسمی ورځی</th>
+                    <th> حاضر</th>
+                    <th> غیر حاضر</th>
+                    <th>تاریخ</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Month)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FormalDays)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Present)
+                        </td>
+                        <td>
+                            @{
+                                var fday = @item.FormalDays;
+                                var pre = item.Present;
+                                var absent = fday - pre;
+                            }
+                            @absent
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Date)
+                        </td>
+
+
+
+                    </tr>
+                }
+            <tr class="fw-bolder bg-light">
+                <td><b>مجموعه</b></td>
+                <td>
+                    @ViewBag.tFormalDay
+                </td>
+                <td>
+                    @ViewBag.Present
+                </td>
+                <td>
+                    @ViewBag.absent
+                </td>
+                <td>
+                  
+                </td>
+            </tr>
+                <tr class="fw-bolder">
+                    <td> مجموعه رسمی ورځی</td>
+
+                    <td>
+                        @ViewBag.tFormalDay
+                    </td>
+                </tr>
+                <tr class="fw-bolder">
+                    <td>مجموعه غیر حاضری </td>
+
+                    <td>
+                        @ViewBag.absent
+                    </td>
+                </tr>
+                <tr class="fw-bolder">
+                    <td>حاضری نتیجه</td>
+
+                    <td>
+                        @stutas
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+
+
+
+
+    </div>
+    <div class="col-12  d-flex flex-row justify-content-center" dir="ltr">
+       
+        <div>
+            <a href="@Url.Action("Dashboard","Home")" id="hideInPrint" class="btn btn-success ">کور پاڼی ته شاتګ </a>
+            <a class="btn btn-primary " id="hideInPrint" onclick="window.print()">PDF ذخیره کړئ </a>
+            <a class="btn btn-primary  " id="hideInPrint" onclick="window.print()">راپور پرنټ کړئ </a>
+        </div>
+    </div>
+</body>
+</html>
+

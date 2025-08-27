@@ -1,0 +1,142 @@
+﻿@model IEnumerable<SchoolMIS.Models.SalaryTable>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html dir="rtl">
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>StudentsByClassReport</title>
+    <link href="~/Content/custom/customCSS.css" rel="stylesheet" />
+    <link href="~/Content/css/sb-admin-2.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body style=" font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">
+
+    <div class="container-fluid">
+
+        <div class="col-12 d-flex flex-row justify-content-between  mb-3 p-3">
+
+            <img src="~/Content/image/logo1.jpg" style="width:150px ;height:70px" />
+            <div class="text-center">
+                <h2><b> چاردیوال خصوصی ښوونځی </b></h2>
+                <h4><b> د میاشتی  په اساس  د معاشاتو راپور  </b></h4>
+            </div>
+            <img src="~/Content/image/aei.jpg" style="width:100px;height:60px" />
+
+        </div>
+
+       
+
+        <form action="/SalaryTables/salaryByMonthReport " method="post">
+            <div class="row mb-4">
+                <div class="col-md-11">
+                    <select type="text" name="Month" id="Month" class="form-control hideInPrint" style="width: 100%; height: 40px">
+                        <option value="All">All</option>
+                        <option value="January">January</option>
+                        <option value="Feberuary">Feberuary</option>
+                        <option value="March">March</option>
+                        <option value="April">April</option>
+                        <option value="May">May</option>
+                        <option value="June">June</option>
+                        <option value="July">July</option>
+                        <option value="August">August</option>
+                        <option value="September">September</option>
+                        <option value="October">October</option>
+                        <option value="November">November</option>
+                        <option value="December">December</option>
+
+                    </select>
+                </div>
+                <div class="col-md-1">
+                    <button type="submit"  class="btn btn-primary hideInPrint"> جوړ کړئ</button>
+                   
+
+                </div>
+            </div>
+
+
+        </form>
+        <div class="row">
+            <h2>د @ViewBag.monthName د میاشتی د معاش راپور</h2>
+           
+        </div>
+        <div class="row">
+            <div class="table-responsive">
+                <table class="table table-bordered " id="dataTable" width="100%" cellspacing="0">
+                    <thead class="table-active">
+                        <tr>
+                            <th>شماره</th>
+                            <th>اداری کارمند</th>
+                            <th>میاشت</th>
+                            <th>اندازه</th>
+                            <th>code</th>
+                            <th>status</th>
+                            <th>تادیه تاریخ </th>
+
+                        </tr>
+                    </thead>
+                 
+                    <tbody id="tbody">
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.SalaryID)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.StaffTable.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Month)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Amount)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ReciptNo)
+
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Status)
+
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.PaidDate)
+                                </td>
+
+
+                            </tr>
+                        }
+                        <tr>
+                            <td><b>د میاشتی د معاشاتو مجموعه</b></td>
+                            <td>@ViewBag.slaryByMonth</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+
+
+
+
+        </div>
+        <div class="col-12  d-flex flex-row justify-content-between" dir="ltr">
+            <p class="mb-0">Print Date:@ViewBag.currentDate</p>
+            <div>
+                <a href="@Url.Action("Dashboard","Home")" class="btn btn-success hideInPrint">کور پاڼی ته شاتګ </a>
+                <a class="btn btn-primary " onclick="window.print()">PDF ذخیره کړئ</a>
+                <a class="btn btn-primary " onclick="window.print()">راپور پرنټ کړئ </a>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+</body>
+</html>

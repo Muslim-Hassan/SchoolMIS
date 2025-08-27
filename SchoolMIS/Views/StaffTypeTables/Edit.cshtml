@@ -1,0 +1,88 @@
+﻿@model SchoolMIS.Models.StaffTypeTable
+
+<link href="~/Content/custom/customCSS.css" rel="stylesheet" />
+
+<div class="d-flex justify-content-md-between container-fluid">
+    <h4><b>اداری کارکوونکی د ډول بیارغول</b></h4>
+    <h4><b>Staff Type Edition</b></h4>
+
+</div>
+
+<hr />
+@*this is alert section*@
+<div id="resultMessage"></div>
+<form id="staffTypeForm">
+    @Html.AntiForgeryToken()
+
+    <div class="row card d-flex flex-row">
+
+        <div class="col-5  mt-5 ">
+            <div class="form-horizontal">
+                  @Html.HiddenFor(model => model.StaffTypeID, new { @type = "hidden" })
+
+                <div class="form-group">
+                    <p class="control-label col-4 mb-0">اداری ډول</p>
+                    <div class="col-md-12">
+                        @Html.EditorFor(model => model.Type, new { htmlAttributes = new {@class = "form-control", style = "width:100%;height:40px" } })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <p class="control-label  col-4 mb-0">وضاحت</p>
+                    <div class="col-md-12">
+                        @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control", style = "width:100%;height:40px" } })
+                    </div>
+                </div>
+
+                <div class=" col-md-9 btn-group mt-4">
+                    <a href="@Url.Action("Index","StaffTypeTables")" class="btn btn-outline-success border-bottom-success">لیست ته شاتګ </a>
+                    <button type="submit" class="btn btn-primary" id="SubmitBtn">معلومات نوی کول</button>
+                </div>
+
+
+            </div>
+        </div>
+        <!--this is for image-->
+        <div class="col-7 ">
+
+            <img src="~/Content/image/school4.jpg" style="width:650px;height:300px" />
+
+
+        </div>
+    </div>
+
+</form>
+
+<script src="~/Scripts/jquery-3.7.0.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script>
+
+         $(document).ready(function () {
+             $("#staffTypeForm").validate({
+
+                 submitHandler: function (form) {
+                 var formData = $("#staffTypeForm").serialize();
+
+        $.ajax({
+            url: '@Url.Action("Create","StaffTypeTables")',
+            type: 'POST',
+            data: formData,
+            success: function (response) {
+                if (response.success) {
+                    $("#resultMessage").html("<div class='alert alert-success'>" + response.msg + "</div>");
+                    $("#staffTypeForm")[0].reset();
+                    window.location.href = response.redirectUrl;
+                } else {
+                    $("#resultMessage").html("<div class='alert alert-danger'>" + response.msg + "</div>");
+                }
+            },
+            error: function () {
+                $("#resultMessage").html("<div class='alert alert-danger'>An error occurred.</div>");
+            }
+        });
+    }
+});
+     });
+  
+</script>

@@ -1,0 +1,210 @@
+﻿@model SchoolMIS.Models.TransferStdTable
+
+<link href="~/Content/custom/customCSS.css" rel="stylesheet" />
+<body>
+    <div class="container-fluid p-2">
+        <div class="row">
+            <div class="d-flex justify-content-md-between pt-2 pb-4">
+                <h4><b>د  شاګردانو سه پرچی  بیارغول</b></h4>
+                <h4><b>Edition of Student Transfer</b></h4>
+
+            </div>
+        </div>
+
+        @*this is alert section*@
+        <div id="resultMessage"></div>
+        <div class="card p-4">
+            <form id="TransferStdForm" enctype="multipart/form-data">
+                @Html.AntiForgeryToken()
+                <div class="row">
+                    @Html.HiddenFor(model => model.TransferStdID, new { @type = "hidden" })
+                    @Html.HiddenFor(model => model.StudentID, new { @type = "hidden" })
+                    <div class="col-4">
+                        <div class="form-group">
+                            <p class="control-label me-3  mb-0">شاګرد</p>
+                            <div class="col-md-12">
+                                @Html.EditorFor(model => model.RollNo, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <p class="control-label me-3  mb-0">شاګرد</p>
+                            <div class="col-md-12">
+                                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <p class="control-label me-3  mb-0">شاګرد</p>
+                            <div class="col-md-12">
+                                @Html.EditorFor(model => model.FatherName, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <p class="control-label me-3  mb-0">صنف</p>
+                            <div class="col-md-12">
+                                @Html.DropDownList("ClassID", null, htmlAttributes: new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <p class="control-label me-3  mb-0">د مکتب څخه</p>
+                            <div class="col-md-12">
+                                @Html.EditorFor(model => model.FromSchool, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                        </div>
+
+                      
+                    </div>
+                    <div class="col-4">
+                        <div class="form-group">
+                            <p class="control-label me-3  mb-0">مکتب ته</p>
+                            <div class="col-md-12">
+                                @Html.EditorFor(model => model.ToSchool, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <p class="control-label me-3  mb-0">د  سه پارچی د مخی تصویر</p>
+                            <div class="col-md-12">
+                                <input type="file" name="FrontImage" id="FrontImage" class="form-control" onchange="loadImage(this)" style="width:100%" />
+
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <p class="control-label me-3  mb-0"> د  سه پارچی د شا تصویر</p>
+                            <div class="col-md-12">
+                                <input type="file" name="BackImage" id="BackImage" class="form-control" onchange="loadImage1(this)" style="width:100%" />
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <p class="control-label me-3  mb-0"> تاریخ</p>
+                            <div class="col-md-12">
+                                @Html.EditorFor(model => model.Date, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                        </div>
+
+                        <div class="form-group ">
+                            <div class="btn-group col-12 mt-4">
+                                <a href="@Url.Action("Index","TransferStdTables")" class="btn  btn-outline-success border-bottom-success">   شاتګ</a>
+                                <button type="submit" class="btn btn-primary">  اضافه کړئ</button>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-4">
+                        @*<div class="ms-1 border-1 mt-4">
+                <img src="~/Content/img/@Path.GetFileName(Session["FrontImage"].ToString())" id="showImage" style=" width: 96%; height: 155px; border: 1px solid Gray; border-radius: 3%;" />
+                <img src="~/Content/image/UserIcon.png" id="hideImage" style="width: 96%; height: 155px;display:none; border-radius: 3%; border: 1px solid Gray" />
+            </div>*@
+                        <div class="row">
+                            <div class="col-md-12">
+                                <img src="~/Content/img/@Path.GetFileName(Session["FrontImage"].ToString())" id="showImage" style=" width: 96%; height: 155px; border: 1px solid Gray; border-radius: 3%;" />
+                                <img src="~/Content/image/UserIcon.png" id="hideImage" style="width: 96%; height: 155px;display:none; border-radius: 3%; border: 1px solid Gray" />
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <img src="~/Content/img/@Path.GetFileName(Session["BackImage"].ToString())" id="showImage1" style=" width: 96%; height: 155px; border: 1px solid Gray; border-radius: 3%;" />
+                                <img src="~/Content/image/UserIcon.png" id="hideImage1" style="width: 96%; height: 155px;display:none; border-radius: 3%; border: 1px solid Gray" />
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+    </div>
+
+    <script src="~/Scripts/jquery-3.7.0.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script type="text/javascript"></script>
+    <script>
+    $(document).ready(function () {
+
+        $("#TransferStdForm").validate({
+            rules: {
+
+                Date: {
+                    required: true,
+
+                },
+
+                FromSchool: {
+                    required: true,
+
+                },
+                ToSchool: {
+                    required: true,
+
+                },
+                ClassID: {
+                    required: true,
+
+                },
+            },
+            submitHandler: function (form) {
+
+                var formData = new FormData(form);
+                if ($("#FrontImage")[0].files[0] && $("#BackImage")[0].files[0]) {
+                    formData.append("FrontImage", $("#FrontImage")[0].files[0]);
+                    formData.append("BackImage", $("#BackImage")[0].files[0]);
+               } else {
+                    formData.append("FrontImage", '@Session["FrontImage"] ');
+                    formData.append("BackImage", '@Session["BackImage"]');
+               }
+
+                $.ajax({
+                    url: '@Url.Action("Create", "TransferStdTables")',
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        if (response.success) {
+                            $("#resultMessage").html("<div class='alert alert-success'>" + response.msg + "</div>");
+                            $("#TransferStdForm")[0].reset();
+                            window.location.href = response.redirectUrl;
+                        } else {
+                            $("#resultMessage").html("<div class='alert alert-danger'>" + response.msg + "</div>");
+                        }
+                    },
+                    error: function () {
+                        $("#resultMessage").html("<div class='alert alert-danger'>An error occurred.</div>");
+                    }
+
+                });
+            }
+        });
+
+    });
+
+
+        function loadImage(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader()
+                reader.onload = function (e) {
+                    src = e.target.result;
+                    $("#showImage").attr("src", e.target.result);
+                    $("#hideImage").hide();
+                    $("#showImage").show();
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        function loadImage1(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader()
+                reader.onload = function (e) {
+                    src = e.target.result;
+                    $("#showImage1").attr("src", e.target.result);
+                    $("#hideImage1").hide();
+                    $("#showImage1").show();
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+    </script>
+</body>

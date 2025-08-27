@@ -1,0 +1,155 @@
+﻿@model SchoolMIS.Models.AdvancementEditModel
+<link href="~/Content/custom/customCSS.css" rel="stylesheet" />
+<body>
+    <div class="container-fluid p-2">
+        <div class="row">
+            <div class="d-flex justify-content-md-between pt-2 pb-4">
+                <h4><b>د شاګردانو ارتقا  بیارغول</b></h4>
+                <h4><b>Edition of  Student Advancement</b></h4>
+
+            </div>
+        </div>
+
+        @*this is alert section*@
+        <div id="resultMessage"></div>
+        <div class="card p-4">
+            <form id="AdvancementForm" enctype="multipart/form-data">
+                @Html.AntiForgeryToken()
+                <div class="row">
+                    <div class="col-8">
+                        <div class="row">
+                            <div class="col-6">
+                                @Html.HiddenFor(model => model.AdvancementID, new { @type = "hidden" })
+                                <div class="form-group">
+                                    <p class="control-label me-3  mb-0">شاکرد</p>
+                                    <div class="col-md-12">
+                                        @Html.DropDownList("StudentID", null, htmlAttributes: new { @class = "form-control" })
+
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <p class="control-label me-3   mb-0">د صنف څخه</p>
+                                    <div class="col-md-12">
+                                        @Html.DropDownList("FromClassID", null, htmlAttributes: new { @class = "form-control" })
+
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <p class="control-label me-3   mb-0">صنف ته</p>
+                                    <div class="col-md-12">
+                                        @Html.DropDownList("ToClassID", null, htmlAttributes: new { @class = "form-control" })
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <p class="control-label me-3   mb-0">استاذ</p>
+                                    <div class="col-md-12">
+                                        @Html.DropDownList("StaffID", null, htmlAttributes: new { @class = "form-control" })
+
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <p class="control-label me-3   mb-0">نمری</p>
+                                    <div class="col-md-12">
+                                        @Html.EditorFor(model => model.StudentScore, new { htmlAttributes = new { @id = "Date", @class = "form-control" } })
+
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <p class="control-label me-3   mb-0"> تاریخ</p>
+                                    <div class="col-md-12">
+
+
+                                        @Html.EditorFor(model => model.Date, new { htmlAttributes = new { @id = "Date", @class = "form-control" } })
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="form-group">
+                                <div class="btn-group  col-12 ">
+                                    <a href="@Url.Action("Index","AdvancementTables")" class="btn  btn-outline-success border-bottom-success"> لیست ته شاتګ</a>
+                                    <button type="submit" class="btn btn-primary">  معلومات  بیارغول</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="row ms-1 border-1 mt-4">
+                            <img src="~/Content/image/promotion.png" id="hideImage" style="width: 100%; height: 265px; border-radius: 5%; " />
+                        </div>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+
+    </div>
+
+    <script src="~/Scripts/jquery-3.7.0.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+    <script>
+    $(document).ready(function () {
+
+        $("#AdvancementForm").validate({
+            rules: {
+                StudentID: {
+                    required: true,
+                },
+                Date: {
+                    required: true,
+
+                },
+                StudentScoreID: {
+                    required: true,
+                    number: true
+
+                },
+                Staff: {
+                    required: true,
+                    number: true
+                },
+                FromClass: {
+                    required: true,
+
+                },
+            },
+            submitHandler: function (form) {
+
+                var formData = new FormData(form);
+
+                $.ajax({
+                    url: '@Url.Action("Create", "AdvancementTables")',
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        if (response.success) {
+                            $("#resultMessage").html("<div class='alert alert-success'>" + response.msg + "</div>");
+                            $("#AdvancementForm")[0].reset();
+                            window.location.href = response.redirectUrl;
+                        } else {
+                            $("#resultMessage").html("<div class='alert alert-danger'>" + response.msg + "</div>");
+                        }
+                    },
+                    error: function () {
+                        $("#resultMessage").html("<div class='alert alert-danger'>An error occurred.</div>");
+                    }
+
+                });
+            }
+        });
+
+    });
+
+    </script>
+
+</body>
+

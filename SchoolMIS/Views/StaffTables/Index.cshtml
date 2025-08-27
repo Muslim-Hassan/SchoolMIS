@@ -1,0 +1,366 @@
+﻿@model IEnumerable<SchoolMIS.Models.StaffTable>
+@{
+    String creation = "hidden";
+    String deletion = "hidden";
+    String edition = "hidden";
+    String details = "hidden";
+
+
+    if (Session["UserId"] == null)
+    {
+        Response.Redirect("~/Home/Index");
+    }
+    else
+    {
+
+        if (Session["UserType"].ToString() == "admin" || Session["UserType"].ToString() == "Admin" || Session["UserType"].ToString() == "ادمین" || Session["UserType"].ToString() == "اډمین")
+        {
+
+
+            creation = "show";
+            edition = "show";
+            details = "show";
+            deletion = "show";
+
+
+        }
+        else
+        {
+
+            details = "show";
+
+        }
+    }
+}
+<div class="d-flex justify-content-md-between pt-2">
+    <h4><b>د اداری کارکوونکی معلومات</b></h4>
+
+    <p class="btn btn-group">
+        <a href="@Url.Action("Dashboard","Home")" class="btn btn-primary"> کور صفحه</a>
+        <a href="@Url.Action("Create","StaffTables")" class="btn btn-success @creation"> نوی معلومات اضافه کړئ</a>
+
+    </p>
+
+    <h4><b>Staff  Information</b></h4>
+</div>
+
+<div class="card shadow  pre-scrollable ">
+
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="0">
+                <thead class="table-active">
+                    <tr>
+
+                        <th>نوم</th>
+                        <th>پلار نوم</th>
+                        <th>وظیفه</th>
+                        <th>شمیره</th>
+                        <th>salry</th>
+                        <th>تذکره</th>
+                        <th>عکس </th>
+                        <th>Action </th>
+                    </tr>
+                </thead>
+                <tfoot class="table-active">
+                    <tr>
+                        <th>نوم</th>
+                        <th>پلار نوم</th>
+                        <th>وظیفه</th>
+                        <th>شمیره</th>
+                        <th>salry</th>
+                        <th>تذکره</th>
+                        <th>عکس </th>
+                        <th>Action </th>
+                    </tr>
+                </tfoot>
+                <tbody id="tbody">
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.FatherName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.StaffTypeTable.Type)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Contact)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.salary)
+
+                            </td>
+                         
+                            <td>
+                                @Html.DisplayFor(modelItem => item.IdentityCardID)
+                            </td>
+
+
+                            <td style="di;background-image: url('../../Content/img/@Path.GetFileName(item.image)');background-size:contain;background-repeat:no-repeat;height:20px;width:20px;background-position:center"></td>
+
+                            <td>
+                                <div class="btn-group">
+                                    <a href="@Url.Action("Edit", "StaffTables", new { id = item.StaffID })" class="btn btn-primary fa fa-edit @edition "></a>
+
+                                    <button class="btn btn-info btn-Details @details" data-id="@item.StaffID"><i class="fa fa-info text-white"></i></button>
+                                    <button class="btn btn-danger btn-delete @deletion" data-id="@item.StaffID"><i class="fa fa-trash"></i></button>
+                                </div>
+                            </td>
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+@* delete model*@
+<div id="deleteModal" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white d-flex justify-content-between align-content-center border-dark">
+                <h4 class="modal-title text-center px-2"><b> ایا غواړی چی کارکوونکی لمنځه یوسی؟</b></h4>
+                <img src="~/Content/image/logo1.jpg" style="width:40px;border-radius:50%;" />
+
+
+
+
+            </div>
+            <div class="modal-body px-4">
+                @* this is alert section*@
+                <div id="resultMessage"></div>
+                <div class="row">
+
+
+                    <div class="col-6 card shadow">
+                        <p><span id="DStaffName" style="float:left"></span><strong style="float:right;"> نوم:</strong> </p>
+                        <hr class="m-0 p-0" />
+                        <p> <span id="DFatherName" style="float:left"></span><strong style="float:right"> پلار نوم:</strong></p>
+                        <hr class="m-0 p-0" />
+                        <p><span id="DType" style="float:left"></span><strong style="float:right">  وظیفه :</strong> </p>
+                        <hr class="m-0 p-0" />
+                        <p><span id="DIdentityCard" style="float:left"></span><strong style="float:right">   تذکری نمبر :</strong> </p>
+                    </div>
+                    <div class="col-6 card shadow m-0 p-0 ">
+                        <img src="" style="width: 243px; height: 160px; border-radius: 3%; border: 1px solid black" id="DimgShow" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6 card shadow">
+                        <p> <span id="DContact" style="float:left"></span><strong style="float:right"> اړیکو شمیره:</strong></p>
+                        <hr class="m-0 p-0" />
+                        <p><span id="DEmail" style="float:left"></span><strong style="float:right"> ایمیل :</strong> </p>
+                        <hr class="m-0 p-0" />
+                        <p><span id="DUserType" style="float:left"></span><strong style="float:right">  صلاحیت : </strong> </p>
+                        <hr class="m-0 p-0" />
+                        <p><span id="DDate" style="float:left"></span><strong style="float:right"> تاریخ :</strong> </p>
+                        <hr class="m-0 p-0" />
+                        <p><span id="Dgender" style="float:left"></span><strong style="float:right"> جنسیت :</strong> </p>
+                    </div>
+                    <div class="col-6 card shadow">
+                        <p><span id="DC_Address" style="float:left"></span><strong style="float:right;"> اوسنی ادرس:</strong> </p>
+                        <hr class="m-0 p-0" />
+                        <p> <span id="DP_Address" style="float:left"></span><strong style="float:right">دایمی ادرس :</strong></p>
+                        <hr class="m-0 p-0" />
+                        <p><span id="DGrade" style="float:left"></span><strong style="float:right">تعلیم درجه : </strong> </p>
+                        <hr class="m-0 p-0" />
+                        <p><span id="DDepartment" style="float:left"></span><strong style="float:right">تعلیم څانګه : </strong> </p>
+                        <hr class="m-0 p-0" />
+                        <p><span id="DisActive" style="float:left"></span><strong style="float:right"> فعال یا غیر فعال :</strong> </p>
+                    </div>
+                </div>
+     
+            </div>
+            <div class="modal-footer bg-danger text-white">
+                <form id="deleteForm">
+                    <input type="hidden" id="input" />
+                    <button type="submit" class="btn btn-primary" id="submitbtn">هو</button>
+                </form>
+                <button type="button" class="btn btn-secondary pe-2" data-bs-dismiss="modal"> نه</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@* details modal*@
+<div id="detailsModal" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white d-flex justify-content-between align-content-center border-dark">
+                <h4 class="modal-title text-center px-2"><b><span id="header"></span> معلومات</b></h4>
+                <img src="~/Content/image/logo1.jpg" style="width:40px;border-radius:50%;" />
+
+
+
+
+            </div>
+            <div class="modal-body px-4" id="modelBody">
+
+                <div class="row">
+
+
+                    <div class="col-6 card shadow">
+                        <p><span id="StaffName" style="float:left"></span><strong style="float:right;"> نوم:</strong> </p>
+                        <hr class="m-0 p-0" />
+                        <p> <span id="FatherName" style="float:left"></span><strong style="float:right"> پلار نوم:</strong></p>
+                        <hr class="m-0 p-0" />
+                        <p><span id="Type" style="float:left"></span><strong style="float:right">  وظیفه :</strong> </p>
+                        <hr class="m-0 p-0" />
+                        <p><span id="IdentityCard" style="float:left"></span><strong style="float:right">   تذکری نمبر :</strong> </p>
+                    </div>
+                    <div class="col-6 card shadow m-0 p-0 ">
+                        <img src="" style="width: 243px; height: 160px; border-radius: 3%; border: 1px solid black" id="imgShow" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6 card shadow">
+                        <p> <span id="Contact" style="float:left"></span><strong style="float:right"> اړیکو شمیره:</strong></p>
+                        <hr class="m-0 p-0" />
+                        <p><span id="Email" style="float:left"></span><strong style="float:right"> ایمیل :</strong> </p>
+                        <hr class="m-0 p-0" />
+                        <p><span id="UserType" style="float:left"></span><strong style="float:right">  صلاحیت : </strong> </p>
+                        <hr class="m-0 p-0" />
+                        <p><span id="Date" style="float:left"></span><strong style="float:right"> تاریخ :</strong> </p>
+                        <hr class="m-0 p-0" />
+                        <p><span id="gender" style="float:left"></span><strong style="float:right"> جنسیت :</strong> </p>
+                    </div>
+                    <div class="col-6 card shadow">
+                        <p><span id="C_Address" style="float:left"></span><strong style="float:right;"> اوسنی ادرس:</strong> </p>
+                        <hr class="m-0 p-0" />
+                        <p> <span id="P_Address" style="float:left"></span><strong style="float:right">دایمی ادرس :</strong></p>
+                        <hr class="m-0 p-0" />
+                        <p><span id="Grade" style="float:left"></span><strong style="float:right">تعلیم درجه : </strong> </p>
+                        <hr class="m-0 p-0" />
+                        <p><span id="Department" style="float:left"></span><strong style="float:right">تعلیم څانګه : </strong> </p>
+                        <hr class="m-0 p-0" />
+                        <p><span id="isActive" style="float:left"></span><strong style="float:right"> فعال یا غیر فعال :</strong> </p>
+                    </div>
+                </div>
+
+
+            </div>
+
+            <div class="modal-footer bg-danger text-white">
+                <button type="button" class="btn btn-secondary pe-2" data-bs-dismiss="modal">شا تګ</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/jquery-3.7.0.min.js"></script>
+
+<script type="text/javascript"></script>
+<script>
+    $(document).ready(function () {
+           //this is deletion section
+       $('.btn-delete').click(function () {
+         var id = $(this).data('id');
+           $.ajax({
+
+            url: '@Url.Action("Delete","StaffTables")',
+            type: 'POST',
+            data: { id: id },
+            success: function (response) {
+                if (response.success) {
+                    alert(response.data.RegistrationDate)
+                    $('#input').val(response.data.StaffID);
+                    $('#DStaffName').text(response.data.Name);
+                    $('#DFatherName').text(response.data.FatherName);
+                    $('#DType').text(response.data.Stafftype);
+                    $('#DIdentityCard').text(response.data.IdentityCardID);
+                    $('#DEmail').text(response.data.Email);
+                    $('#DContact').text(response.data.Contact);
+                    $('#DisActive').text(response.data.Active);
+                    $('#Dgender').text(response.data.gender);
+                    $('#DUserType').text(response.data.Usertype);
+                    $('#DDate').text(response.data.RegistrationDate);
+                    $('#DC_Address').text(response.data.CurrentAddress);
+                    $('#DP_Address').text(response.data.PermenentAddress);
+                    $('#DGrade').text(response.data.Grade);
+                    $('#DDepartment').text(response.data.Department);
+                    $('#DimgShow').attr('src', response.data.Image);
+                    //modal show
+                    $('#deleteModal').modal('show');
+                } else {
+                    $("#resultMessage").html("<div class='alert alert-success'>" + response.msg + "</div>");
+                }
+            },
+            error: function () {
+              alert("errore")
+            }
+        });
+
+       });
+       //------------------------------ConfirmDeletion
+       $('#submitbtn').click(function (e) {
+          e.preventDefault();  // Prevent the default form submission
+          var id=parseInt($('#input').val());
+           $.ajax({
+               url: '@Url.Action("ConDelete", "StaffTables")',
+               type: 'POST',
+               data: { id: id },  // Send the serialized data
+               success: function (response) {
+                   $("#resultMessage").html("<div class='alert alert-success'>" + "معلومات په کامیابۍ سره ختم شول" + "</div>");
+                 window.location.href = response.redirectUrl;
+        },
+        error: function () {
+            alert("error occured");
+        }
+    });
+});
+ //this is for detail----------------------------------
+        $('.btn-Details').click(function () {
+            var id = $(this).data('id');
+            $.ajax({
+                url: '@Url.Action("Details", "StaffTables")',
+                type: 'POST',
+                data: { id: id },
+                success: function (response) {
+                    if (response.success) {
+                        alert(response.data.RegistrationDate)
+                        $('#header').text(response.data.Name);
+                        $('#StaffName').text(response.data.Name);
+                        $('#FatherName').text(response.data.FatherName);
+                        $('#Type').text(response.data.Stafftype);
+                        $('#IdentityCard').text(response.data.IdentityCardID);
+                        $('#Email').text(response.data.Email);
+                        $('#isActive').text(response.data.Active);
+                        $('#gender').text(response.data.gender);
+                        $('#Contact').text(response.data.Contact);
+                        $('#UserType').text(response.data.Usertype);
+                        $('#Date').text(response.data.RegistrationDate);
+                        $('#C_Address').text(response.data.CurrentAddress);
+                        $('#P_Address').text(response.data.PermenentAddress);
+                        $('#Grade').text(response.data.Grade);
+                        $('#Department').text(response.data.Department);
+
+                        $('#imgShow').attr('src', response.data.Image);
+
+
+
+
+                        // Show the modal
+                        $('#detailsModal').modal('show');
+                    } else {
+                        alert("errore occurd")
+                    }
+                },
+                error: function () {
+                    alert('An error occurred while fetching the details.');
+                }
+            });
+        });
+});
+</script>
+
+
+
+
+
+
+
+

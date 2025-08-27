@@ -1,0 +1,162 @@
+﻿@model SchoolMIS.Models.IncomeTable
+
+<body>
+    <div class="container-fluid p-2">
+        <div class="row">
+            <div class="d-flex justify-content-md-between pt-2 pb-4">
+                <h4><b>د عایداتو معلومات نوی کول</b></h4>
+                <h4><b>Edition of  Income Information</b></h4>
+
+            </div>
+        </div>
+
+        @*this is alert section*@
+        <div id="resultMessage"></div>
+        <div class="card p-4">
+            <form id="IncomeForm" enctype="multipart/form-data">
+                @Html.AntiForgeryToken()
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="row">
+                            <div class="col-md-6">
+
+                                <div class="form-group">
+                                    <p class="control-label me-3  mb-0"> څیز نوم</p>
+                                    <div class="col-md-12">
+                                        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @id = "Name", @class = "form-control", @style = "height:40px" } })
+                                    </div>
+
+                                </div>
+
+                                <div class="form-group">
+                                    <p class="control-label me-3  mb-0">اندازه</p>
+                                    <div class="col-md-12">
+                                        @Html.EditorFor(model => model.Amount, new { htmlAttributes = new { @id = "Amount", @class = "form-control", @style = "height:40px" } })
+
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <p class="control-label me-3  mb-0">فی قیمت</p>
+                                    <div class="col-md-12">
+
+                                        @Html.EditorFor(model => model.price, new { htmlAttributes = new { @id = "price", @class = "form-control", @style = "height:40px" } })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <p class="control-label me-3  mb-0">تخفیف</p>
+                                    <div class="col-md-12">
+                                        @Html.EditorFor(model => model.Discount, new { htmlAttributes = new { @id = "Discount", @class = "form-control", @style = "height:40px" } })
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <p class="control-label me-3  mb-0">مجموعه</p>
+                                    <div class="col-md-12">
+                                        @Html.EditorFor(model => model.NetAmount, new { htmlAttributes = new { @id = "NetAmount", @class = "form-control", @style = "height:40px" } })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <p class="control-label me-3  mb-0">تاریخ</p>
+                                    <div class="col-md-12">
+                                        @Html.EditorFor(model => model.Date, new { htmlAttributes = new { @id = "Date", @class = "form-control", @style = "height:40px" } })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <p class="control-label me-3  mb-0">  خرڅوونکی</p>
+                                    <div class="col-md-12">
+                                        @Html.DropDownList("StaffID", null, htmlAttributes: new { @id = "StaffID", @class = "form-control" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <p class="control-label me-3 mb-0">  وضاحت</p>
+                                    <div class="col-md-12">
+                                        @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @id = "Description", @class = "form-control", @style = "height:40px" } })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="form-group">
+                                <div class="btn-group  col-12 ">
+                                    <a href="@Url.Action("Index","IncomeTables")" class="btn t btn-outline-success border-bottom-success">  شاتګ</a>
+                                    <button type="submit" class="btn btn-primary"> نوی کړئ</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 ">
+                        <div class="row ms-1 border-1 mt-4">
+                            <img src="~/Content/image/money3.png" style="width: 100%; height: 350px; border-radius: 5%; " />
+                        </div>
+                    </div>
+                </div>
+            </form>
+         
+        </div>
+    </div>
+    <script src="~/Scripts/jquery-3.7.0.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script>
+   $(document).ready(function () {
+
+       $("#IncomeForm").validate({
+           rules: {
+               Name: {
+                   required: true,
+               },
+               price: {
+                   required: true,
+                   number: true
+               },
+               NetAmount: {
+                   required: true,
+                   number: true
+
+               },
+               Amount: {
+                   required: true,
+                   number: true
+               },
+
+           },
+           submitHandler: function (form) {
+               var formData = new FormData(form);
+               $.ajax({
+                   url: '@Url.Action("Create", "IncomeTables")',
+                   type: 'POST',
+                   data: formData,
+                   processData: false,
+                   contentType: false,
+                   success: function (response) {
+                       if (response.success) {
+                           $("#resultMessage").html("<div class='alert alert-success'>" + response.msg + "</div>");
+                           $("#IncomeForm")[0].reset();
+                           window.location.href = response.redirectUrl;
+                       } else {
+                           $("#resultMessage").html("<div class='alert alert-danger'>" + response.msg + "</div>");
+                       }
+                   },
+                   error: function () {
+                       $("#resultMessage").html("<div class='alert alert-danger'>An error occurred.</div>");
+                   }
+
+               });
+           }
+       });
+   });
+
+
+
+    </script>
+</body>
+
+
+
+
+

@@ -1,0 +1,227 @@
+﻿@model SchoolMIS.Models.ExamTable
+
+<body>
+    <div class="container-fluid p-2">
+        <div class="row">
+            <div class="d-flex justify-content-md-between pt-2 pb-4">
+                <h4><b>د امتحاناتو معلومات نوی کول</b></h4>
+                <h4><b>Edition of  Exam Information</b></h4>
+
+            </div>
+        </div>
+
+        @*this is alert section*@
+        <div id="resultMessage"></div>
+        <div class="card p-4">
+            <form id="ExamForm" enctype="multipart/form-data">
+                @Html.AntiForgeryToken()
+                <div class="row">
+                    <div class="col-4">
+                        @Html.HiddenFor(model => model.ExamID, new { @type = "hidden" })
+                        <div class="form-group">
+                            <p class="control-label me-3  mb-0">امتحان ډول</p>
+                            <div class="col-md-12">
+                                <select type="text" name="ExamType" id="ExamType" class="form-control" onchange="GetVlaue(this)" style="width:100%">
+                                 
+                                    <option value="@Model.ExamType ">@Model.ExamType </option>
+                                    <option value="کلنۍ">کلنۍ</option>
+                                    <option value="څلورنیمه">څلورنیمه</option>
+                                    <option value="ټیست">ټیست</option>
+                                </select>
+                            </div>
+
+                        </div>
+
+                        <div class="form-group">
+                            <p class="control-label me-3  mb-0">شاکرد</p>
+                            <div class="col-md-12">
+                                @Html.DropDownList("StudentID", null, htmlAttributes: new { @id = "StudentID", @class = "form-control" })
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <p class="control-label me-3  mb-0">استاذ</p>
+                            <div class="col-md-12">
+                                @Html.DropDownList("StaffID", null, htmlAttributes: new { @id = "StaffID", @class = "form-control" })
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <p class="control-label me-3  mb-0">مضمون</p>
+                            <div class="col-md-12">
+                                @*@Html.DropDownList("SubjectID", null, htmlAttributes: new {@id= "SubjectID" ,@class = "form-control" })*@
+                                @Html.DropDownList("SubjectId", ViewBag.sub as SelectList, "select subject", new { @class = "form-control" })
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-4">
+                        <div class="form-group">
+                            <p class="control-label me-3  mb-0">صنف</p>
+                            <div class="col-md-12">
+                                @Html.DropDownList("ClassID", null, htmlAttributes: new { @id = "ClassID", @class = "form-control" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <p class="control-label me-3  mb-0">تاریخ</p>
+                            <div class="col-md-12">
+                               
+                                <input type="text" value="@ViewBag.Date" name="Date" id="Date" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <p class="control-label me-3  mb-0"> پوره نمری</p>
+                            <div class="col-md-12">
+                                @Html.EditorFor(model => model.TotalScore, new { htmlAttributes = new { @id = "TotalScore", @class = "form-control", } })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <p class="control-label me-3 mb-0">  تحریری نمری</p>
+                            <div class="col-md-12">
+                                @Html.EditorFor(model => model.writtenTest, new { htmlAttributes = new { @id = "writtenTest", @class = "form-control", @style = "height:40px" } })
+
+                            </div>
+                        </div>
+
+
+                    </div>
+
+
+
+                    <div class="col-4 ">
+
+                        <div class="form-group">
+                            <p class="control-label me-3  mb-0">تقریری نمری</p>
+                            <div class="col-md-12">
+
+                                @Html.EditorFor(model => model.verbalTest, new { htmlAttributes = new { @id = "verbalTest", @class = "form-control", @style = "height:40px" } })
+
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <p class="control-label me-3  mb-0">صنفی لیاقت</p>
+                            <div class="col-md-12">
+                              
+                                @Html.EditorFor(model => model.ClassWork, new { htmlAttributes = new { @id = "ClassWork", @class = "form-control", @style = "height:40px" } })
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <p class="control-label me-3  mb-0">  کورنی کار</p>
+                            <div class="col-md-12">
+                            
+                                @Html.EditorFor(model => model.homeWork, new { htmlAttributes = new { @id = "homeWork", @class = "form-control", @style = "height:40px" } })
+
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <p class="control-label me-3 mb-0"> اخیستل شوی نمری</p>
+                            <div class="col-md-12">
+                                @Html.EditorFor(model => model.AbtainScore, new { htmlAttributes = new { @id = "AbtainScore", @class = "form-control", @style = "height:40px" } })
+
+                            </div>
+                        </div>
+
+
+
+
+                    </div>
+
+                </div>
+
+                <div class="row mt-3">
+                    <div class="form-group">
+                        <div class="btn-group  col-12 ">
+                            <a href="@Url.Action("Index","ExamTables")" class="btn t btn-outline-success border-bottom-success">  شاتګ</a>
+                            <button type="submit" class="btn btn-primary"> نوی کړئ</button>
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+           
+        </div>
+    </div>
+    <script src="~/Scripts/jquery-3.7.0.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+   
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script>
+   $(document).ready(function () {
+
+       $("#ExamForm").validate({
+           rules: {
+               ExamType: {
+                   required: true,
+               },
+               Date: {
+                   required: true,
+
+               },
+               TotalScore: {
+                   required: true,
+                   number: true
+
+               },
+               AbtainScore: {
+                   required: true,
+                   number: true
+               },
+              
+           },
+           submitHandler: function (form) {
+               var formData = new FormData(form);
+
+             
+
+
+
+               $.ajax({
+                   url: '@Url.Action("Create", "ExamTables")',
+                   type: 'POST',
+                   data: formData,
+                   processData: false,
+                   contentType: false,
+                   success: function (response) {
+                       if (response.success) {
+                           $("#resultMessage").html("<div class='alert alert-success'>" + response.msg + "</div>");
+                           $("#ExamForm")[0].reset();
+                           window.location.href = response.redirectUrl;
+                       } else {
+                           $("#resultMessage").html("<div class='alert alert-danger'>" + response.msg + "</div>");
+                       }
+                   },
+                   error: function () {
+                       $("#resultMessage").html("<div class='alert alert-danger'>An error occurred.</div>");
+                   }
+
+               });
+           }
+       });
+   });
+
+
+        function GetVlaue() {
+            if ($("#ExamType").val() == "کلنۍ") {
+                $("#TotalScore").val(60).text(60)
+            } else if ($("#ExamType").val() == "څلورنیمه") {
+                $("#TotalScore").val(40).text(40)
+            } else {
+                $("#TotalScore").val(20).text(20)
+            }
+        }
+
+    </script>
+</body>
+
+
+
+
+
+
+
+

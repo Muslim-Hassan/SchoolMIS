@@ -1,0 +1,472 @@
+﻿@model IEnumerable<SchoolMIS.Models.ScheduleTable>
+<html>
+
+<body>
+    <style>
+        .carousel {
+            background-size: cover;
+            height: 70vh;
+        }
+
+        .carousel1 {
+            background-image: url('../../Content/image/crousel.jpg');
+        }
+
+        .carousel2 {
+            background-image: url('../../Content/image/st15.jpg');
+        }
+
+        .carousel3 {
+            background-image: url('../../Content/image/cr.jpg');
+        }
+
+        .carousel4 {
+            background-image: url('../../Content/image/cr5.jpg');
+        }
+
+        #carouselExampleInterval {
+            display: flex;
+            flex-direction: row;
+            justify-content: start;
+            height: 70vh;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+
+    <link href="~/Content/css/sb-admin-2.min.css" rel="stylesheet" />
+    @*this is  crousul section*@
+    <div class="row card border-left-danger ">
+        <div id="carouselExampleInterval" class="carousel slide " data-bs-ride="carousel">
+            <div class="carousel-inner">
+
+                <div class="carousel-item active" data-bs-interval="5000">
+                    <div class="d-block   w-100 carousel1 carousel">
+
+                    </div>
+                </div>
+                <div class="carousel-item" data-bs-interval="1000">
+                    <div class="d-block w-100 carousel2 carousel">
+
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="d-block w-100 carousel3 carousel">
+
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="d-block w-100 carousel4 carousel">
+
+                    </div>
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+
+        </div>
+
+    </div>
+
+    @*this is time table section*@
+    <div class="row card mt-2 p-3 border-left-warning">
+        <h4 class="text-center mt-2 "><b>د ورځی په اساس د هر استاذ ساعتونه</b></h4>
+        <form action="/Home/Dashboard/" method="post" class="mb-2 ">
+            <div class="row  mt-4  text-center">
+                <div class="col-md-10">
+                    <div class="row">
+                        <div class="col-md-6 ">
+                            <div class="row form-group">
+                                <div class="col-md-2 bg-light border">
+                                    <label class=" mt-1"> استاذ</label>
+                                </div>
+                                <div class="col-md-10">
+                                    @Html.DropDownList("StaffID", null, htmlAttributes: new { @class = "form-control" })
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-2 bg-light border">
+                                    <label class=" mt-1"> ورځ</label>
+                                </div>
+                                <div class="col-md-10">
+                                    <select type="text" name="day" id="day" class="form-control">
+                                        <option value="شنبه">شنبه</option>
+                                        <option value="یکشنبه">یکشنبه</option>
+                                        <option value="دوشنبه">دوشنبه</option>
+                                        <option value="سه شنبه">سه شنبه</option>
+                                        <option value="چهارشنبه">چهارشنبه</option>
+                                        <option value="پنجشنبه">پنجشنبه</option>
+
+                                    </select>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2 m-0 p-0" style="width:100%">
+                    <button type="submit" id="printBtn" class="btn btn-primary"> د تقسیم اوقات پلټنه </button>
+
+
+                </div>
+            </div>
+
+
+        </form>
+        @foreach(var itm in Model)
+        {
+            ViewBag.Day = itm.Day;
+            ViewBag.Teacher = itm.StaffTable.Name;
+        }
+        @{ 
+            int no = 1;
+        }
+        <p>د <strong>@ViewBag.Day</strong> ورځی د<strong> @ViewBag.Teacher</strong> تقسیم اوقات  </p>
+        <div class="table-responsive">
+            <table class="table table-bordered " width="100%">
+                <thead class="table-active table-active bg-primary text-white">
+                    <tr>
+
+                        <th> شماره </th>
+                        <th> صنف </th>
+
+                        <th>مضمون</th>
+                        <th>شروع</th>
+                        <th>ختم</th>
+
+
+                    </tr>
+                </thead>
+
+                <tbody id="tbody">
+                    @foreach (var item in Model)
+                    {
+                     
+                        <tr>
+                            <td>
+                               @no
+                            </td>
+                          
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ClassTable.Name)
+                            </td>
+                          
+                            <td>
+                                @Html.DisplayFor(modelItem => item.SubjectTable.Name)
+
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.StartTime)
+
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.EndTime)
+                            </td>
+
+
+                        </tr>
+                        no++;
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+
+
+
+
+
+    @*this is  cards section*@
+    <div class=" row d-flex flex-row justify-content-between mt-4">
+
+        <div class="col-md-3 p-3  mt-2 d-flex flex-row justify-content-around border-left-success text-center card">
+            <i class="fas fa-user f fa-3x text-danger"></i>
+            <div>
+                <div class="text-danger fw-bold">ټول شاګردان </div>
+                <div class="text-success mt-2 fw-bolder">@ViewBag.AllStudent</div>
+            </div>
+
+        </div>
+        <div class="col-md-3 p-3 mt-2 d-flex flex-row justify-content-around border-left-danger text-center   card">
+            <i class="fas fa-user  fa-3x text-danger"></i>
+            <div>
+                <div class=" text-danger fw-bold">ټول اداری کارمندان </div>
+                <div class="text-success mt-2 fw-bolder">@ViewBag.AllStaff</div>
+            </div>
+
+        </div>
+        <div class="col-md-3 p-3 mt-2 d-flex flex-row justify-content-around border-left-warning text-center  card">
+            <i class="fas fa-dollar-sign fw-bold fa-3x text-danger"></i>
+            <div>
+                <div class=" text-danger fw-bold">میاشتنی  فیسونو عاید</div>
+                <div class="text-success mt-2 fw-bolder">  @{ var feeIncome = ViewBag.TotalIncom;} <span style="float:right">AF</span>  @feeIncome  </div>
+            </div>
+
+        </div>
+
+    </div>
+    <div class=" row d-flex flex-row justify-content-between mt-4">
+
+        <div class="col-md-3 p-3 mt-2 d-flex flex-row justify-content-around border-left-warning text-center  card">
+            <i class="fas fa-dollar-sign  fa-3x text-danger"></i>
+            <div>
+                <div class="text-danger fw-bold">میاشتنی مصارف </div>
+               <div class="text-primary mt-2 fw-bolder"><span style="float:right">AF</span> @ViewBag.AllExpences  </div>
+            </div>
+
+        </div>
+        <div class="col-md-3 p-3 mt-2 d-flex flex-row justify-content-around border-left-info  text-center  card">
+            <i class="fas fa-dollar-sign fw-bold fa-3x text-danger"></i>
+            <div>
+                <div class=" text-danger fw-bold">میاشتنی اسبابو عاید </div>
+                <div class="text-primary mt-2 fw-bolder"><span style="float:right">AF</span> @ViewBag.otherIncome  </div>
+            </div>
+
+        </div>
+        <div class="col-md-3 p-3 mt-2 d-flex flex-row justify-content-around border-left-danger  text-center  card">
+            <i class="fas fa-dollar-sign fw-bold fa-3x text-danger"></i>
+            <div>
+                <div class=" text-danger fw-bold">میاشتنی مجموعه عاید </div>
+                <div class="text-primary mt-2 fw-bolder">
+                    @{
+                        var income = ViewBag.otherIncome + ViewBag.TotalIncom;
+                    }
+                    <span style="float:right">AF</span>
+               
+                    @income
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <div class=" row card bg-gradient-light d-flex flex-row border-left-danger  justify-content-between mt-4 p-4 text-center ">
+
+        <div class="col-md-3 mt-2 card m-0 p-0">
+
+            <div class="card-header" style="background-image: url('../../Content/image/school7.jpg');background-size:cover;background-repeat:no-repeat;height:130px ">
+
+
+
+
+            </div>
+
+            <div class="crad-body p-3">
+چهاردیوال خصوصی ښوونخی چی په چهاردهی کلی کی موقعیت لری په ۱۳۹۸ ه ش کال کی یی د جهاردهی غیور ولس ته د خدمت په اساس جوړ شو او تر اوسه فعالیت کوی
+            </div>
+        </div>
+        <div class="col-md-3  card mt-2 m-0 p-0 ">
+
+            <div class="card-header" style="background-image: url('../../Content/image/owner.jpg');background-size:cover;background-repeat:no-repeat;height:130px ">
+
+            </div>
+
+            <div class="crad-body p-3">
+             د چهاردیوال خصوصی ښوونځی موسس دروند مشر الحاج انجنیر دوست محمد چاردیوال. چی دغه ښوونځی یی د زده کړی سره د مینی په خاطر یی ددی ښوونځی اساس کیښود.
+            </div>
+        </div>
+        <div class="col-md-3 card mt-2 m-0 p-0 ">
+
+            <div class="card-header" style="background-image: url('../../Content/image/chardahi.jpg');background-size:cover;background-repeat:no-repeat;height:130px ">
+
+            </div>
+
+            <div class="crad-body p-3">
+          چهاردهی کلی  چی یو د مشهورو کلیو د بټی کوټ څخه دی په ځپل غیږ کی یی بی شمیره علمی قدرونه روزلی او هیوادوالو خدمت ته یی وړاندی کړیږ
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    @*<div class="row p-3 d-flex justify-content-between  ">
+            <div class="col-12 card shadow  ">
+                <div class="row bg-gradient-light"><div class="col-12 text-center text-danger p-2"><h4><b>د شاګردانو په هکله</b></h4></div></div>
+
+                <div class="row">
+                    <div class="col-12 py-4 d-flex  flex-row justify-content-around ">
+                        <a href="@Url.Action("Index","StudentTables")" class="text-danger d-flex flex-column justify-content-center text-center">
+                            <i class="fas fa-user"></i>
+                            <span>ټول شاګردان </span>
+                        </a>
+                        <a href="@Url.Action("Create","StudentTables")" class="text-danger d-flex flex-column justify-content-center text-center">
+                            <i class="fas fa-user"></i>
+                            <span>نوی شاګرد داخلول</span>
+                        </a>
+                        <a href="@Url.Action("Index","StudentAttendencyTables")" class="text-danger d-flex flex-column justify-content-center text-center">
+                            <i class="fas fa-user"></i>
+                            <span>شاګردانو حاضری</span>
+                        </a>
+                        <a href="@Url.Action("Index","ExamTables")" class="text-danger d-flex flex-column justify-content-center text-center">
+                            <i class="fas fa-user"></i>
+                            <span>شاګردانو نمری</span>
+                        </a>
+                        <a href="@Url.Action("Index","AdvancementTables")" class="text-danger d-flex flex-column justify-content-center text-center">
+                            <i class="fas fa-user"></i>
+                            <span> شاګردانو ارتقا </span>
+                        </a>
+                        <a href="@Url.Action("Index","TransferStdTables")" class="text-danger d-flex flex-column justify-content-center text-center">
+                            <i class="fas fa-user"></i>
+                            <span> شاګرد سه پرچه</span>
+                        </a>
+                        <a href="@Url.Action("Index","FeesTables")" class="text-danger d-flex flex-column justify-content-center text-center">
+                            <i class="fas fa-user"></i>
+                            <span>شاګردانو فیسونه</span>
+                        </a>
+                        <a href="@Url.Action("Index","StudentTables")" class="text-danger d-flex flex-column justify-content-center text-center">
+                            <i class="fas fa-user"></i>
+                            <span>شاګردانو ریپورټ </span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row p-3 d-flex justify-content-between  ">
+            <div class="col-12 card shadow  ">
+                <div class="row  bg-gradient-light"><div class="col-12 text-center text-danger p-2"><h4><b>د اداری کارکوونکو په هکله</b></h4></div></div>
+
+                <div class="row">
+                    <div class="col-12 py-4 d-flex  flex-row justify-content-around ">
+                        <a href="@Url.Action("Create","StaffTables")" class="text-danger d-flex flex-column justify-content-center text-center">
+                            <i class="fas fa-user"></i>
+                            <span> نوی اداری داخلول</span>
+                        </a>
+                        <a href="@Url.Action("Index","StaffTables")" class="text-danger d-flex flex-column justify-content-center text-center">
+                            <i class="fas fa-user"></i>
+                            <span>  ټول اداری کارکوونکي  </span>
+                        </a>
+                        <a href="@Url.Action("Index","StaffTypeTables")" class="text-danger d-flex flex-column justify-content-center text-center">
+                            <i class="fas fa-user"></i>
+                            <span>  اداری کارکوونکي ډول </span>
+                        </a>
+                        <a href="@Url.Action("Index","SalaryTables")" class="text-danger d-flex flex-column justify-content-center text-center">
+                            <i class="fas fa-user"></i>
+                            <span> اداری کارکوونکي تنخوا</span>
+                        </a>
+                        <a href="@Url.Action("Index","StaffAttendencyTables")" class="text-danger d-flex flex-column justify-content-center text-center">
+                            <i class="fas fa-user"></i>
+                            <span> اداری کارکوونکي حاضری </span>
+                        </a>
+                        <a href="@Url.Action("Index","ScheduleTables")" class="text-danger d-flex flex-column justify-content-center text-center">
+                            <i class="fas fa-user"></i>
+                            <span>  تقسیم اوقات </span>
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row p-3 d-flex justify-content-between  ">
+            <div class="col-8 card shadow">
+                <div class="row"><div class="col-12  bg-gradient-light p-2 text-danger text-center"><h4><b>د نورو برخو په هکله</b></h4></div></div>
+                <div class="row">
+                    <div class="col-12 p-4 d-flex  flex-row justify-content-around ">
+                        <a href="@Url.Action("Index","ClassTables")" class="text-danger d-flex flex-column justify-content-center text-center">
+                            <i class="fas fa-user"></i>
+                            <span>ټول صنفونه </span>
+                        </a>
+                        <a href="@Url.Action("Create","SubjectTables")" class="text-danger d-flex flex-column justify-content-center text-center">
+                            <i class="fas fa-user"></i>
+                            <span>ټول  مضامین</span>
+                        </a>
+                        <a href="@Url.Action("Index","ExpencesTables")" class="text-danger d-flex flex-column justify-content-center text-center">
+                            <i class="fas fa-user"></i>
+                            <span> ټول مصارف</span>
+                        </a>
+                        <a href="@Url.Action("Create","ExpencesTables")" class="text-danger d-flex flex-column justify-content-center text-center">
+                            <i class="fas fa-user"></i>
+                            <span>  نوی مصارف اضافه کول</span>
+                        </a>
+                        <a href="@Url.Action("Index","ExamTables")" class="text-danger d-flex flex-column justify-content-center text-center">
+                            <i class="fas fa-user"></i>
+                            <span> امتحانونه</span>
+                        </a>
+                        <a href="@Url.Action("Index","StudentTables")" class="text-danger d-flex flex-column justify-content-center text-center">
+                            <i class="fas fa-user"></i>
+                            <span>مصارفو ریپورټ </span>
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-4 card shadow">
+                <div class="row"><div class="col-12  bg-gradient-light p-2 text-danger text-center"> <h4><b>د سیستم استعمالوونکي</b></h4> </div></div>
+                <div class="row">
+                    <div class="col-12 p-4 d-flex  flex-row justify-content-around ">
+                        <a href="@Url.Action("Index","UserTableTables")" class="text-danger d-flex flex-column justify-content-center text-center">
+                            <i class="fas fa-user"></i>
+                            <span>ټول استعمالوونکي </span>
+                        </a>
+                        <a href="@Url.Action("Index","UserTypeTables")" class="text-danger d-flex flex-column justify-content-center text-center">
+                            <i class="fas fa-user"></i>
+                            <span>   ډول یی  </span>
+                        </a>
+                        <a href="@Url.Action("Create","UserTypeTables")" class="text-danger d-flex flex-column justify-content-center text-center">
+                            <i class="fas fa-user"></i>
+                            <span> نوی اضافه کړئ   </span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row p-3  d-flex justify-content-between">
+            <div class="col-6">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-danger">Area Chart</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="chart-area">
+                            <canvas id="myAreaChart"></canvas>
+                        </div>
+                        <hr>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-danger">Bar Chart</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="chart-bar">
+                            <canvas id="myBarChart"></canvas>
+                        </div>
+                        <hr>
+
+                    </div>
+                </div>
+            </div>
+        </div>*@
+
+
+</body>
+</html>
+
+
+

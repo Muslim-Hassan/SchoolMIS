@@ -1,0 +1,112 @@
+﻿@model SchoolMIS.Models.SubjectTable
+<link href="~/Content/custom/customCSS.css" rel="stylesheet" />
+<div class="container-fluid p-2">
+    <div class="row">
+        <div class="d-flex justify-content-md-between pt-2 pb-4">
+            <h4><b>   د مضامینو معلومات نوی کول</b></h4>
+            <h4><b>Edition of Subject Information</b></h4>
+
+        </div>
+    </div>
+    @* this isalert section*@
+    <div id="resultMessage"></div>
+    <div class="card">
+        <form id="subjectForm">
+            <div class="row  d-flex flex-row">
+                <div class="col-5  p-3 mt-4 justify-content-center ">
+                    @Html.AntiForgeryToken()
+                    @Html.HiddenFor(model => model.SubjectID, new { @type = "hidden" })
+                    <div class="form-group">
+                        <p class="control-label me-3  mb-0">مضمون </p>
+                        <div class="col-md-12">
+                            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @id = "Name", @class = "form-control", @style = "width: 100%; height: 40px" } })
+
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <p class="control-label me-3  mb-0">صنف</p>
+                        <div class="col-md-12">
+                            <select name="ClassName" id="ClassName" class="form-control" style="width: 100%; height: 40px">
+                                <option value="@Model.ClassName">@Model.ClassName</option>
+                                <option value="نرسری">نرسری</option>
+                                <option value="لمړی ټولګی">لمړی ټولګی</option>
+                                <option value="دوهم ټولګی">دوهم ټولګی</option>
+                                <option value="دریم ټولګی">دریم ټولګی</option>
+                                <option value="څلورم ټولګی">څلورم ټولګی</option>
+                                <option value="پنځم ټولګی">پنځم ټولګی</option>
+                                <option value="شپږم ټولګی">شپږم ټولګی</option>
+                                <option value="اووم ټولګی">اووم ټولګی</option>
+                                <option value="اتم ټولګی">اتم ټولګی</option>
+                                <option value="نهم ټولګی">نهم ټولګی</option>
+                                <option value="لسم ټولګی">لسم ټولګی</option>
+                                <option value="یوولسم ټولګی">یوولسم ټولګی</option>
+                                <option value="دوولسم ټولګی">دوولسم ټولګی</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group mt-4">
+                        <div class=" col-md-9 btn-group">
+                            <a href="@Url.Action("Index","SubjectTables")" class="btn btn-outline-success border-bottom-success">لیست ته شاتګ </a>
+                            <button type="submit" class="btn btn-primary">معلومات اضافه کول</button>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class=" col-7 d-flex flex-row ">
+                    <img src="~/Content/image/subject3.jpg" style="width:auto;height:300px" />
+                    <img src="~/Content/image/subject1.jpg" style="width: auto; height: 300px" />
+
+                </div>
+            </div>
+        </form>
+    </div>
+  
+</div>
+
+<script src="~/Scripts/jquery-3.7.0.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script>
+    $(document).ready(function () {
+
+        $("#subjectForm").validate({
+            rules: {
+                Name: {
+                    required: true,
+
+                },
+                ClassName: {
+                    required: true,
+
+                },
+            },
+
+    submitHandler: function (form) {
+        var formData = $("#subjectForm").serialize();
+
+         $.ajax({
+             url: '@Url.Action("Create","SubjectTables")',
+             type: 'POST',
+             data: formData,
+             success: function (response) {
+                 if (response.success) {
+                     $("#resultMessage").html("<div class='alert alert-success'>" + response.msg + "</div>");
+                     $("#subjectForm")[0].reset();
+                     window.location.href = response.redirectUrl;
+                 } else {
+                     $("#resultMessage").html("<div class='alert alert-danger'>" + response.msg  + "</div>");
+                 }
+             },
+             error: function () {
+                 $("#resultMessage").html("<div class='alert alert-danger'>An error occurred.</div>");
+             }
+         });
+     }
+ });
+        });
+</script>
+

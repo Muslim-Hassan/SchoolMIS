@@ -1,0 +1,181 @@
+﻿@model SchoolMIS.Models.ScheduleTable
+<link href="~/Content/custom/customCSS.css" rel="stylesheet" />
+<body>
+    <div class="container-fluid p-2">
+        <div class="row">
+            <div class="d-flex justify-content-md-between pt-2 pb-4">
+                <h4><b>د  استاذانو تقسیم اوقات اضافه کول</b></h4>
+                <h4><b>Create  Schedule for Teacher</b></h4>
+
+            </div>
+        </div>
+
+        @*this is alert section*@
+        <div id="resultMessage"></div>
+        <div class="card p-4">
+            <form id="ScheduleForm" enctype="multipart/form-data">
+                @Html.AntiForgeryToken()
+                <div class="row">
+                    <div class="col-8">
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <p class="control-label me-3  mb-0">ورځ</p>
+                                    <div class="col-md-12">
+
+                                        <select type="text" name="Day" id="Day" class="form-control" style="width:100%">
+                                            <option value="شنبه">شنبه</option>
+                                            <option value="یکشنبه">یکشنبه</option>
+                                            <option value="دوشنبه">دوشنبه</option>
+                                            <option value="سه شنبه">سه شنبه</option>
+                                            <option value="چهارشنبه">چهارشنبه</option>
+                                            <option value="پنجشنبه">پنجشنبه</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <p class="control-label me-3  mb-0">مضمون</p>
+                                    <div class="col-md-12">
+                                        @Html.DropDownList("SubjectID", null, htmlAttributes: new { @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <p class="control-label me-3  mb-0">استاذ</p>
+                                    <div class="col-md-12">
+                                        @Html.DropDownList("StaffID", null, htmlAttributes: new { @id = "FromClassID", @name = "FromClassID", @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <p class="control-label me-3  mb-0">صنف</p>
+                                    <div class="col-md-12">
+                                        @Html.DropDownList("ClassID", null, htmlAttributes: new { @id = "ToClassID", @name = "ToClassID", @class = "form-control" })
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <p class="control-label me-3  mb-0">تاریخ</p>
+                                    <div class="col-md-12">
+                                        <input type="text" name="Date" id="Date" class="form-control" style="width:100%" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <p class="control-label me-3  mb-0">کریډیټ</p>
+                                    <div class="col-md-12">
+                                        <input type="text" name="Credit" id="Credit" class="form-control" style="width:100%" />
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <p class="control-label me-3  mb-0"> پیل وخت</p>
+                                    <div class="col-md-12">
+                                        <input type="time" name="StartTime" id="StartTime" class="form-control" style="width:100%" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <p class="control-label me-3  mb-0"> پای وخت</p>
+                                    <div class="col-md-12">
+                                        <input type="time" name="EndTime" id="EndTime" class="form-control" style="width:100%" />
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="form-group">
+                                <div class="btn-group  col-12 ">
+                                    <a href="@Url.Action("Index","ScheduleTables")" class="btn  btn-outline-success border-bottom-success"> لیست ته شاتګ</a>
+                                    <button type="submit" class="btn btn-primary"> نوی معلومات اضافه کړئ</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="row ms-1 border-1 mt-4">
+                            <img src="~/Content/image/timeTable.jpg" style="width: 100%; height: 340px; border-radius: 5%; " />
+                        </div>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+
+    </div>
+
+    <script src="~/Scripts/jquery-3.7.0.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script type="text/javascript"></script>
+    @section Scripts {
+        @Scripts.Render("~/bundles/persianDatepicker")
+
+        <script>
+            $(document).ready(function () {
+               
+
+                $("#Date").persianDatepicker({
+                    format: 'YYYY/MM/DD',
+                    autoClose: true
+                });
+            });
+        </script>
+    }
+    <script>
+    $(document).ready(function () {
+
+        $("#ScheduleForm").validate({
+            rules: {
+                SubjectID: {
+                    required: true,
+                },
+                Date: {
+                    required: true,
+                },
+                StartTime: {
+                    required: true,
+                },
+                EndTime: {
+                    required: true,
+                },
+                StaffID: {
+                    required: true,
+
+                },
+                ClassID: {
+                    required: true,
+                },
+
+            },
+            submitHandler: function (form) {
+
+                var formData = new FormData(form);
+
+                $.ajax({
+                    url: '@Url.Action("Create", "ScheduleTables")',
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        if (response.success) {
+                            $("#resultMessage").html("<div class='alert alert-success'>" + response.msg + "</div>");
+                            $("#ScheduleForm")[0].reset();
+                            window.location.href = response.redirectUrl;
+                        } else {
+                            $("#resultMessage").html("<div class='alert alert-danger'>" + response.msg + "</div>");
+                        }
+                    },
+                    error: function () {
+                        $("#resultMessage").html("<div class='alert alert-danger'>An error occurred.</div>");
+                    }
+
+                });
+            }
+        });
+
+    });
+
+    </script>
+
+</body>

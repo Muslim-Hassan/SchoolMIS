@@ -1,0 +1,376 @@
+﻿@model IEnumerable<SchoolMIS.Models.StudentTable>
+@{
+    String deletion = "hidden";
+    String creation = "hidden";
+    String edition = "hidden";
+
+    if (Session["UserId"] == null)
+    {
+        Response.Redirect("~/Home/Index");
+    }
+    else
+    {
+
+        if (Session["UserType"].ToString() == "admin" || Session["UserType"].ToString() == "Admin" || Session["UserType"].ToString() == "ادمین" || Session["UserType"].ToString() == "اډمین")
+        {
+
+
+            creation = "show";
+            deletion = "show";
+            edition = "show";
+
+        }
+      
+
+    }
+}
+<div class="d-flex justify-content-md-between pt-2">
+    <h4><b>د  شاګردانو معلومات</b></h4>
+
+    <p class="btn btn-group">
+        <a href="@Url.Action("Dashboard","Home")" class="btn btn-primary"> کور پاڼه</a>
+
+        <a href="@Url.Action("Create","StudentTables")" class="btn btn-success @creation"> نوی معلومات اضافه کړئ</a>
+
+
+    </p>
+    <h4><b>Students  Information</b></h4>
+
+</div>
+
+    <div class="card shadow  pre-scrollable ">
+
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="0">
+                    <thead class="table-active">
+                        <tr>
+                            <th>اساس</th>
+                            <th>نوم</th>
+                            <th>پلارنوم</th>
+                            <th> عمر</th>
+                            <th>شمیره</th>
+                            <th>صنف</th>
+                            <th>عکس </th>
+                            <th>Action </th>
+                        </tr>
+                    </thead>
+                    <tfoot class="table-active">
+                        <tr>
+                            <th>اساس</th>
+                            <th>نوم</th>
+                            <th>پلارنوم</th>
+                            <th> عمر</th>
+                            <th>شمیره</th>
+                            <th>صنف</th>
+                            <th>عکس </th>
+                            <th>Action </th>
+                        </tr>
+                    </tfoot>
+                    <tbody id="tbody">
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.RollNO)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.FatherName)
+                                </td>
+                              
+                                <td>
+                                    @{
+                                        DateTime today = DateTime.Today;
+                                        int age = today.Year -item.DOB.Year;
+                                        if (item.DOB.Date > today.AddYears(-age))
+                                        {
+                                            ViewBag.age= age--;
+                                        }
+                                    }
+                                    @ViewBag.age
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Contact)
+                                </td>
+
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ClassTable.Name)
+                                </td>
+                                <td style="di;background-image: url('../../Content/img/@Path.GetFileName(item.Image)');background-size:contain;background-repeat:no-repeat;height:20px;width:20px;background-position:center"></td>
+
+                                <td>
+                                    <div class="btn-group ">
+                                        <a href="@Url.Action("Edit", "StudentTables", new { id = item.StudentID })" class="btn btn-primary fa fa-edit @edition "></a>
+                                        <button class="btn btn-info btn-Details" data-id="@item.StudentID"><i class="fa fa-info"></i></button>
+                                        <button class="btn btn-danger btn-delete @deletion " data-id="@item.StudentID"><i class="fa fa-trash "></i></button>
+                                    </div>
+                                </td>
+
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    @* delete model*@
+    <div id="deleteModal" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white d-flex justify-content-between align-content-center border-dark">
+                    <img src="~/Content/image/logo1.jpg" style="width:40px;border-radius:50%;" />
+
+                    <h4 class="modal-title text-center px-2"><b> ایا غواړی چی شاګرد لمنځه یوسی؟</b></h4>
+
+
+                </div>
+                <div class="modal-body ">
+                    @* this is alert section*@
+                    <div id="resultMessage"></div>
+                    <div class="row">
+
+                        <div class="col-6 card shadow m-0 p-0 ">
+                            <img src="" style="width: 243px; height: 160px; border-radius: 3%; border: 1px solid black" id="DimgShow" />
+                        </div>
+                        <div class="col-6 card shadow">
+                            <p><span id="DRollNo" style="float:left"></span><strong style="float:right"> اساس شمیره:</strong> </p>
+                            <hr class="m-0 p-0" />
+                            <p><span id="DStudentName" style="float:left"></span><strong style="float:right;"> نوم:</strong> </p>
+                            <hr class="m-0 p-0" />
+                            <p> <span id="DFatherName" style="float:left"></span><strong style="float:right"> پلار نوم:</strong></p>
+                            <hr class="m-0 p-0" />
+                            <p><span id="DGrandFatherName" style="float:left"></span><strong style="float:right"> نیکه نوم:</strong> </p>
+
+
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6 card shadow">
+                            <p><span id="DIdentityID" style="float:left"></span><strong style="float:right;">تذکره :</strong> </p>
+                            <hr class="m-0 p-0" />
+                            <p> <span id="DContact"style="float:left"></span><strong style="float:right"> اړیکو شمیره:</strong></p>
+                            <hr class="m-0 p-0" />
+                            <p><span id="DStudentType"style="float:left"></span><strong style="float:right">شاګرد ډول :</strong> </p>
+                            <hr class="m-0 p-0" />
+                            <p><span id="DDOB" style="float:left"></span><strong style="float:right"> زیږیدو نیټه: </strong> </p>
+                            <hr class="m-0 p-0" />
+                            <p><span id="DDate"style="float:left"></span><strong style="float:right">ثبت تاریخ :</strong> </p>
+                         
+                        </div>
+                        <div class="col-6 card shadow">
+                            <p><span id="DC_Address"style="float:left"></span><strong style="float:right;"> اوسنی ادرس:</strong> </p>
+                            <hr class="m-0 p-0" />
+                            <p> <span id="DP_Address"style="float:left"></span><strong style="float:right">دایمی ادرس :</strong></p>
+                            <hr class="m-0 p-0" />
+                            <p><span id="DClass"style="float:left"></span><strong style="float:right">صنف : </strong> </p>
+                            <hr class="m-0 p-0" />
+                            <p><span id="DNationality"style="float:left"></span><strong style="float:right">ملت : </strong> </p>
+                            <hr class="m-0 p-0" />
+                            <p><span id="DGender" style="float:left"></span><strong style="float:right">جنس : </strong> </p>
+                       
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer bg-danger text-white">
+                    <form id="deleteForm">
+                        <input type="hidden" id="input" />
+                        <button type="submit" class="btn btn-primary" id="submitbtn">هو</button>
+                    </form>
+                    <button type="button" class="btn btn-secondary pe-2" data-bs-dismiss="modal"> نه</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @* details modal*@
+    <div id="detailsModal" class="modal" tabindex="-1" role="dialog" style="width:1200px">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white d-flex justify-content-between align-content-center border-dark">
+                    <img src="~/Content/image/logo1.jpg" style="width:40px;border-radius:50%;" />
+
+                    <h4 class="modal-title text-center px-2"><b><span id="header"></span> معلومات</b></h4>
+
+
+                </div>
+                <div class="modal-body " id="modelBody">
+
+                    <div class="row">
+
+                        <div class="col-6 card shadow m-0 p-0">
+                            <img src="" style="width: 243px; height: 160px; border-radius: 3%; border: 1px solid black" id="imgShow" />
+                        </div>
+                        <div class="col-6 card shadow">
+                            <p><span id="RollNo"style="float:left"></span><strong style="float:right">اساس شمیره :</strong> </p>
+                            <hr class="m-0 p-0" />
+                            <p><span id="StudentName"style="float:left"></span><strong style="float:right;">نوم :</strong> </p>
+                            <hr class="m-0 p-0" />
+                            <p> <span id="FatherName"style="float:left"></span><strong style="float:right">پلار نوم :</strong></p>
+                            <hr class="m-0 p-0" />
+                            <p><span id="GrandFatherName"style="float:left"></span><strong style="float:right">نیکه نوم :</strong> </p>
+
+
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6 card shadow">
+                            <p><span id="IdentityID"style="float:left"></span><strong style="float:right;"> تذکره:</strong> </p>
+                            <hr class="m-0 p-0" />
+                            <p> <span id="Contact"style="float:left"></span><strong style="float:right"> اړیکو شمیره:</strong></p>
+                            <hr class="m-0 p-0" />
+                            <p><span id="StudentType"style="float:left"></span><strong style="float:right"> شاګرد ډول:</strong> </p>
+                            <hr class="m-0 p-0" />
+                            <p><span id="DOB"style="float:left"></span><strong style="float:right">زیږیدو نیټه : </strong> </p>
+                            <hr class="m-0 p-0" />
+                            <p><span id="Date"style="float:left"></span><strong style="float:right"> ثبت تاریخ:</strong> </p>
+                            <hr class="m-0 p-0" />
+                            <p><span id="NativeLanguage"style="float:left"></span><strong style="float:right">مورنۍ ژبه :</strong> </p>
+                            <hr class="m-0 p-0" />
+                            <p><span id="Brother"style="float:left"></span><strong style="float:right">ورور نوم :</strong> </p>
+                        </div>
+                        <div class="col-6 card shadow">
+                            <p><span id="C_Address"style="float:left"></span><strong style="float:right;">اوسنی ادرس :</strong> </p>
+                            <hr class="m-0 p-0" />
+                            <p> <span id="P_Address"style="float:left"></span><strong style="float:right">دایمی ادرس :</strong></p>
+                            <hr class="m-0 p-0" />
+                            <p><span id="Class"style="float:left"></span><strong style="float:right">صنف : </strong> </p>
+                            <hr class="m-0 p-0" />
+                            <p><span id="Nationality"style="float:left"></span><strong style="float:right">ملت : </strong> </p>
+                            <hr class="m-0 p-0" />
+                            <p><span id="Gender"style="float:left"></span><strong style="float:right"> جنس: </strong> </p>
+                            <hr class="m-0 p-0" />
+                            <p><span id="FatherJob"style="float:left"></span><strong style="float:right">پلار وظیفه : </strong> </p>
+                            <hr class="m-0 p-0" />
+                            <p><span id="Uncle"style="float:left"></span><strong style="float:right">کاکا نوم : </strong> </p>
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <div class="modal-footer bg-danger text-white">
+                    <button type="button" class="btn btn-secondary pe-2" data-bs-dismiss="modal">شا تګ</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="~/Scripts/jquery-3.7.0.min.js"></script>
+
+    <script type="text/javascript"></script>
+    <script>
+    $(document).ready(function () {
+           //this is deletion section
+       $('.btn-delete').click(function () {
+         var id = $(this).data('id');
+           $.ajax({
+
+            url: '@Url.Action("Delete","StudentTables")',
+            type: 'POST',
+            data: { id: id },
+            success: function (response) {
+                if (response.success) {
+                    // the D is for Deletion Specification
+                    $('#input').val(response.data.StudentID);
+                    $('#DRollNo').text(response.data.RollNO);
+                    $('#DStudentName').text(response.data.Name);
+                    $('#DFatherName').text(response.data.FatherName);
+                    $('#DGrandFatherName').text(response.data.GrandFatherName);
+                    $('#DIdentityID').text(response.data.IdentityID);
+                    $('#DContact').text(response.data.Contact);
+                    $('#DStudentType').text(response.data.StudentType);
+                    $('#DDOB').text(response.data.DOB);
+                    $('#DDate').text(response.data.RegistrationDate);
+                    $('#DNativeLanguage').text(response.data.NativeLanguage);
+                    $('#DBrother').text(response.data.Brother);
+                    $('#DC_Address').text(response.data.CurrentAddress);
+                    $('#DP_Address').text(response.data.PermenentAddress);
+                    $('#DClass').text(response.data.classID);
+                    $('#DNationality').text(response.data.Nationality);
+                    $('#DGender').text(response.data.Gender);
+                    $('#DFatherJob').text(response.data.FatherJob);
+                    $('#DUncle').text(response.data.Uncle);
+                    $('#DimgShow').attr('src', response.data.Image);
+                    //modal show
+                    $('#deleteModal').modal('show');
+                } else {
+                    $("#resultMessage").html("<div class='alert alert-success'>" + response.msg + "</div>");
+                }
+            },
+            error: function () {
+              alert("errore")
+            }
+        });
+
+       });
+       //------------------------------ConfirmDeletion
+       $('#submitbtn').click(function (e) {
+          e.preventDefault();  // Prevent the default form submission
+          var id=parseInt($('#input').val());
+           $.ajax({
+               url: '@Url.Action("ConDelete", "StudentTables")',
+               type: 'POST',
+               data: { id: id },  // Send the serialized data
+               success: function (response) {
+                   $("#resultMessage").html("<div class='alert alert-success'>" + "معلومات په کامیابۍ سره ختم شول" + "</div>");
+                   window.location.href = response.redirectUrl;
+        },
+        error: function () {
+            alert("error occured");
+        }
+    });
+});
+ //this is for detail----------------------------------
+        $('.btn-Details').click(function () {
+            var id = $(this).data('id');
+            $.ajax({
+                url: '@Url.Action("Details", "StudentTables")',
+                type: 'POST',
+                data: { id: id },
+                success: function (response) {
+                    if (response.success) {
+
+                        $('#header').text(response.data.Name);
+                        $('#RollNo').text(response.data.RollNO);
+                        $('#StudentName').text(response.data.Name);
+                        $('#FatherName').text(response.data.FatherName);
+                        $('#GrandFatherName').text(response.data.GrandFatherName);
+                        $('#IdentityID').text(response.data.IdentityID);
+                        $('#Contact').text(response.data.Contact);
+                        $('#StudentType').text(response.data.StudentType);
+                        $('#DOB').text(response.data.DOB);
+                        $('#Date').text(response.data.RegistrationDate);
+                        $('#NativeLanguage').text(response.data.NativeLanguage);
+                        $('#Brother').text(response.data.Brother);
+                        $('#C_Address').text(response.data.CurrentAddress);
+                        $('#P_Address').text(response.data.PermenentAddress);
+                        $('#Class').text(response.data.classID);
+                        $('#Nationality').text(response.data.Nationality);
+                        $('#Gender').text(response.data.Gender);
+                        $('#FatherJob').text(response.data.FatherJob);
+                        $('#Uncle').text(response.data.Uncle);
+
+
+                        $('#imgShow').attr('src', response.data.Image);
+
+
+
+
+                        // Show the modal
+                        $('#detailsModal').modal('show');
+                    } else {
+                        alert("errore occurd")
+                    }
+                },
+                error: function () {
+                    alert('An error occurred while fetching the details.');
+                }
+            });
+        });
+});
+    </script>

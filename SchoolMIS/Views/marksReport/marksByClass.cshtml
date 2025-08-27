@@ -1,0 +1,866 @@
+﻿@model SchoolMIS.Models.marksModel
+@{
+
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+
+<html dir="rtl">
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link href="~/Content/custom/customCSS.css" rel="stylesheet" />
+    <link href="~/Content/css/sb-admin-2.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+
+    <title>marksByClass</title>
+</head>
+<body class="pashtoFont p-4">
+    <div class="container-fluid">
+        <div class="col-12 d-flex flex-row justify-content-between  mb-3 p-3">
+
+            <img src="~/Content/image/logo1.jpg" style="width:150px ;height:80px" />
+            <div class="text-center">
+                <h2><b>چاردیوال خصوصی ښوونځی </b></h2>
+                <h4><b>د صنف په اساس  د شاکردانو نمرو راپور  </b></h4>
+            </div>
+            <img src="@Url.Content(@Model.Student.Image)" style="width: 80px; height: 80px" />
+
+        </div>
+
+        @using (Html.BeginForm("marksByClass", "marksReport", FormMethod.Post, new { @class = "hideInPrint" }))
+        {
+            <div class="row mb-4">
+                <div class="col-md-10">
+                    <div class="row">
+                        <div class="col-md-5">
+                            <div class="row">
+                                <div class="col-md-2 bg-light border">
+                                    <label class=" mt-1 fw-bold pe-3"> شاګرد</label>
+                                </div>
+                                <div class="col-md-10">
+                                    @Html.DropDownList("classId", ViewBag.ClassList as SelectList, "لمړی ټولګی وټاکئ ", new { @class = "form-control hideInPrint" })
+
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <button type="submit" class="btn btn-primary hideInPrint" style="width:100%">     شاګران پیداکړئ </button>
+
+
+
+                        </div>
+                        <div class="col-md-5">
+                            <div class="row">
+                                <div class="col-md-2 bg-light border">
+                                    <label class=" mt-1 fw-bold pe-3"> ټولګی</label>
+                                </div>
+                                <div class="col-md-10">
+                                    @Html.DropDownList("studentId", ViewBag.StudentList as SelectList, "شاګرد وټاکئ", new { @class = "form-control hideInPrint" })
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+              
+                <div class="col-md-2">
+            
+
+                    <button type="submit" class="btn btn-primary hideInPrint" style="width:100%">  جوړ کړئ </button>
+
+                </div>
+            </div>
+
+
+        }
+
+        <table class="table table-bordered ">
+            <thead class="">
+                <tr>
+                    <th colspan="2" class="bg-light text-center">
+                        نوم :
+                        @{
+                            if (Model.Student != null)
+                            {
+                                @Model.Student.Name;
+                            }
+                        }
+
+                    </th>
+
+                    <th class="bg-light text-center">
+                        پلار نوم :
+
+                        @{
+                            if (Model.Student != null)
+                            {
+                                @Model.Student.FatherName;
+                            }
+                        }
+
+                    </th>
+
+                    <th class="bg-light text-center">
+                        نیکه نوم :
+                        @{
+                            if (Model.Student != null)
+                            {
+                                @Model.Student.GrandFatherName;
+                            }
+                        }
+                    </th>
+
+                    @*<th class="bg-light text-center">
+                            صنف :
+                            @{
+                                if (Model.Student != null)
+                                {
+                                    @Model.Student.ClassTable.Name;
+                                }
+
+                            }
+                        </th>*@
+
+                </tr>
+            </thead>
+
+
+        </table>
+
+
+
+
+        @foreach (var score in Model.Score)
+        {
+            switch (@score.SubjectTable.Name)
+            {
+                case "قرانکریم":
+                    switch (@score.ExamType)
+                    {
+                        case "څلورنیمه":
+                            ViewBag.midQuran = @Model.Score.Where(f => f.ExamType == "څلورنیمه").Where(f => f.SubjectTable.Name == "قرانکریم").Sum(f => f.AbtainScore);
+                            break;
+                        case "کلنۍ":
+                            ViewBag.finalQuran = @Model.Score.Where(f => f.ExamType == "کلنۍ").Where(f => f.SubjectTable.Name == "قرانکریم").Sum(f => f.AbtainScore);
+                            break;
+
+                    }
+                    break;
+                case "اسلامی ښوونه":
+                    switch (@score. ExamType)
+                    {
+                        case "څلورنیمه":
+                            ViewBag.midIslamic = @Model.Score.Where(f => f. ExamType == "څلورنیمه").Where(f => f.SubjectTable.Name == "اسلامی ښوونه").Sum(f => f.AbtainScore);
+                            break;
+                        case "کلنۍ":
+                            ViewBag.finalIslamic = @Model.Score.Where(f => f. ExamType == "کلنۍ").Where(f => f.SubjectTable.Name == "اسلامی ښوونه").Sum(f => f.AbtainScore);
+                            break;
+
+                    }
+                    break;
+                case "پښتو":
+                    switch (@score. ExamType)
+                    {
+                        case "څلورنیمه":
+                            ViewBag.midPashto = @Model.Score.Where(f => f. ExamType == "څلورنیمه").Where(f => f.SubjectTable.Name == "پښتو").Sum(f => f.AbtainScore);
+                            break;
+                        case "کلنۍ":
+                            ViewBag.finalPashto = @Model.Score.Where(f => f. ExamType == "کلنۍ").Where(f => f.SubjectTable.Name == "پښتو").Sum(f => f.AbtainScore);
+                            break;
+
+                    }
+                    break;
+                case "دری":
+                    switch (@score. ExamType)
+                    {
+                        case "څلورنیمه":
+                            ViewBag.midDari = @Model.Score.Where(f => f. ExamType == "څلورنیمه").Where(f => f.SubjectTable.Name == "دری").Sum(f => f.AbtainScore);
+                            break;
+                        case "کلنۍ":
+                            ViewBag.finalDari = @Model.Score.Where(f => f. ExamType == "کلنۍ").Where(f => f.SubjectTable.Name == "دری").Sum(f => f.AbtainScore);
+                            break;
+
+                    }
+                    break;
+                case "عربی":
+                    switch (@score. ExamType)
+                    {
+                        case "څلورنیمه":
+                            ViewBag.midArabic = @Model.Score.Where(f => f. ExamType == "څلورنیمه").Where(f => f.SubjectTable.Name == "عربی").Sum(f => f.AbtainScore);
+                            break;
+                        case "کلنۍ":
+                            ViewBag.finalArabic = @Model.Score.Where(f => f. ExamType == "کلنۍ").Where(f => f.SubjectTable.Name == "عربی").Sum(f => f.AbtainScore);
+                            break;
+
+                    }
+                    break;
+                case "انګلیسی":
+                case "E":
+                    switch (@score. ExamType)
+                    {
+                        case "څلورنیمه":
+                            ViewBag.midE = @Model.Score.Where(f => f. ExamType == "څلورنیمه").Where(f => f.SubjectTable.Name == "انګلیسی" || f.SubjectTable.Name == "E").Sum(f => f.AbtainScore);
+                            break;
+                        case "کلنۍ":
+                            ViewBag.finalE = @Model.Score.Where(f => f. ExamType == "کلنۍ").Where(f => f.SubjectTable.Name == "انګلیسی" || f.SubjectTable.Name == "E").Sum(f => f.AbtainScore);
+                            break;
+
+                    }
+                    break;
+                case "ریاضی":
+                    switch (@score. ExamType)
+                    {
+                        case "څلورنیمه":
+                            ViewBag.midMath = @Model.Score.Where(f => f. ExamType == "څلورنیمه").Where(f => f.SubjectTable.Name == "ریاضی").Sum(f => f.AbtainScore);
+                            break;
+                        case "کلنۍ":
+                            ViewBag.finalMath = @Model.Score.Where(f => f. ExamType == "کلنۍ").Where(f => f.SubjectTable.Name == "ریاضی").Sum(f => f.AbtainScore);
+                            break;
+
+                    }
+                    break;
+                case "فزیک":
+                    switch (@score. ExamType)
+                    {
+                        case "څلورنیمه":
+                            ViewBag.midPhysic = @Model.Score.Where(f => f. ExamType == "څلورنیمه").Where(f => f.SubjectTable.Name == "فزیک").Sum(f => f.AbtainScore);
+                            break;
+                        case "کلنۍ":
+                            ViewBag.finalPhysic = @Model.Score.Where(f => f. ExamType == "کلنۍ").Where(f => f.SubjectTable.Name == "فزیک").Sum(f => f.AbtainScore);
+                            break;
+
+                    }
+                    break;
+                case "کیمیا":
+                    switch (@score. ExamType)
+                    {
+                        case "څلورنیمه":
+                            ViewBag.midChemistry = @Model.Score.Where(f => f. ExamType == "څلورنیمه").Where(f => f.SubjectTable.Name == "کیمیا").Sum(f => f.AbtainScore);
+                            break;
+                        case "کلنۍ":
+                            ViewBag.finalChemistry = @Model.Score.Where(f => f. ExamType == "کلنۍ").Where(f => f.SubjectTable.Name == "کیمیا").Sum(f => f.AbtainScore);
+                            break;
+
+                    }
+                    break;
+                case "بیولوژی":
+                    switch (@score. ExamType)
+                    {
+                        case "څلورنیمه":
+                            ViewBag.midBiology = @Model.Score.Where(f => f. ExamType == "څلورنیمه").Where(f => f.SubjectTable.Name == "بیولوژی").Sum(f => f.AbtainScore);
+                            break;
+                        case "کلنۍ":
+                            ViewBag.finalBiology = @Model.Score.Where(f => f. ExamType == "کلنۍ").Where(f => f.SubjectTable.Name == "بیولوژی").Sum(f => f.AbtainScore);
+                            break;
+
+                    }
+                    break;
+                case "جغرافیه":
+                    switch (@score. ExamType)
+                    {
+                        case "څلورنیمه":
+                            ViewBag.midGeography = @Model.Score.Where(f => f. ExamType == "څلورنیمه").Where(f => f.SubjectTable.Name == "جغرافیه").Sum(f => f.AbtainScore);
+                            break;
+                        case "کلنۍ":
+                            ViewBag.finalGeography = @Model.Score.Where(f => f. ExamType == "کلنۍ").Where(f => f.SubjectTable.Name == "جغرافیه").Sum(f => f.AbtainScore);
+                            break;
+
+                    }
+                    break;
+                case "تاریخ":
+                    switch (@score. ExamType)
+                    {
+                        case "څلورنیمه":
+                            ViewBag.midHistory = @Model.Score.Where(f => f. ExamType == "څلورنیمه").Where(f => f.SubjectTable.Name == "تاریخ").Sum(f => f.AbtainScore);
+                            break;
+                        case "کلنۍ":
+                            ViewBag.finalHistory = @Model.Score.Where(f => f. ExamType == "کلنۍ").Where(f => f.SubjectTable.Name == "تاریخ").Sum(f => f.AbtainScore);
+                            break;
+
+                    }
+                    break;
+                case "حرفه":
+                    switch (@score. ExamType)
+                    {
+                        case "څلورنیمه":
+                            ViewBag.midCraft = @Model.Score.Where(f => f. ExamType == "څلورنیمه").Where(f => f.SubjectTable.Name == "حرفه").Sum(f => f.AbtainScore);
+                            break;
+                        case "کلنۍ":
+                            ViewBag.finalCraft = @Model.Score.Where(f => f. ExamType == "کلنۍ").Where(f => f.SubjectTable.Name == "حرفه").Sum(f => f.AbtainScore);
+                            break;
+
+                    }
+                    break;
+
+            }
+
+        }
+        @{
+            string first = "hidden";
+            string second = "hidden";
+            string third = "hidden";
+
+
+
+            foreach (var Class in Model.Score)
+            {
+                if (Class.ClassTable.Name == "اول ټولګی" || Class.ClassTable.Name == "دوهم ټولګی" || Class.ClassTable.Name == "دریم ټولګی")
+                {
+                    first = "show";
+                }
+                else if (Class.ClassTable.Name == "ځلورم ټولګی" || Class.ClassTable.Name == "پنځم ټولګی" || Class.ClassTable.Name == "شپږم ټولګی")
+                {
+                    second = "show";
+                }
+                else
+                {
+                    third = "show";
+                }
+
+
+                ViewBag.midcollectionMarks = Model.Score.Where(f => f. ExamType == "څلورنیمه").Sum(f => f.AbtainScore);
+                ViewBag.finalcollectionMarks = Model.Score.Where(f => f. ExamType == "کلنۍ").Sum(f => f.AbtainScore);
+
+                try
+                {
+
+                    ViewBag.midPercentage = Model.Score.DefaultIfEmpty().Where(f => f. ExamType == "څلورنیمه").Average(f => f.AbtainScore);
+                    ViewBag.finalPercentage = Model.Score.Where(f => f.ExamType == "کلنۍ").Average(f => f.AbtainScore);
+                }
+                catch
+                {
+                    ViewBag.midPercentage = 0.0;
+                    ViewBag.finalPercentage = 0.0;
+                }
+
+            }
+        }
+
+        @foreach (var attend in Model.Attendence)
+        {
+
+            ViewBag.formalDays = @Model.Attendence.Sum(f => f.FormalDays);
+            ViewBag.present = @Model.Attendence.Sum(f => f.Present);
+            ViewBag.absent = ViewBag.formalDays - ViewBag.present;
+        }
+
+
+
+        @*this is second table for loop iteration*@
+        <div class="row d-flex flex-row justify-content-between markTable " >
+            <div class="col-md-6">
+                <table class="table table-bordered">
+                    <thead class="table-active">
+                        <tr>
+                            <th>مضمون</th>
+                            <th>څلورنیمه نمری</th>
+                            <th>کلنۍ نمری</th>
+                            <th>مجموعه</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>قرانکریم</td>
+                            <td> @ViewBag.midQuran</td>
+                            <td>@ViewBag.finalQuran</td>
+                            <td>
+                                @{
+                                    long collectionQuran = 0;
+                                    if (ViewBag.midQuran != null || ViewBag.midQuran != null)
+                                    {
+                                        collectionQuran = ViewBag.midQuran + ViewBag.finalQuran;
+                                    }
+
+                                } @collectionQuran
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>اسلامی ښوونه</td>
+                            <td> @ViewBag.midIslamic</td>
+                            <td>@ViewBag.finalIslamic</td>
+                            <td>
+                                @{
+                                    long collectionIslamic = 0;
+                                    if (ViewBag.midIslamic != null || ViewBag.finalIslamic != null)
+                                    {
+                                        collectionIslamic = ViewBag.midIslamic + ViewBag.finalIslamic;
+                                    }
+                                } @collectionIslamic
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>پښتو </td>
+                            <td> @ViewBag.midPashto</td>
+                            <td>@ViewBag.finalPashto</td>
+                            <td>
+                                @{
+                                    long collectionPashto = 0;
+                                    if (ViewBag.midPashto != null || ViewBag.finalPashto != null)
+                                    {
+                                        collectionPashto = ViewBag.midPashto + ViewBag.finalPashto;
+                                    }
+
+                                } @collectionPashto
+                            </td>
+                        </tr>
+                        <tr @second>
+                            <td>دری </td>
+                            <td> @ViewBag.midDari</td>
+                            <td>@ViewBag.finalDari</td>
+                            <td>
+                                @{
+                                    long collectionDari = 0;
+                                    if (ViewBag.midDari != null || ViewBag.finalDari != null)
+                                    {
+                                        collectionDari = ViewBag.midDari + ViewBag.finalDari;
+                                    }
+
+                                } @collectionDari
+                            </td>
+                        </tr>
+                        <tr @third>
+                            <td>عربی </td>
+                            <td> @ViewBag.midArabic</td>
+                            <td>@ViewBag.finalArabic</td>
+                            <td>
+                                @{
+                                    long collectionArabic = 0;
+                                    if (ViewBag.midArabic != null || ViewBag.finalArabic != null)
+                                    {
+                                        collectionArabic = ViewBag.midArabic + ViewBag.finalArabic;
+                                    }
+
+                                } @collectionArabic
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>انګلیسی </td>
+                            <td> @ViewBag.midE</td>
+                            <td>@ViewBag.finalE</td>
+                            <td>
+                                @{
+                                    long collectionE = 0;
+                                    if (ViewBag.midE != null || ViewBag.finalE != null)
+                                    {
+                                        collectionE = ViewBag.midE + ViewBag.finalE;
+                                    }
+
+                                } @collectionE
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>ریاضی </td>
+                            <td> @ViewBag.midMath</td>
+                            <td>@ViewBag.finalMath</td>
+                            <td>
+                                @{
+                                    long collectionMath = 0;
+                                    if (ViewBag.midMath != null || ViewBag.finalMath != null)
+                                    {
+                                        collectionMath = ViewBag.midMath + ViewBag.finalMath;
+                                    }
+
+                                } @collectionMath
+                            </td>
+                        </tr>
+                        <tr @third>
+                            <td>فزیک </td>
+                            <td> @ViewBag.midPhysic</td>
+                            <td>@ViewBag.finalPhysic</td>
+                            <td>
+                                @{
+                                    long collectionPhysic = 0;
+                                    if (ViewBag.midPhysic != null || ViewBag.finalPhysic != null)
+                                    {
+                                        collectionPhysic = ViewBag.midPhysic + ViewBag.finalPhysic;
+                                    }
+
+                                } @collectionPhysic
+                            </td>
+                        </tr>
+                        <tr @third>
+                            <td>کیمیا </td>
+                            <td> @ViewBag.midChemistry</td>
+                            <td>@ViewBag.finalChemistry</td>
+                            <td>
+                                @{
+                                    long collectionChemistry = 0;
+                                    if (ViewBag.midChemistry != null || ViewBag.finalChemistry != null)
+                                    {
+                                        collectionChemistry = ViewBag.midChemistry + ViewBag.finalChemistry;
+                                    }
+
+                                } @collectionChemistry
+                            </td>
+                        </tr>
+                        <tr @third>
+                            <td>بیولوژی </td>
+                            <td> @ViewBag.midBiology</td>
+                            <td>@ViewBag.finalBiology</td>
+                            <td>
+                                @{
+                                    long collectionBiology = 0;
+                                    if (ViewBag.midBiology != null || ViewBag.finalBiology != null)
+                                    {
+                                        collectionBiology = ViewBag.midBiology + ViewBag.finalBiology;
+                                    }
+
+                                } @collectionBiology
+                            </td>
+                        </tr>
+                        <tr @third>
+                            <td>جغرافیه </td>
+                            <td> @ViewBag.midGeography</td>
+                            <td>@ViewBag.finalGeography</td>
+                            <td>
+                                @{
+                                    long collectionGeography = 0;
+                                    if (ViewBag.midGeography != null || ViewBag.finalGeography != null)
+                                    {
+                                        collectionGeography = ViewBag.midGeography + ViewBag.finalGeography;
+                                    }
+
+                                } @collectionGeography
+                            </td>
+                        </tr>
+                        <tr @third>
+                            <td>تاریخ </td>
+                            <td> @ViewBag.midHistory</td>
+                            <td>@ViewBag.finalHistory</td>
+                            <td>
+                                @{
+                                    long collectionHistory = 0;
+                                    if (ViewBag.midHistory != null || ViewBag.finalHistory != null)
+                                    {
+                                        collectionHistory = ViewBag.midHistory + ViewBag.finalHistory;
+                                    }
+
+                                } @collectionHistory
+                            </td>
+                        </tr>
+                        <tr @third>
+                            <td>حرفه </td>
+                            <td> @ViewBag.midCraft</td>
+                            <td>@ViewBag.finalCraft</td>
+                            <td>
+                                @{
+                                    long collectionCraft = 0;
+                                    if (ViewBag.midCraft != null || ViewBag.finalCraft != null)
+                                    {
+                                        collectionCraft = ViewBag.midCraft + ViewBag.finalCraft;
+                                    }
+
+                                } @collectionCraft
+                            </td>
+                        </tr>
+                        <tr @first @second>
+                            <td>رسم </td>
+                            <td> @ViewBag.midDrawing</td>
+                            <td>@ViewBag.finalDrawing</td>
+                            <td>
+                                @{
+                                    long collectionDrawing = 0;
+                                    if (ViewBag.midDrawing != null || ViewBag.finalDrawing != null)
+                                    {
+                                        collectionDrawing = ViewBag.midDrawing + ViewBag.finalDrawing;
+                                    }
+
+                                } @collectionDrawing
+                            </td>
+                        </tr>
+                        <tr @first @second>
+                            <td>حسن خط </td>
+                            <td> @ViewBag.midKhat</td>
+                            <td>@ViewBag.finalKhat</td>
+                            <td>
+                                @{
+                                    long collectionKhat = 0;
+                                    if (ViewBag.midKhat != null || ViewBag.finalKhat != null)
+                                    {
+                                        collectionKhat = ViewBag.midKhat + ViewBag.finalKhat;
+                                    }
+
+                                } @collectionKhat
+                            </td>
+                        </tr>
+                        <tr @first>
+                            <td>ژوند مهارت </td>
+                            <td> @ViewBag.midLiveSkill</td>
+                            <td>@ViewBag.finalLiveSkill</td>
+                            <td>
+                                @{
+                                    long collectionLiveSkill = 0;
+                                    if (ViewBag.midLiveSkill != null || ViewBag.finalLiveSkill != null)
+                                    {
+                                        collectionLiveSkill = ViewBag.midLiveSkill + ViewBag.finalLiveSkill;
+                                    }
+
+                                } @collectionLiveSkill
+                            </td>
+                        </tr>
+                        <tr @second>
+                            <td>ټولنیز </td>
+                            <td> @ViewBag.midSocail</td>
+                            <td>@ViewBag.finalSocail</td>
+                            <td>
+                                @{
+                                    long collectionSocail = 0;
+                                    if (ViewBag.midSocail != null || ViewBag.finalSocail != null)
+                                    {
+                                        collectionSocail = ViewBag.midSocail + ViewBag.finalSocail;
+                                    }
+
+                                } @collectionSocail
+                            </td>
+                        </tr>
+                        <tr @second>
+                            <td>ساینس </td>
+                            <td> @ViewBag.midScience</td>
+                            <td>@ViewBag.finalScience</td>
+                            <td>
+                                @{
+                                    long collectionScience = 0;
+                                    if (ViewBag.midScience != null || ViewBag.finalScience != null)
+                                    {
+                                        collectionScience = ViewBag.midScience + ViewBag.finalScience;
+                                    }
+
+                                } @collectionScience
+                            </td>
+                        </tr>
+                        <tr>
+                            <td> سپورټ</td>
+                            <td> @ViewBag.midSport</td>
+                            <td>@ViewBag.finalSport</td>
+                            <td>
+                                @{
+                                    long collectionSport = 0;
+                                    if (ViewBag.midSport != null && ViewBag.finalSport != null)
+                                    {
+                                        collectionSport = ViewBag.midSport + ViewBag.finalSport;
+                                    }
+
+                                } @collectionSport
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>تهذیب </td>
+                            <td> @ViewBag.midEthics</td>
+                            <td>@ViewBag.finalEthics</td>
+                            <td>
+                                @{
+                                    long collectionEthics = 0;
+                                    if (ViewBag.midEthics != null && ViewBag.finalEthics != null)
+                                    {
+                                        collectionEthics = ViewBag.midEthics + ViewBag.finalEthics;
+                                    }
+
+                                } @collectionEthics
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><b>مجموعه</b> </td>
+                            <td>@ViewBag.midcollectionMarks</td>
+                            <td>@ViewBag.finalcollectionMarks</td>
+                            <td>
+                                @{
+                                    long collectionMarks = 0;
+                                    if (ViewBag.midcollectionMarks != null && ViewBag.finalcollectionMarks != null)
+                                    {
+                                        collectionMarks = ViewBag.midcollectionMarks + ViewBag.finalcollectionMarks;
+                                    }
+
+                                } @collectionMarks
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td><b>فیصدی</b> </td>
+                            <td> @ViewBag.midPercentage</td>
+                            <td>@ViewBag.finalPercentage</td>
+                            <td>
+                                @{
+                                    double collectionpercentage = 0;
+                                    if (ViewBag.midPercentage != null && ViewBag.finalPercentage != null)
+                                    {
+                                        collectionpercentage = ViewBag.midPercentage + ViewBag.finalPercentage;
+                                    }
+
+                                } @collectionpercentage
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><b> درجه</b> </td>
+                            <td>
+                                @{
+                                    var midResult = "";
+                                    if (@ViewBag.midPercentage >= 16.0)
+                                    {
+                                        midResult = "بریالی";
+                                    }
+                                    else
+                                    {
+                                        midResult = "ناکام";
+                                    }
+
+                                }
+                                @midResult
+                            </td>
+                            <td>
+                                @{
+                                    var finalresult = "";
+                                    if (@ViewBag.finalPercentage >= 16.0)
+                                    {
+                                        finalresult = "بریالی";
+                                    }
+                                    else
+                                    {
+                                        finalresult = "ناکام";
+                                    }
+
+                                }
+                                @finalresult
+                            </td>
+                            <td>
+                                @{
+                                    var combinationlresult = "";
+                                    if (@ViewBag.finalPercentage >= 16.0)
+                                    {
+                                        combinationlresult = "بریالی";
+                                    }
+                                    else
+                                    {
+                                        combinationlresult = "ناکام";
+                                    }
+
+                                }
+                                @combinationlresult
+                            </td>
+
+                        </tr>
+                      
+                        
+                        <tr>
+                            <td>
+                                <b>درجه </b>
+
+                            </td>
+                            <td class="text-center" colspan="3">
+                                @{
+                                    var position = "";
+                                    if (ViewBag.pos == 1)
+                                    {
+                                        position = "اوله درجه";
+                                    }
+                                    else if (ViewBag.pos == 2)
+                                    {
+                                        position = "دوهمه درجه";
+                                    }
+                                    else if (ViewBag.pos == 3)
+                                    {
+                                        position = "دریمه درجه";
+                                    }
+                                    else
+                                    {
+                                        @ViewBag.pos
+                                    }
+                                }
+                                @position
+                            </td>
+
+                        </tr>
+               
+                    </tbody>
+
+                </table>
+            </div>
+            <div class="col-md-6 text-center border">
+            
+                     <table class="table table-bordered">
+                         <thead>
+                             <tr>
+                                 <th></th>
+                                 <th>رسمی ورځی</th>
+                                 <th>سوب</th>
+                                 <th>ناسوب</th>
+                                 <th>مریض</th>
+                                 <th>رخصت</th>
+                             </tr>
+                             <tr>
+                                 <th>څلورنیمه</th>
+                                 <td></td>
+                                 <td></td>
+                                 <td></td>
+                                 <td></td>
+                                 <td></td>
+
+
+                             </tr>
+                             <tr>
+                                 <th>کلنۍ</th>
+                                 <td></td>
+                                 <td></td>
+                                 <td></td>
+                                 <td></td>
+                                 <td></td>
+
+
+                             </tr>
+                             <tr>
+
+                                 <th>مجموعه</th>
+                                 
+                                 <td>@ViewBag.formalDays </td>
+                                 <td>@ViewBag.present</td>
+                                 <td>@ViewBag.absent</td>
+                                 <td>0</td>
+                                 <td>0</td>
+
+
+                             </tr>
+                             <tr>
+                                 <th>نتیجه</th>
+                                 <th class="text-center" colspan="4">
+                                     @{
+                                         double? absentPercentage =((double?)@ViewBag.absent / (double?)@ViewBag.formalDays) * 100 ;
+                                         var status = "";
+                                         if (absentPercentage >= 25)
+                                         {
+                                             status = "محروم";
+                                         }
+                                         else
+                                         {
+                                             status = " محروم نه دی";
+                                         }
+                                     }
+                                     @status
+                                 </th>
+                             </tr>
+                         </thead>
+                     </table>
+             
+            </div>
+        </div>
+      
+
+
+
+
+
+    </div>
+    <div class="col-12  d-flex flex-row justify-content-center" dir="ltr">
+
+        <div>
+            <a href="@Url.Action("Dashboard","Home")" id="hideInPrint" class="btn btn-success ">کور پاڼی ته شاتګ </a>
+            <a class="btn btn-primary " id="hideInPrint" onclick="window.print()">PDF ذخیره کړئ </a>
+            <a class="btn btn-primary  " id="hideInPrint" onclick="window.print()">راپور پرنټ کړئ </a>
+        </div>
+    </div>
+    <script src="~/Scripts/jquery-3.7.0.min.js"></script>
+    <script type="text/javascript"></script>
+
+</body>
+</html>

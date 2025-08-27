@@ -1,0 +1,176 @@
+﻿
+@model IEnumerable<SchoolMIS.Models.ExpencesTable>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html dir="rtl">
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>StudentsByClassReport</title>
+    <link href="~/Content/custom/customCSS.css" rel="stylesheet" />
+    <link href="~/Content/css/sb-admin-2.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <!-- Persian Datepicker CSS -->
+    <link href="~/Content/persian-datepicker.min.css" rel="stylesheet" />
+    <script src="~/Content/vendor/jquery/jquery.min.js"></script>
+    <script src="~/Scripts/persian-date.min.js"></script>
+    <script src="~/Scripts/persian-datepicker.min.js"></script>
+</head>
+<body class="p-4" style=" font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">
+
+    <div class="container-fluid">
+
+        <div class="col-12 d-flex flex-row justify-content-between  mb-3 p-3">
+
+            <img src="~/Content/image/logo1.jpg" style="width:150px ;height:70px" />
+            <div class="text-center">
+                <h2><b> چاردیوال خصوصی ښوونځی </b></h2>
+                <h4><b> د تاریخ  په اساس  د مصارفو راپور  </b></h4>
+            </div>
+            <img src="~/Content/image/aei.jpg" style="width:100px;height:70px" />
+
+        </div>
+        <form action="/ExpencesTables/expencesReport " method="post" class="hideInPrint">
+            <div class="row mb-4">
+                <div class="col-md-11">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-2 bg-light border">
+                                    <label class=" mt-1 fw-bold">تاریخ څخه</label>
+                                </div>
+                                <div class="col-md-10">
+                                    <input type="text" name="fromDate" id="fromDate" class="form-control" />
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-2 bg-light border">
+                                    <label class=" mt-1 fw-bold">تاریخ پوری</label>
+                                </div>
+                                <div class="col-md-10">
+                                    <input type="text" name="toDate" id="toDate" class="form-control" />
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-1">
+                    <button type="submit" id="printBtn" class="btn btn-primary">  جوړ کړئ </button>
+
+
+                </div>
+            </div>
+
+
+        </form>
+
+        <script>
+            $(document).ready(function () {
+                $("#fromDate").persianDatepicker({
+                    format: 'YYYY/MM/DD',
+                    autoClose: true
+                });
+
+                $("#toDate").persianDatepicker({
+                    format: 'YYYY/MM/DD',
+                    autoClose: true
+                });
+            });
+        </script>
+
+        <div class="row mb-3 fw-bold">
+            <h4>د  [ @ViewBag.fromDate] څخه تر [ @ViewBag.toDate] تاریخ پوری د چاردیوال خصوصی ښوونځی د  مصارفو راپور</h4>
+
+        </div>
+
+        <div class="row">
+            <div class="table-responsive">
+                <table class="table table-bordered " id="dataTable" width="100%" cellspacing="0">
+                    <thead class="table-active">
+                        <tr>
+
+                            <th>شماره</th>
+                            <th> څیز نوم</th>
+                            <th>اندازه</th>
+                            <th>فی قیمت</th>
+                            <th>مجموعی قیمت</th>
+                            <th>راوړونکی</th>
+                            <th>تاریخ</th>
+                            <th>وضاحت </th>
+
+                        </tr>
+                    </thead>
+
+                    <tbody id="tbody">
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ExpencesID)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ItemName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Amount)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Price)
+                                </td>
+                                <td>
+                                    @{
+                                        var totalPrice = item.Amount * item.Price;
+                                    }@totalPrice
+
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.StaffTable.Name)
+
+                                </td>
+                                <td>
+                                    @SchoolMIS.Models.Converssion.ToShamsi(item.Date)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Description)
+
+                                </td>
+
+
+                            </tr>
+                        }
+                        <tr>
+                            <td><b>مجموعه مصارف</b></td>
+                            <td>@ViewBag.expencesCollection</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+
+
+        </div>
+        <div class="col-12  d-flex flex-row justify-content-center" dir="ltr">
+           
+            <div>
+                <a href="@Url.Action("Dashboard","Home")" id="printBtn" class="btn btn-success">کور پاڼی ته شاتګ </a>
+                <a class="btn btn-primary " id="printBtn" onclick="window.print()">PDFذخیره کړئ</a>
+                <a class="btn btn-primary " id="printBtn" onclick="window.print()"> راپور پرنټ کړئ</a>
+            </div>
+        </div>
+    </div>
+
+ 
+
+
+
+</body>
+</html>
+

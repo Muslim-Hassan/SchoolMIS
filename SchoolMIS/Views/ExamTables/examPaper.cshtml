@@ -1,0 +1,213 @@
+﻿@model IEnumerable<SchoolMIS.Models.ExamTable>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html dir="rtl">
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>StudentsByClassReport</title>
+    <link href="~/Content/custom/customCSS.css" rel="stylesheet" />
+    <link href="~/Content/css/sb-admin-2.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-3.7.0.min.js"></script>
+    
+</head>
+<body style=" font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">
+
+    <div class="container-fluid">
+
+        <div class="col-12 d-flex flex-row justify-content-between  mb-3 p-3">
+            <p>this empty</p>
+            <img src="~/Content/image/logo1.jpg" style="width:230px ;height:180px" class="mb-1" />
+            <div class="text-center">
+                <h5>  د افغانستان اسلامی امارت</h5>
+                <h5>  د پوهنی وزارت</h5>
+                <h5>  د ننګرهار د پوهنی ریاست</h5>
+                <h5>  د بټی کوټ د پوهنی امریت</h5>
+                <h5>چاردیوال خصوصی ښوونځی</h5>
+
+            </div>
+            <img src="~/Content/image/aei.jpg" style="width:180px;height:150px" class="mt-2" />
+            <div class="mt-3" style="float:right">
+
+                <p>
+                    ټولګی :@ViewBag.Class
+
+
+                </p>
+                <p>
+                    نګران :@ViewBag.Teacher
+                </p>
+            </div>
+        </div>
+        <form action="/ExamTables/examPaper" method="post" class="hideInPrint">
+
+            <div class="row d-flex flex-row mb-3">
+                <div class="col-md-4 d-flex  flex-row">
+                    <label class="ps-2 pt-2 "><b>ټولګی</b></label>
+                    @Html.DropDownList("ClassID", null, htmlAttributes: new { @id = "classID", @class = "form-control hideInPrint" })
+                </div>
+                <div class="col-md-4 d-flex flex-row">
+                    <label class="ps-2 pt-2 "><b>مضمون</b></label>
+                    @Html.DropDownList("SubjectID", null, "ټولګی وټاکئ", htmlAttributes: new { @class = "form-control hideInPrint" })
+                </div>
+                <div class="col-md-3 d-flex flex-row">
+                    <label class="ps-2 pt-2 "><b>  امتحان</b></label>
+                    <select typeof="text" class="form-control " name="examType" id="examType">
+
+                        <option value="څلورنیمه">څلورنیمه</option>
+                        <option value="کلنی"> کلنی</option>
+                    </select>
+                </div>
+                <div class="col-md-1">
+
+                    <button type="submit" class="btn btn-primary hideInPrint"> جوړ کړئ</button>
+
+                </div>
+
+            </div>
+
+        </form>
+
+        <h4 class="d-flex flex-row justify-content-around">
+            <span>ازموینه(@ViewBag.Exam)</span>
+            <span>مضمون(@ViewBag.Subject)</span>
+            <span>ممتحن(@ViewBag.Staff)</span>
+            <span>ممیز(@ViewBag.helper)</span>
+            <span>تاریخ(@ViewBag.Date)</span>
+        </h4>
+        @{ 
+            int No = 0;
+        }
+        <div class="row">
+            <div class="col-md-12 tbl1">
+                <div class="table-responsive">
+                    <table class="table table-bordered " id="dataTable" width="100%" cellspacing="0">
+                        <thead class="table-active">
+                            <tr>
+                                <th style="writing-mode:vertical-rl;">
+                                    شماره
+                                </th>
+                                <th>
+                                    نوم
+                                </th>
+                                <th>
+                                    پلار نوم
+                                </th>
+                                <th>
+                                    تحریری
+                                </th>
+                                <th>
+                                    تقریری
+                                </th>
+                                <th>
+                                    صنفی لیاقت
+
+                                </th>
+                                <th>
+                                    کورنی کار
+                                </th>
+                                <th>
+                                    مجموعه
+                                </th>
+                                <th>
+                                    کتنی
+                                </th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="tbody">
+                            @if (Model != null)
+                            {
+                                foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                       
+                                            @No
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.StudentTable.Name)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.StudentTable.FatherName)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.writtenTest)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.verbalTest)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.ClassWork)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.homeWork)
+                                        </td>
+                                        <td>
+                                            @{
+                                                var collectoin = item.writtenTest + item.verbalTest + item.ClassWork + item.homeWork;
+                                            }@collectoin
+                                        </td>
+                                    </tr>
+                                }
+
+                                                    No++;
+
+                                                }
+                                                else
+                                                {
+                <tr>
+                    <td>دیټا نشته</td>
+                </tr>
+            }
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+
+        </div>
+
+
+
+        <h4 class="d-flex flex-row justify-content-around">
+            <span>تعداد داخله(@ViewBag.ClassStudentAmount)</span>
+            <span>شامل امتحان(@ViewBag.includeExam)</span>
+            <span>کامیاب(@ViewBag.succes)</span>
+            <span>ناکام(@ViewBag.fail)</span>
+            <span>معذرتی (0)</span>
+            <span>محروم (0)</span>
+        </h4>
+        <h4>پورته نمری زما په خپل قلم د شاګردانو د لیاقت سره سمی د ممیز په حضور ورکړل شوی صحت دی</h4>
+        <p class="d-flex flex-row justify-content-around">
+             
+            <h4>ممتحن</h4>
+            <h4>ممیز</h4>
+
+        </p>
+
+        <div class="col-12  d-flex flex-row justify-content-center hideInPrint" dir="ltr">
+
+            <div>
+                <a href="@Url.Action("Dashboard","Home")" class="btn btn-success hideInPrint">کورپاڼی ته شاتګ </a>
+                <a class="btn btn-primary hideInPrint " onclick="window.print()">راپور پرنټ ګړئ </a>
+                <a class="btn btn-primary hideInPrint " onclick="window.print()">PDF ذخیره کړئ </a>
+            </div>
+        </div>
+
+
+
+
+
+    </div>
+
+
+
+</body>
+</html>

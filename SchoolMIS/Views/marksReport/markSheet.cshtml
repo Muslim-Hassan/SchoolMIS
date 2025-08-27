@@ -1,0 +1,1066 @@
+﻿@model SchoolMIS.Models.marksModel
+
+@{
+    Layout = null;
+}
+
+
+<!DOCTYPE html>
+
+<html dir="rtl">
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>StudentsByClassReport</title>
+    <link href="~/Content/custom/customCSS.css" rel="stylesheet" />
+    <link href="~/Content/css/sb-admin-2.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-3.7.0.min.js"></script>
+</head>
+<body class="pashtoFont">
+
+    <div class="container-fluid">
+
+        <div class="col-12 d-flex flex-row justify-content-between  mb-3 p-3">
+
+            <img src="~/Content/image/logo1.jpg" style="width:150px ;height:70px" />
+            <div class="text-center">
+                <h2><b>چاردیوال خصوصی ښوونځی</b></h2>
+                <h4><b>د شاګردانو  دټولو نمرو  راپور  </b></h4>
+            </div>
+            <img src="~/Content/image/aei.jpg" style="width:100px;height:60px" />
+
+        </div>
+        @using (Html.BeginForm("markSheet", "marksReport", FormMethod.Post))
+        {
+            @Html.DropDownList("studentId", ViewBag.StudentList as SelectList, "شاګرد وټاکئ ", new { @class = "form-control hideInPrint" })
+
+            <br />
+            <input type="submit" value="د ټاکل شوی شاګرد نمری پیدا کړئ" class="btn btn-primary hideInPrint" />
+        }
+        <div class="row my-3">
+            <div class="col-md-3 text-md-center  ">
+                <p class="pe-2">
+                    <strong>نوم:    </strong>@{
+                        if (Model.Student != null)
+                        {
+                            @Model.Student.Name;
+                        }
+                    }
+
+                </p>
+            </div>
+            <div class="col-md-3 text-md-center  ">
+                <p>
+                    <strong>پلار نوم :</strong> @{
+                        if (Model.Student != null)
+                        {
+                            @Model.Student.FatherName;
+                        }
+                    }
+                </p>
+            </div>
+            <div class="col-md-3 text-md-center  ">
+                <p>
+                    <strong>پلار نوم :</strong> @{
+                        if (Model.Student != null)
+                        {
+                            @Model.Student.GrandFatherName;
+                        }
+                    }
+                </p>
+            </div>
+            <div class="col-md-3 text-md-center   ">
+                <p class="">
+                    <strong>صنف:</strong> @{
+                        if (Model.Student != null)
+                        {
+                            @Model.Student.ClassTable.Name;
+                        }
+                    }
+                </p>
+
+            </div>
+        </div>
+        @foreach (var attend in Model.Attendence)
+        {
+           
+            switch (@attend.ClassTable.Name)
+            {
+                case "نرسری ټولګی":
+                    ViewBag.prepFormalDays = @Model.Attendence.Where(f => f.ClassTable.Name == "نرسری ټولګی").Sum(f => f.FormalDays);
+                    ViewBag.preppresent = @Model.Attendence.Where(f => f.ClassTable.Name == "نرسری ټولګی").Sum(f => f.Present);
+                    break;
+                case "اول ټولګی":
+                    ViewBag.firstFormalDays = @Model.Attendence.Where(f => f.ClassTable.Name == "اول ټولګی").Sum(f => f.FormalDays);
+                    ViewBag.firstpresent = @Model.Attendence.Where(f => f.ClassTable.Name == "اول ټولګی").Sum(f => f.Present);
+                    break;
+                case "دوهم ټولګی":
+                    ViewBag.secondFormalDays = @Model.Attendence.Where(f => f.ClassTable.Name == "دوهم ټولګی").Sum(f => f.FormalDays);
+                    ViewBag.secondpresent = @Model.Attendence.Where(f => f.ClassTable.Name == "دوهم ټولګی").Sum(f => f.Present);
+                    break;
+                case "دریم ټولګی":
+
+                    ViewBag.thirdFormalDays = @Model.Attendence.Where(f => f.ClassTable.Name == "دریم ټولګی").Sum(f => f.FormalDays);
+                    ViewBag.thirdpresent = @Model.Attendence.Where(f => f.ClassTable.Name == "دریم ټولګی").Sum(f => f.Present);
+                    break;
+                case "څلورم ټولګی":
+                    ViewBag.fourthFormalDays = @Model.Attendence.Where(f => f.ClassTable.Name == "څلورم ټولګی").Sum(f => f.FormalDays);
+                    ViewBag.fourthpresent = @Model.Attendence.Where(f => f.ClassTable.Name == "څلورم ټولګی").Sum(f => f.Present);
+                    break;
+                case "پنځم ټولګی":
+                    ViewBag.fifthFormalDays = @Model.Attendence.Where(f => f.ClassTable.Name == "پنځم ټولګی").Sum(f => f.FormalDays);
+                    ViewBag.fifthpresent = @Model.Attendence.Where(f => f.ClassTable.Name == "پنځم ټولګی").Sum(f => f.Present);
+                    break;
+                case "شپږم ټولګی":
+                    ViewBag.sixthFormalDays = @Model.Attendence.Where(f => f.ClassTable.Name == "شپږم ټولګی").Sum(f => f.FormalDays);
+                    ViewBag.sixthpresent = @Model.Attendence.Where(f => f.ClassTable.Name == "شپږم ټولګی").Sum(f => f.Present);
+                    break;
+                case "اووم ټولګی":
+                    ViewBag.seventhFormalDays = @Model.Attendence.Where(f => f.ClassTable.Name == "اووم ټولګی").Sum(f => f.FormalDays);
+                    ViewBag.seventhpresent = @Model.Attendence.Where(f => f.ClassTable.Name == "اووم ټولګی").Sum(f => f.Present);
+                    break;
+                case "اتم ټولګی":
+                    ViewBag.eigthFormalDays = @Model.Attendence.Where(f => f.ClassTable.Name == "اتم ټولګی").Sum(f => f.FormalDays);
+                    ViewBag.eigthpresent = @Model.Attendence.Where(f => f.ClassTable.Name == "اتم ټولګی").Sum(f => f.Present);
+                    break;
+                case "نهم ټولګی":
+                    ViewBag.ninthFormalDays = @Model.Attendence.Where(f => f.ClassTable.Name == "نهم ټولګی").Sum(f => f.FormalDays);
+                    ViewBag.ninthpresent = @Model.Attendence.Where(f => f.ClassTable.Name == "نهم ټولګی").Sum(f => f.Present);
+                    break;
+            }
+        }
+
+        @foreach (var item in Model.Score)
+        {
+
+            switch (@item.SubjectTable.Name)
+            {
+                case "قرانکریم":
+                    switch (@item.ClassTable.Name)
+                    {
+                        case "نرسری ټولګی":
+                            ViewBag.prepQuran = Model.Score.Where(f => f.ClassTable.Name == "نرسری ټولګی").Where(f => f.SubjectTable.Name == "قرانکریم").Sum(f => f.AbtainScore);
+                            break;
+                        case "اول ټولګی":
+                            ViewBag.firstQuran = Model.Score.Where(f=>f.ClassTable.Name== "اول ټولګی").Where(f => f.SubjectTable.Name == "قرانکریم").Sum(f => f.AbtainScore);
+                            break;
+                        case "دوهم ټولګی":
+                            ViewBag.secondQuran = Model.Score.Where(f => f.ClassTable.Name == "دوهم ټولګی").Where(f => f.SubjectTable.Name == "قرانکریم").Sum(f => f.AbtainScore); ;
+                            break;
+                        case "دریم ټولګی":
+                            ViewBag.thirdQuran = Model.Score.Where(f => f.ClassTable.Name == "دریم ټولګی").Where(f => f.SubjectTable.Name == "قرانکریم").Sum(f => f.AbtainScore); ;
+                            break;
+                        case "څلورم ټولګی":
+                            ViewBag.fourthQuran = Model.Score.Where(f => f.ClassTable.Name == "څلورم ټولګی").Where(f => f.SubjectTable.Name == "قرانکریم").Sum(f => f.AbtainScore); ;
+                            break;
+                        case "پنځم ټولګی":
+                            ViewBag.fifthQuran = Model.Score.Where(f => f.ClassTable.Name== "پنځم ټولګی").Where(f => f.SubjectTable.Name == "قرانکریم").Sum(f => f.AbtainScore);
+                            break;
+                        case "شپږم ټولګی":
+                            ViewBag.sixthQuran = Model.Score.Where(f => f.ClassTable.Name == "شپږم ټولګی").Where(f => f.SubjectTable.Name == "قرانکریم").Sum(f => f.AbtainScore); ;
+                            break;
+                        case "اووم ټولګی":
+                            ViewBag.seventhQuran = Model.Score.Where(f => f.ClassTable.Name == "اووم ټولګی").Where(f => f.SubjectTable.Name == "قرانکریم").Sum(f => f.AbtainScore); ;
+                            break;
+                        case "اتم ټولګی":
+                            ViewBag.eigthQuran = Model.Score.Where(f => f.ClassTable.Name == "اتم ټولګی").Where(f => f.SubjectTable.Name == "قرانکریم").Sum(f => f.AbtainScore); ;
+                            break;
+                        case "نهم ټولګی":
+                            ViewBag.ninthQuran = Model.Score.Where(f => f.ClassTable.Name == "نهم ټولګی").Where(f => f.SubjectTable.Name == "قرانکریم").Sum(f => f.AbtainScore); ;
+                            break;
+                    }
+                    break;
+                case "اسلامی ښوونه":
+                    switch (@item.ClassTable.Name)
+                    {
+                        case "نرسری ټولګی":
+                            ViewBag.prepIslamic = Model.Score.Where(f => f.ClassTable.Name == "نرسری ټولګی").Where(f => f.SubjectTable.Name == "اسلامی ښوونه").Sum(f => f.AbtainScore);
+                            break;
+                        case "اول ټولګی":
+                            ViewBag.firstIslamic = Model.Score.Where(f => f.ClassTable.Name == "اول ټولګی").Where(f => f.SubjectTable.Name == "اسلامی ښوونه").Sum(f => f.AbtainScore);
+                            break;
+                        case "دوهم ټولګی":
+                            ViewBag.secondIslamic = Model.Score.Where(f => f.ClassTable.Name == "دوهم ټولګی").Where(f => f.SubjectTable.Name == "اسلامی ښوونه").Sum(f => f.AbtainScore); ;
+                            break;
+                        case "دریم ټولګی":
+                            ViewBag.thirdIslamic = Model.Score.Where(f => f.ClassTable.Name == "دریم ټولګی").Where(f => f.SubjectTable.Name == "اسلامی ښوونه").Sum(f => f.AbtainScore); ;
+                            break;
+                        case "څلورم ټولګی":
+                            ViewBag.fourthIslamic = Model.Score.Where(f => f.ClassTable.Name == "څلورم ټولګی").Where(f => f.SubjectTable.Name == "اسلامی ښوونه").Sum(f => f.AbtainScore); ;
+                            break;
+                        case "پنځم ټولګی":
+                            ViewBag.fifthIslamic = Model.Score.Where(f => f.ClassTable.Name == "پنځم ټولګی").Where(f => f.SubjectTable.Name == "اسلامی ښوونه").Sum(f => f.AbtainScore); ;
+                            break;
+                        case "شپږم ټولګی":
+                            ViewBag.sixthIslamic = Model.Score.Where(f => f.ClassTable.Name == "شپږم ټولګی").Where(f => f.SubjectTable.Name == "اسلامی ښوونه").Sum(f => f.AbtainScore); ;
+                            break;
+                        case "اووم ټولګی":
+                            ViewBag.seventhIslamic = Model.Score.Where(f => f.ClassTable.Name == "اووم ټولګی").Where(f => f.SubjectTable.Name == "اسلامی ښوونه").Sum(f => f.AbtainScore); ;
+                            break;
+                        case "اتم ټولګی":
+                            ViewBag.eigthIslamic = Model.Score.Where(f => f.ClassTable.Name == "اتم ټولګی" ).Where(f => f.SubjectTable.Name == "اسلامی ښوونه").Sum(f => f.AbtainScore); ;
+                            break;
+                        case "نهم ټولګی":
+                            ViewBag.ninthIslamic = Model.Score.Where(f => f.ClassTable.Name == "نهم ټولګی").Where(f => f.SubjectTable.Name == "اسلامی ښوونه").Sum(f => f.AbtainScore); ;
+                            break;
+                    }
+                    break;
+                case "پښتو":
+                    switch (@item.ClassTable.Name)
+                    {
+                        case "نرسری ټولګی":
+                            ViewBag.prepPashto = Model.Score.Where(f => f.ClassTable.Name == "نرسری ټولګی").Where(f => f.SubjectTable.Name == "پښتو").Sum(f => f.AbtainScore);
+                            break;
+                        case "اول ټولګی":
+                            ViewBag.firstPashto = Model.Score.Where(f => f.ClassTable.Name == "اول ټولګی").Where(f => f.SubjectTable.Name == "پښتو").Sum(f => f.AbtainScore);
+                            break;
+                        case "دوهم ټولګی":
+                            ViewBag.secondPashto = Model.Score.Where(f => f.ClassTable.Name == "دوهم ټولګی").Where(f => f.SubjectTable.Name == "پښتو").Sum(f => f.AbtainScore); ;
+                            break;
+                        case "دریم ټولګی":
+                            ViewBag.thirdPashto = Model.Score.Where(f => f.ClassTable.Name == "دریم ټولګی").Where(f => f.SubjectTable.Name == "پښتو").Sum(f => f.AbtainScore); ;
+                            break;
+                        case "څلورم ټولګی":
+                            ViewBag.fourthPashto = Model.Score.Where(f => f.ClassTable.Name == "څلورم ټولګی").Where(f => f.SubjectTable.Name == "پښتو").Sum(f => f.AbtainScore); ;
+                            break;
+                        case "پنځم ټولګی":
+                            ViewBag.fifthPashto = Model.Score.Where(f => f.ClassTable.Name == "پنځم ټولګی").Where(f => f.SubjectTable.Name == "پښتو").Sum(f => f.AbtainScore); ;
+                            break;
+                        case "شپږم ټولګی":
+                            ViewBag.sixthPashto = Model.Score.Where(f => f.ClassTable.Name == "شپږم ټولګی").Where(f => f.SubjectTable.Name == "پښتو").Sum(f => f.AbtainScore); ;
+                            break;
+                        case "اووم ټولګی":
+                            ViewBag.seventhPashto = Model.Score.Where(f => f.ClassTable.Name == "اووم ټولګی").Where(f => f.SubjectTable.Name == "پښتو").Sum(f => f.AbtainScore); ;
+                            break;
+                        case "اتم ټولګی":
+                            ViewBag.eigthPashto = Model.Score.Where(f => f.ClassTable.Name == "اتم ټولګی").Where(f => f.SubjectTable.Name == "پښتو").Sum(f => f.AbtainScore); ;
+                            break;
+                        case "نهم ټولګی":
+                            ViewBag.ninthPashto = Model.Score.Where(f => f.ClassTable.Name == "نهم ټولګی").Where(f => f.SubjectTable.Name == "پښتو").Sum(f => f.AbtainScore); ;
+                            break;
+                    }
+                    break;
+                case "دری":
+                    switch (@item.ClassTable.Name)
+                    {
+                        case "نرسری ټولګی":
+                            ViewBag.prepDari = Model.Score.Where(f => f.ClassTable.Name == "نرسری ټولګی").Where(f => f.SubjectTable.Name == "دری").Sum(f => f.AbtainScore);
+                            break;
+                        case "اول ټولګی":
+                            ViewBag.firstDari = Model.Score.Where(f => f.ClassTable.Name == "اول ټولګی").Where(f => f.SubjectTable.Name == "دری").Sum(f => f.AbtainScore);
+                            break;
+                        case "دوهم ټولګی":
+                            ViewBag.secondDari = Model.Score.Where(f => f.ClassTable.Name == "دوهم ټولګی").Where(f => f.SubjectTable.Name == "دری").Sum(f => f.AbtainScore); ;
+                            break;
+                        case "دریم ټولګی":
+                            ViewBag.thirdDari = Model.Score.Where(f => f.ClassTable.Name == "دریم ټولګی").Where(f => f.SubjectTable.Name == "دری").Sum(f => f.AbtainScore); ;
+                            break;
+                        case "څلورم ټولګی":
+                            ViewBag.fourthDari = Model.Score.Where(f => f.ClassTable.Name == "څلورم ټولګی").Where(f => f.SubjectTable.Name == "دری").Sum(f => f.AbtainScore); ;
+                            break;
+                        case "پنځم ټولګی":
+                            ViewBag.fifthDari = Model.Score.Where(f => f.ClassTable.Name == "پنځم ټولګی").Where(f => f.SubjectTable.Name == "دری").Sum(f => f.AbtainScore); ;
+                            break;
+                        case "شپږم ټولګی":
+                            ViewBag.sixthDari = Model.Score.Where(f => f.ClassTable.Name == "شپږم ټولګی").Where(f => f.SubjectTable.Name == "دری").Sum(f => f.AbtainScore); ;
+                            break;
+                        case "اووم ټولګی":
+                            ViewBag.seventhDari = Model.Score.Where(f => f.ClassTable.Name == "اووم ټولګی").Where(f => f.SubjectTable.Name == "دری").Sum(f => f.AbtainScore); ;
+                            break;
+                        case "اتم ټولګی":
+                            ViewBag.eigthDari = Model.Score.Where(f => f.ClassTable.Name == "اتم ټولګی").Where(f => f.SubjectTable.Name == "دری").Sum(f => f.AbtainScore); ;
+                            break;
+                        case "نهم ټولګی":
+                            ViewBag.ninthDari = Model.Score.Where(f => f.ClassTable.Name == "نهم ټولګی").Where(f => f.SubjectTable.Name == "دری").Sum(f => f.AbtainScore); ;
+                            break;
+                    }
+                    break;
+                case "عربی":
+                    switch (@item.ClassTable.Name)
+                    {
+
+                        case "اووم ټولګی":
+                            ViewBag.seventhArabic = Model.Score.Where(f => f.ClassTable.Name == "اووم ټولګی").Where(f => f.SubjectTable.Name == "عربی").Sum(f => f.AbtainScore); ;
+                            break;
+                        case "اتم ټولګی":
+                            ViewBag.eigthArabic = Model.Score.Where(f => f.ClassTable.Name == "اتم ټولګی").Where(f => f.SubjectTable.Name == "عربی").Sum(f => f.AbtainScore); ;
+                            break;
+                        case "نهم ټولګی":
+                            ViewBag.ninthArabic = Model.Score.Where(f => f.ClassTable.Name == "نهم ټولګی").Where(f => f.SubjectTable.Name == "عربی").Sum(f => f.AbtainScore); ;
+                            break;
+                    }
+                    break;
+                case "انګلیسی":
+                    switch (@item.ClassTable.Name)
+                    {
+                        case "نرسری ټولګی":
+                            ViewBag.prepE = Model.Score.Where(f => f.ClassTable.Name == "نرسری ټولګی").Where(f => f.SubjectTable.Name == "انګلیسی").Sum(f => f.AbtainScore); ;
+                            break;
+                        case "اول ټولګی":
+                            ViewBag.firstE = Model.Score.Where(f => f.ClassTable.Name == "اول ټولګی").Where(f => f.SubjectTable.Name == "انګلیسی").Sum(f => f.AbtainScore); ;
+                            break;
+                        case "دوهم ټولګی":
+                            ViewBag.secondE = Model.Score.Where(f => f.ClassTable.Name == "دوهم ټولګی").Where(f => f.SubjectTable.Name == "انګلیسی").Sum(f => f.AbtainScore);
+                            break;
+                        case "دریم ټولګی":
+                            ViewBag.thirdE = Model.Score.Where(f => f.ClassTable.Name == "دریم ټولګی").Where(f => f.SubjectTable.Name == "انګلیسی").Sum(f => f.AbtainScore);
+                            break;
+                        case "څلورم ټولګی":
+                            ViewBag.fourthE = Model.Score.Where(f => f.ClassTable.Name == "څلورم ټولګی").Where(f => f.SubjectTable.Name == "انګلیسی").Sum(f => f.AbtainScore);
+                            break;
+                        case "پنځم ټولګی":
+                            ViewBag.fifthE = Model.Score.Where(f => f.ClassTable.Name == "پنځم ټولګی").Where(f => f.SubjectTable.Name == "انګلیسی").Sum(f => f.AbtainScore);
+                            break;
+                        case "شپږم ټولګی":
+                            ViewBag.sixthE = Model.Score.Where(f => f.ClassTable.Name == "شپږم ټولګی").Where(f => f.SubjectTable.Name == "انګلیسی").Sum(f => f.AbtainScore);
+                            break;
+                        case "اووم ټولګی":
+                            ViewBag.seventhE = Model.Score.Where(f => f.ClassTable.Name == "اووم ټولګی").Where(f => f.SubjectTable.Name == "انګلیسی").Sum(f => f.AbtainScore);
+                            break;
+                        case "اتم ټولګی":
+                            ViewBag.eigthE = Model.Score.Where(f => f.ClassTable.Name == "اتم ټولګی").Where(f => f.SubjectTable.Name == "انګلیسی").Sum(f => f.AbtainScore);
+                            break;
+                        case "نهم ټولګی":
+                            ViewBag.ninthE = Model.Score.Where(f => f.ClassTable.Name == "نهم ټولګی").Where(f => f.SubjectTable.Name == "انګلیسی").Sum(f => f.AbtainScore);
+                            break;
+                    }
+                    break;
+                case "ساینس":
+                    switch (@item.ClassTable.Name)
+                    {
+
+                        case "څلورم ټولګی":
+                            ViewBag.fourthScience = Model.Score.Where(f => f.ClassTable.Name == "څلورم ټولګی").Where(f => f.SubjectTable.Name == "ساینس").Sum(f => f.AbtainScore);
+                            break;
+                        case "پنځم ټولګی":
+                            ViewBag.fifthScience = Model.Score.Where(f => f.ClassTable.Name == "پنځم ټولګی").Where(f => f.SubjectTable.Name == "ساینس").Sum(f => f.AbtainScore);
+                            break;
+                        case "شپږم ټولګی":
+                            ViewBag.sixthScience = Model.Score.Where(f => f.ClassTable.Name == "شپږم ټولګی").Where(f => f.SubjectTable.Name == "ساینس").Sum(f => f.AbtainScore);
+                            break;
+
+                    }
+                    break;
+                case "ټولنیز":
+                    switch (@item.ClassTable.Name)
+                    {
+
+                        case "څلورم ټولګی":
+                            ViewBag.fourthSocial = Model.Score.Where(f => f.ClassTable.Name == "څلورم ټولګی").Where(f => f.SubjectTable.Name == "ټولنیز").Sum(f => f.AbtainScore);
+                            break;
+                        case "پنځم ټولګی":
+                            ViewBag.fifthSocial = Model.Score.Where(f => f.ClassTable.Name == "پنځم ټولګی").Where(f => f.SubjectTable.Name == "ټولنیز").Sum(f => f.AbtainScore);
+                            break;
+                        case "شپږم ټولګی":
+                            ViewBag.sixthSocial = Model.Score.Where(f => f.ClassTable.Name == "شپږم ټولګی").Where(f => f.SubjectTable.Name == "ټولنیز").Sum(f => f.AbtainScore);
+                            break;
+
+                    }
+                    break;
+                case "رسم":
+                    switch (@item.ClassTable.Name)
+                    {
+                        case "نرسری ټولګی":
+                            ViewBag.prepDrawing = Model.Score.Where(f => f.ClassTable.Name == "نرسری ټولګی").Where(f => f.SubjectTable.Name == "رسم").Sum(f => f.AbtainScore);
+                            break;
+                        case "اول ټولګی":
+                            ViewBag.firstDrawing = Model.Score.Where(f => f.ClassTable.Name == "اول ټولګی").Where(f => f.SubjectTable.Name == "رسم").Sum(f => f.AbtainScore);
+                            break;
+                        case "دوهم ټولګی":
+                            ViewBag.secondDrawing = Model.Score.Where(f => f.ClassTable.Name == "دوهم ټولګی").Where(f => f.SubjectTable.Name == "رسم").Sum(f => f.AbtainScore);
+                            break;
+                        case "دریم ټولګی":
+                            ViewBag.thirdDrawing = Model.Score.Where(f => f.ClassTable.Name == "دریم ټولګی").Where(f => f.SubjectTable.Name == "رسم").Sum(f => f.AbtainScore);
+                            break;
+                        case "څلورم ټولګی":
+                            ViewBag.fourthDrawing = Model.Score.Where(f => f.ClassTable.Name == "څلورم ټولګی").Where(f => f.SubjectTable.Name == "رسم").Sum(f => f.AbtainScore);
+                            break;
+                        case "پنځم ټولګی":
+                            ViewBag.fifthDrawing = Model.Score.Where(f => f.ClassTable.Name == "پنځم ټولګی").Where(f => f.SubjectTable.Name == "رسم").Sum(f => f.AbtainScore);
+                            break;
+                        case "شپږم ټولګی":
+                            ViewBag.sixthDrawing = Model.Score.Where(f => f.ClassTable.Name == "شپږم ټولګی").Where(f => f.SubjectTable.Name == "رسم").Sum(f => f.AbtainScore);
+                            break;
+
+                    }
+                    break;
+                case "حسن خط":
+                    switch (@item.ClassTable.Name)
+                    {
+                        case "نرسری ټولګی":
+                            ViewBag.prepKhat = Model.Score.Where(f => f.ClassTable.Name == "نرسری ټولګی").Where(f => f.SubjectTable.Name == "حسن خط").Sum(f => f.AbtainScore); ;
+                            break;
+                        case "اول ټولګی":
+                            ViewBag.firstKhat = Model.Score.Where(f => f.ClassTable.Name == "اول ټولګی").Where(f => f.SubjectTable.Name == "حسن خط").Sum(f => f.AbtainScore); ;
+                            break;
+
+                        case "دوهم ټولګی":
+                            ViewBag.secondKhat = Model.Score.Where(f => f.ClassTable.Name == "دوهم ټولګی").Where(f => f.SubjectTable.Name == "حسن خط").Sum(f => f.AbtainScore); ;
+                            break;
+                        case "دریم ټولګی":
+                            ViewBag.thirdKhat = Model.Score.Where(f => f.ClassTable.Name == "دریم ټولګی").Where(f => f.SubjectTable.Name == "حسن خط").Sum(f => f.AbtainScore); ;
+                            break;
+                        case "څلورم ټولګی":
+                            ViewBag.fourthKhat = Model.Score.Where(f => f.ClassTable.Name == "څلورم ټولګی").Where(f => f.SubjectTable.Name == "حسن خط").Sum(f => f.AbtainScore); ;
+                            break;
+                        case "پنځم ټولګی":
+                            ViewBag.fifthKhat = Model.Score.Where(f => f.ClassTable.Name == "پنځم ټولګی").Where(f => f.SubjectTable.Name == "حسن خط").Sum(f => f.AbtainScore); ;
+                            break;
+                        case "شپږم ټولګی":
+                            ViewBag.sixthKhat = Model.Score.Where(f => f.ClassTable.Name == "شپږم ټولګی").Where(f => f.SubjectTable.Name == "حسن خط").Sum(f => f.AbtainScore); ;
+                            break;
+
+                    }
+                    break;
+                case "ژوند مهارت":
+                    switch (@item.ClassTable.Name)
+                    {
+                        case "نرسری ټولګی":
+                            ViewBag.prepLiveSkill = Model.Score.Where(f => f.ClassTable.Name == "نرسری ټولګی").Where(f => f.SubjectTable.Name == "ژوند مهارت").Sum(f => f.AbtainScore);
+                            break;
+                        case "اول ټولګی":
+                            ViewBag.firstLiveSkill = Model.Score.Where(f => f.ClassTable.Name == "اول ټولګی").Where(f => f.SubjectTable.Name == "ژوند مهارت").Sum(f => f.AbtainScore);
+                            break;
+                        case "دوهم ټولګی":
+                            ViewBag.secondLiveSkill = Model.Score.Where(f => f.ClassTable.Name == "دوهم ټولګی").Where(f => f.SubjectTable.Name == "ژوند مهارت").Sum(f => f.AbtainScore); ;
+                            break;
+                        case "دریم ټولګی":
+                            ViewBag.thirdLiveSkill = Model.Score.Where(f => f.ClassTable.Name == "دریم ټولګی").Where(f => f.SubjectTable.Name == "ژوند مهارت").Sum(f => f.AbtainScore); ;
+                            break;
+
+                    }
+                    break;
+                case "ریاضی":
+                    switch (@item.ClassTable.Name)
+                    {
+                        case "نرسری ټولګی":
+                            ViewBag.prepMath = Model.Score.Where(f => f.ClassTable.Name == "نرسری ټولګی").Where(f => f.SubjectTable.Name == "ریاضی").Sum(f => f.AbtainScore);
+                            break;
+                        case "اول ټولګی":
+                            ViewBag.firstMath = Model.Score.Where(f => f.ClassTable.Name == "اول ټولګی").Where(f => f.SubjectTable.Name == "ریاضی").Sum(f => f.AbtainScore);
+                            break;
+                        case "دوهم ټولګی":
+                            ViewBag.secondMath = Model.Score.Where(f => f.ClassTable.Name == "دوهم ټولګی").Where(f => f.SubjectTable.Name == "ریاضی").Sum(f => f.AbtainScore); ;
+                            break;
+                        case "دریم ټولګی":
+                            ViewBag.thirdMath = Model.Score.Where(f => f.ClassTable.Name == "دریم ټولګی").Where(f => f.SubjectTable.Name == "ریاضی").Sum(f => f.AbtainScore); ;
+                            break;
+                        case "څلورم ټولګی":
+                            ViewBag.fourthMath = Model.Score.Where(f => f.ClassTable.Name == "څلورم ټولګی").Where(f => f.SubjectTable.Name == "ریاضی").Sum(f => f.AbtainScore); ;
+                            break;
+                        case "پنځم ټولګی":
+                            ViewBag.fifthMath = Model.Score.Where(f => f.ClassTable.Name == "پنځم ټولګی").Where(f => f.SubjectTable.Name == "ریاضی").Sum(f => f.AbtainScore); ;
+                            break;
+                        case "شپږم ټولګی":
+                            ViewBag.sixthMath = Model.Score.Where(f => f.ClassTable.Name == "شپږم ټولګی").Where(f => f.SubjectTable.Name == "ریاضی").Sum(f => f.AbtainScore); ;
+                            break;
+                        case "اووم ټولګی":
+                            ViewBag.seventhMath = Model.Score.Where(f => f.ClassTable.Name == "اووم ټولګی").Where(f => f.SubjectTable.Name == "ریاضی").Sum(f => f.AbtainScore); ;
+                            break;
+                        case "اتم ټولګی":
+                            ViewBag.eigthMath = Model.Score.Where(f => f.ClassTable.Name == "اتم ټولګی").Where(f => f.SubjectTable.Name == "ریاضی").Sum(f => f.AbtainScore); ;
+                            break;
+                        case "نهم ټولګی":
+                            ViewBag.ninthMath = Model.Score.Where(f => f.ClassTable.Name == "نهم ټولګی").Where(f => f.SubjectTable.Name == "ریاضی").Sum(f => f.AbtainScore); ;
+                            break;
+                    }
+                    break;
+                case "فزیک":
+                    switch (@item.ClassTable.Name)
+                    {
+
+                        case "اووم ټولګی":
+                            ViewBag.seventhPhysic = Model.Score.Where(f => f.ClassTable.Name == "اووم ټولګی").Where(f => f.SubjectTable.Name == "فزیک").Sum(f => f.AbtainScore); ;
+                            break;
+                        case "اتم ټولګی":
+                            ViewBag.eigthPhysic = Model.Score.Where(f => f.ClassTable.Name == "اتم ټولګی").Where(f => f.SubjectTable.Name == "فزیک").Sum(f => f.AbtainScore); ;
+                            break;
+                        case "نهم ټولګی":
+                            ViewBag.ninthPhysic = Model.Score.Where(f => f.ClassTable.Name == "نهم ټولګی").Where(f => f.SubjectTable.Name == "فزیک").Sum(f => f.AbtainScore); ;
+                            break;
+                    }
+                    break;
+                case "کیمیا":
+                    switch (@item.ClassTable.Name)
+                    {
+
+                        case "اووم ټولګی":
+                            ViewBag.seventhChemistry = Model.Score.Where(f => f.ClassTable.Name == "اووم ټولګی").Where(f => f.SubjectTable.Name == "کیمیا").Sum(f => f.AbtainScore); ;
+                            break;
+                        case "اتم ټولګی":
+                            ViewBag.eigthChemistry = Model.Score.Where(f => f.ClassTable.Name == "اتم ټولګی").Where(f => f.SubjectTable.Name == "کیمیا").Sum(f => f.AbtainScore); ;
+                            break;
+                        case "نهم ټولګی":
+                            ViewBag.ninthChemistry = Model.Score.Where(f => f.ClassTable.Name == "نهم ټولګی").Where(f => f.SubjectTable.Name == "کیمیا").Sum(f => f.AbtainScore); ;
+                            break;
+                    }
+                    break;
+                case "بیولوژی":
+                    switch (@item.ClassTable.Name)
+                    {
+
+                        case "اووم ټولګی":
+                            ViewBag.seventhBiology = Model.Score.Where(f => f.ClassTable.Name == "اووم ټولګی").Where(f => f.SubjectTable.Name == "بیولوژی").Sum(f => f.AbtainScore); ;
+                            break;
+                        case "اتم ټولګی":
+                            ViewBag.eigthBiology = Model.Score.Where(f => f.ClassTable.Name == "اتم ټولګی").Where(f => f.SubjectTable.Name == "بیولوژی").Sum(f => f.AbtainScore); ;
+                            break;
+                        case "نهم ټولګی":
+                            ViewBag.ninthBiology = Model.Score.Where(f => f.ClassTable.Name == "نهم ټولګی").Where(f => f.SubjectTable.Name == "بیولوژی").Sum(f => f.AbtainScore); ;
+                            break;
+                    }
+                    break;
+                case "جغرافیه":
+                    switch (@item.ClassTable.Name)
+                    {
+
+                        case "اووم ټولګی":
+                            ViewBag.seventhGeography = Model.Score.Where(f => f.ClassTable.Name == "اووم ټولګی").Where(f => f.SubjectTable.Name == "جغرافیه").Sum(f => f.AbtainScore); ;
+                            break;
+                        case "اتم ټولګی":
+                            ViewBag.eigthGeography = Model.Score.Where(f => f.ClassTable.Name == "اتم ټولګی").Where(f => f.SubjectTable.Name == "جغرافیه").Sum(f => f.AbtainScore); ;
+                            break;
+                        case "نهم ټولګی":
+                            ViewBag.ninthGeography = Model.Score.Where(f => f.ClassTable.Name == "نهم ټولګی").Where(f => f.SubjectTable.Name == "جغرافیه").Sum(f => f.AbtainScore); ;
+                            break;
+                    }
+                    break;
+                case "تاریخ":
+                    switch (@item.ClassTable.Name)
+                    {
+
+                        case "اووم ټولګی":
+                            ViewBag.seventhHistory = Model.Score.Where(f => f.ClassTable.Name == "اووم ټولګی").Where(f => f.SubjectTable.Name == "تاریخ").Sum(f => f.AbtainScore); ;
+                            break;
+                        case "اتم ټولګی":
+                            ViewBag.eigthHistory = Model.Score.Where(f => f.ClassTable.Name == "اتم ټولګی").Where(f => f.SubjectTable.Name == "تاریخ").Sum(f => f.AbtainScore); ;
+                            break;
+                        case "نهم ټولګی":
+                            ViewBag.ninthHistory = Model.Score.Where(f => f.ClassTable.Name == "نهم ټولګی").Where(f => f.SubjectTable.Name == "تاریخ").Sum(f => f.AbtainScore); ;
+                            break;
+                    }
+                    break;
+                case "مدنی":
+                    switch (@item.ClassTable.Name)
+                    {
+
+                        case "اووم ټولګی":
+                            ViewBag.seventhCivilian = Model.Score.Where(f => f.ClassTable.Name == "اووم ټولګی").Where(f => f.SubjectTable.Name == "مدنی").Sum(f => f.AbtainScore);
+                            break;
+                        case "اتم ټولګی":
+                            ViewBag.eigthCivilian = Model.Score.Where(f => f.ClassTable.Name == "اتم ټولګی").Where(f => f.SubjectTable.Name == "مدنی").Sum(f => f.AbtainScore);
+                            break;
+                        case "نهم ټولګی":
+                            ViewBag.ninthCivilian = Model.Score.Where(f => f.ClassTable.Name == "نهم ټولګی").Where(f => f.SubjectTable.Name == "مدنی").Sum(f => f.AbtainScore);
+                            break;
+                    }
+                    break;
+                case "حرفه":
+                    switch (@item.ClassTable.Name)
+                    {
+
+                        case "اووم ټولګی":
+                            ViewBag.seventhCraft = Model.Score.Where(f => f.ClassTable.Name == "اووم ټولګی").Where(f => f.SubjectTable.Name == "حرفه").Sum(f => f.AbtainScore);
+                            break;
+                        case "اتم ټولګی":
+                            ViewBag.eigthCraft = Model.Score.Where(f => f.ClassTable.Name == "اتم ټولګی").Where(f => f.SubjectTable.Name == "حرفه").Sum(f => f.AbtainScore);
+                            break;
+                        case "نهم ټولګی":
+                            ViewBag.ninthCraft = Model.Score.Where(f => f.ClassTable.Name == "نهم ټولګی").Where(f => f.SubjectTable.Name == "حرفه").Sum(f => f.AbtainScore);
+                            break;
+                    }
+                    break;
+                case "سپورټ":
+                    switch (@item.ClassTable.Name)
+                    {
+                        case "نرسری ټولګی":
+                            ViewBag.prepSport = Model.Score.Where(f => f.ClassTable.Name == "نرسری ټولګی").Where(f => f.SubjectTable.Name == "سپورټ").Sum(f => f.AbtainScore); ;
+                            break;
+                        case "اول ټولګی":
+                            ViewBag.firstSport = Model.Score.Where(f => f.ClassTable.Name == "اول ټولګی" ).Where(f => f.SubjectTable.Name == "سپورټ").Sum(f => f.AbtainScore); ;
+                            break;
+                        case "دوهم ټولګی":
+                            ViewBag.secondSport = Model.Score.Where(f => f.ClassTable.Name == "دوهم ټولګی").Where(f => f.SubjectTable.Name == "سپورټ").Sum(f => f.AbtainScore); ;
+                            break;
+                        case "دریم ټولګی":
+                            ViewBag.thirdSport = Model.Score.Where(f => f.ClassTable.Name == "دریم ټولګی").Where(f => f.SubjectTable.Name == "سپورټ").Sum(f => f.AbtainScore); ;
+                            break;
+                        case "څلورم ټولګی":
+                            ViewBag.fourthSport = Model.Score.Where(f => f.ClassTable.Name == "څلورم ټولګی").Where(f => f.SubjectTable.Name == "سپورټ").Sum(f => f.AbtainScore); ;
+                            break;
+                        case "پنځم ټولګی":
+                            ViewBag.fifthSport = Model.Score.Where(f => f.ClassTable.Name == "پنځم ټولګی").Where(f => f.SubjectTable.Name == "سپورټ").Sum(f => f.AbtainScore); ;
+                            break;
+                        case "شپږم ټولګی":
+                            ViewBag.sixthSport = Model.Score.Where(f => f.ClassTable.Name == "شپږم ټولګی").Where(f => f.SubjectTable.Name == "سپورټ").Sum(f => f.AbtainScore); ;
+                            break;
+                        case "اووم ټولګی":
+                            ViewBag.seventhSport = Model.Score.Where(f => f.ClassTable.Name == "اووم ټولګی").Where(f => f.SubjectTable.Name == "سپورټ").Sum(f => f.AbtainScore); ;
+                            break;
+                        case "اتم ټولګی":
+                            ViewBag.eigthSport = Model.Score.Where(f => f.ClassTable.Name == "اتم ټولګی" ).Where(f => f.SubjectTable.Name == "سپورټ").Sum(f => f.AbtainScore); ;
+                            break;
+                        case "نهم ټولګی":
+                            ViewBag.ninthSport = Model.Score.Where(f => f.ClassTable.Name == "نهم ټولګی").Where(f => f.SubjectTable.Name == "سپورټ").Sum(f => f.AbtainScore); ;
+                            break;
+                    }
+                    break;
+                case "تهذیب":
+                    switch (@item.ClassTable.Name)
+                    {
+                        case "نرسری ټولګی":
+                            ViewBag.prepEthics = Model.Score.Where(f => f.ClassTable.Name == "نرسری ټولګی").Where(f => f.SubjectTable.Name == "تهذیب").Sum(f => f.AbtainScore); ;
+                            break;
+                        case "اول ټولګی":
+                            ViewBag.firstEthics = Model.Score.Where(f => f.ClassTable.Name == "اول ټولګی").Where(f => f.SubjectTable.Name == "تهذیب").Sum(f => f.AbtainScore); ;
+                            break;
+                        case "دوهم ټولګی":
+                            ViewBag.secondEthics = Model.Score.Where(f => f.ClassTable.Name == "دوهم ټولګی").Where(f => f.SubjectTable.Name == "تهذیب").Sum(f => f.AbtainScore); ;
+                            break;
+                        case "دریم ټولګی":
+                            ViewBag.thirdEthics = Model.Score.Where(f => f.ClassTable.Name == "دریم ټولګی").Where(f => f.SubjectTable.Name == "تهذیب").Sum(f => f.AbtainScore); ;
+                            break;
+                        case "څلورم ټولګی":
+                            ViewBag.fourthEthics = Model.Score.Where(f => f.ClassTable.Name == "څلورم ټولګی").Where(f => f.SubjectTable.Name == "تهذیب").Sum(f => f.AbtainScore); ;
+                            break;
+                        case "پنځم ټولګی":
+                            ViewBag.fifthEthics = Model.Score.Where(f => f.ClassTable.Name == "پنځم ټولګی").Where(f => f.SubjectTable.Name == "تهذیب").Sum(f => f.AbtainScore); ;
+                            break;
+                        case "شپږم ټولګی":
+                            ViewBag.sixthEthics = Model.Score.Where(f => f.ClassTable.Name == "شپږم ټولګی").Where(f => f.SubjectTable.Name == "تهذیب").Sum(f => f.AbtainScore); ;
+                            break;
+                        case "اووم ټولګی":
+                            ViewBag.seventhEthics = Model.Score.Where(f => f.ClassTable.Name == "اووم ټولګی").Where(f => f.SubjectTable.Name == "تهذیب").Sum(f => f.AbtainScore); ;
+                            break;
+                        case "اتم ټولګی":
+                            ViewBag.eigthEthics = Model.Score.Where(f => f.ClassTable.Name == "اتم ټولګی").Where(f => f.SubjectTable.Name == "تهذیب").Sum(f => f.AbtainScore); ;
+                            break;
+                        case "نهم ټولګی":
+                            ViewBag.ninthEthics = Model.Score.Where(f => f.ClassTable.Name == "نهم ټولګی").Where(f => f.SubjectTable.Name == "تهذیب").Sum(f => f.AbtainScore); ;
+                            break;
+                    }
+                    break;
+
+            }
+
+
+
+        }
+
+
+
+        @*------------------------------this is  table section---------------------------------------*@
+        <div class="row">
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead class=" table-active">
+                        <tr>
+                            <th>مضامین</th>
+                            <th>نرسری</th>
+                            <th>اول</th>
+                            <th>دوهم</th>
+                            <th>دریم</th>
+                            <th>څلورم</th>
+                            <th>پنځم</th>
+                            <th>شپږم</th>
+                            <th>اووم</th>
+                            <th>اتم</th>
+                            <th>نهم</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>قرانکریم</td>
+                            <td>@ViewBag.prepQuran</td>
+                            <td>@ViewBag.firstQuran</td>
+                            <td> @ViewBag.secondQuran </td>
+                            <td>@ViewBag.thirdQuran</td>
+                            <td> @ViewBag.fourthQuran </td>
+                            <td>@ViewBag.fifthQuran</td>
+                            <td> @ViewBag.sixthQuran </td>
+                            <td>@ViewBag.seventhQuran</td>
+                            <td> @ViewBag.eigthQuran </td>
+                            <td>@ViewBag.ninthQuran</td>
+                        </tr>
+                        <tr>
+                            <td>اسلامی ښوونه</td>
+                            <td>@ViewBag.prepIslamic</td>
+                            <td>@ViewBag.firstIslamic</td>
+                            <td> @ViewBag.secondIslamic </td>
+                            <td>@ViewBag.thirdIslamic</td>
+                            <td> @ViewBag.fourthIslamic </td>
+                            <td>@ViewBag.fifthIslamic</td>
+                            <td> @ViewBag.sixthIslamic </td>
+                            <td>@ViewBag.seventhIslamic</td>
+                            <td> @ViewBag.eigthIslamic </td>
+                            <td>@ViewBag.ninthIslamic</td>
+                        </tr>
+
+                        <tr>
+                            <td> پښتو</td>
+                            <td>@ViewBag.prepPashto</td>
+                            <td>@ViewBag.firstPashto</td>
+                            <td> @ViewBag.secondPashto </td>
+                            <td>@ViewBag.thirdPashto</td>
+                            <td> @ViewBag.fourthPashto </td>
+                            <td>@ViewBag.fifthPashto</td>
+                            <td> @ViewBag.sixthPashto </td>
+                            <td>@ViewBag.seventhPashto</td>
+                            <td> @ViewBag.eigthPashto </td>
+                            <td>@ViewBag.ninthPashto</td>
+                        </tr>
+                        <tr>
+                            <td> دری</td>
+                            <td>@ViewBag.prepDari</td>
+                            <td>@ViewBag.firstDari</td>
+                            <td> @ViewBag.secondDari </td>
+                            <td>@ViewBag.thirdDari</td>
+                            <td> @ViewBag.fourthDari </td>
+                            <td>@ViewBag.fifthDari</td>
+                            <td> @ViewBag.sixthDari </td>
+                            <td>@ViewBag.seventhDari</td>
+                            <td> @ViewBag.eigthDari </td>
+                            <td>@ViewBag.ninthDari</td>
+                        </tr>
+                        <tr>
+                            <td> عربی</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td> @ViewBag.fourthArabic </td>
+                            <td>@ViewBag.fifthArabic</td>
+                            <td> @ViewBag.sixthArabic </td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td> انګلیسی</td>
+                            <td>@ViewBag.prepE</td>
+                            <td>@ViewBag.firstE</td>
+                            <td> @ViewBag.secondE </td>
+                            <td>@ViewBag.thirdE</td>
+                            <td> @ViewBag.fourthE </td>
+                            <td>@ViewBag.fifthE</td>
+                            <td> @ViewBag.sixthE </td>
+                            <td>@ViewBag.seventhE</td>
+                            <td> @ViewBag.eigthE </td>
+                            <td>@ViewBag.ninthE</td>
+                        </tr>
+                        <tr>
+                            <td> ساینس</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td> @ViewBag.fourthScience </td>
+                            <td>@ViewBag.fifthScience</td>
+                            <td> @ViewBag.sixthScience </td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td> ټولنیز</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td> @ViewBag.fourthSocial </td>
+                            <td>@ViewBag.fifthSocial</td>
+                            <td> @ViewBag.sixthSocial </td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+
+                        </tr>
+                        <tr>
+                            <td> رسم</td>
+                            <td>@ViewBag.prepDrawing</td>
+                            <td>@ViewBag.firstDrawing</td>
+                            <td> @ViewBag.secondDrawing </td>
+                            <td>@ViewBag.thirdDrawing</td>
+                            <td> @ViewBag.fourthDrawing </td>
+                            <td>@ViewBag.fifthDrawing</td>
+                            <td> @ViewBag.sixthDrawing </td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td> حسن خط</td>
+                            <td>@ViewBag.prepKhat</td>
+                            <td>@ViewBag.firstKhat</td>
+                            <td> @ViewBag.secondKhat </td>
+                            <td>@ViewBag.thirdKhat</td>
+                            <td> @ViewBag.fourthKhat </td>
+                            <td>@ViewBag.fifthKhat</td>
+                            <td> @ViewBag.sixthKhat </td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+
+                        </tr>
+                        <tr>
+                            <td>ژوند مهارت</td>
+                            <td>@ViewBag.prepLiveSkill</td>
+                            <td>@ViewBag.firstLiveSkill</td>
+                            <td> @ViewBag.secondLiveSkill </td>
+                            <td>@ViewBag.thirdLiveSkill</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+
+                        </tr>
+                        <tr>
+                            <td> ریاضی</td>
+                            <td>@ViewBag.prepMath</td>
+                            <td>@ViewBag.firstMath</td>
+                            <td> @ViewBag.secondMath </td>
+                            <td>@ViewBag.thirdMath</td>
+                            <td> @ViewBag.fourthMath </td>
+                            <td>@ViewBag.fifthMath</td>
+                            <td> @ViewBag.sixthMath </td>
+                            <td>@ViewBag.seventhMath </td>
+                            <td> @ViewBag.eigthMath </td>
+                            <td>@ViewBag.ninthMath </td>
+                        </tr>
+                        <tr>
+                            <td> فزیک</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>@ViewBag.seventhPhysic </td>
+                            <td> @ViewBag.eigthPhysic </td>
+                            <td>@ViewBag.ninthPhysic</td>
+                        </tr>
+                        <tr>
+                            <td> کیمیا</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>@ViewBag.seventhChemistry </td>
+                            <td> @ViewBag.eigthChemistry </td>
+                            <td>@ViewBag.ninthChemistry </td>
+                        </tr>
+                        <tr>
+                            <td> بیولوژی</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>@ViewBag.seventhBiology </td>
+                            <td> @ViewBag.eigthBiology </td>
+                            <td>@ViewBag.ninthBiology </td>
+                        </tr>
+                        <tr>
+                            <td> جغرافیه</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>@ViewBag.seventhGeography </td>
+                            <td> @ViewBag.eigthGeography </td>
+                            <td>@ViewBag.ninthGeography </td>
+                        </tr>
+                        <tr>
+                            <td> تاریخ</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>@ViewBag.seventhHistory </td>
+                            <td> @ViewBag.eigthHistory </td>
+                            <td>@ViewBag.ninthHistory </td>
+                        </tr>
+
+                        <tr>
+                            <td> حرفه</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>@ViewBag.seventhCraft </td>
+                            <td> @ViewBag.eigthCraft </td>
+                            <td>@ViewBag.ninthCraft </td>
+                        </tr>
+                        <tr>
+                            <td> سپورټ</td>
+                            <td>@ViewBag.prepSport</td>
+                            <td>@ViewBag.firstSport</td>
+                            <td> @ViewBag.secondSport </td>
+                            <td>@ViewBag.thirdSport </td>
+                            <td> @ViewBag.fourthSport </td>
+                            <td>@ViewBag.fifthSport </td>
+                            <td> @ViewBag.sixthSport </td>
+                            <td>@ViewBag.seventhSport </td>
+                            <td> @ViewBag.eigthSport </td>
+                            <td>@ViewBag.ninthSport </td>
+                        </tr>
+                        <tr>
+                            <td> تهذیب</td>
+                            <td>@ViewBag.prepEthics</td>
+                            <td>@ViewBag.firstEthics</td>
+                            <td> @ViewBag.secondEthics </td>
+                            <td>@ViewBag.thirdEthics </td>
+                            <td> @ViewBag.fourthEthics </td>
+                            <td>@ViewBag.fifthEthics </td>
+                            <td> @ViewBag.sixthEthics </td>
+                            <td>@ViewBag.seventhEthics </td>
+                            <td> @ViewBag.eigthEthics </td>
+                            <td>@ViewBag.ninthEthics </td>
+                        </tr>
+                        <tr>
+                            <td>مجموعه</td>
+                            <td>@ViewBag.prepClassMarks</td>
+                            <td>@ViewBag.firstClassMarks</td>
+                            <td>@ViewBag.secondClassMarks</td>
+                            <td>@ViewBag.thirdClassMarks</td>
+                            <td>@ViewBag.fourthClassMarks</td>
+                            <td>@ViewBag.fifthClassMarks</td>
+                            <td>@ViewBag.sixthClassMarks</td>
+                            <td>@ViewBag.seventhClassMarks</td>
+                            <td>@ViewBag.eightClassMarks</td>
+                            <td>@ViewBag.ninthClassMarks</td>
+                        </tr>
+                        <tr>
+                            <td>فیصدی</td>
+                            <td>@ViewBag.prepPercentage</td>
+                            <td>@ViewBag.firstPercentage</td>
+                            <td>@ViewBag.secondPercentage</td>
+                            <td>@ViewBag.thirdPercentage</td>
+                            <td>@ViewBag.fourthPercentage</td>
+                            <td>@ViewBag.fifthPercentage</td>
+                            <td>@ViewBag.sixthPercentage</td>
+                            <td>@ViewBag.seventhPercentage</td>
+                            <td>@ViewBag.eightPercentage</td>
+                            <td>@ViewBag.ninthPercentage</td>
+                        </tr>
+                        <tr>
+                            <td>رسمی ورځی</td>
+                            <td>@ViewBag.prepFormalDays</td>
+                            <td>@ViewBag.firstFormalDays</td>
+                            <td>@ViewBag.secondFormalDays</td>
+                            <td>@ViewBag.thirdFormalDays</td>
+                            <td>@ViewBag.fourthFormalDays</td>
+                            <td>@ViewBag.fifthFormalDays</td>
+                            <td>@ViewBag.sixthFormalDays</td>
+                            <td>@ViewBag.seventhFormalDays</td>
+                            <td>@ViewBag.eightFormalDays</td>
+                            <td>@ViewBag.ninthFormalDays</td>
+                        </tr>
+                        <tr>
+                            <td>حاضری ورځی</td>
+                            <td>@ViewBag.prepPresent</td>
+                            <td>@ViewBag.firstPresent</td>
+                            <td>@ViewBag.secondPresent</td>
+                            <td>@ViewBag.thirdPresent</td>
+                            <td>@ViewBag.fourthPresent</td>
+                            <td>@ViewBag.fifthPresent</td>
+                            <td>@ViewBag.sixthPresent</td>
+                            <td>@ViewBag.seventhPresent</td>
+                            <td>@ViewBag.eightPresent</td>
+                            <td>@ViewBag.ninthPresent</td>
+                        </tr>
+                        <tr>
+                            <td>ِغیر حاضری</td>
+                            <td>
+                                @{
+                                    var prepAbsent = ViewBag.prepFormalDays - ViewBag.prepPresent;
+                                }@prepAbsent
+                            </td>
+                          
+                            <td>
+                                @{
+                                    var firstAbsent = ViewBag.firstFormalDays - ViewBag.firstPresent;
+                                }@firstAbsent
+                            </td>
+                            <td>
+                                @{
+                                    var secondAbsent = ViewBag.secondFormalDays - ViewBag.secondPresent;
+                                }@secondAbsent
+                            </td>
+                            <td>
+                                @{
+                                    var thirdAbsent = ViewBag.thirdFormalDays - ViewBag.thirdPresent;
+                                }@thirdAbsent
+                            </td>
+                            <td>
+                                @{
+                                    var fourthAbsent = ViewBag.fourthFormalDays - ViewBag.fourthPresent;
+                                }@fourthAbsent
+                            </td>
+                            <td>
+                                @{
+                                    var fifthAbsent = ViewBag.fifthFormalDays - ViewBag.fifthPresent;
+                                }@fifthAbsent
+                            </td>
+                            <td>
+                                @{
+                                    var sixthAbsent = ViewBag.sixthFormalDays - ViewBag.sixthPresent;
+                                }@sixthAbsent
+                            </td>
+                            <td>
+                                @{
+                                    var seventhAbsent = ViewBag.seventhFormalDays - ViewBag.seventhPresent;
+                                }@seventhAbsent
+                            </td>
+                            <td>
+                                @{
+                                    var eigthAbsent = ViewBag.eigthFormalDays - ViewBag.eigthPresent;
+                                }@eigthAbsent
+                            </td>
+                            <td>
+                                @{
+                                    var ninthAbsent = ViewBag.ninthFormalDays - ViewBag.ninthPresent;
+                                }@ninthAbsent
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+
+            </div>
+
+
+
+
+
+        </div>
+     
+        <div class="col-12  d-flex flex-row justify-content-center" dir="ltr">
+         
+            <div>
+                <a href="@Url.Action("Dashboard","Home")" id="hideInPrint" class="btn btn-success ">کور پاڼی ته شاتګ </a>
+                <a class="btn btn-primary " id="hideInPrint" onclick="window.print()">PDF ذخیره کړئ </a>
+                <a class="btn btn-primary " id="hideInPrint" onclick="window.print()"> راپور پرنټ کړئ</a>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+</body>
+</html>
+

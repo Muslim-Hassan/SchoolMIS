@@ -1,0 +1,48 @@
+﻿@model SchoolMIS.Models.FeeTable
+
+@{
+    Layout = null;
+}
+
+
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+<link href="~/Content/custom/customCSS.css" rel="stylesheet" />
+<script src="~/Scripts/bootstrap.bundle.min.js"></script>
+
+<body style="font-family:Arial">
+    <div class="card" style="width:500px">
+        <div class="card-header d-flex justify-content-md-between p-2 ">
+            <img src="~/Content/image/aei.jpg" style="width:40px;height:40px" class="mt-1" />
+            <h1><b>چاردیوال خصوصی ښوونځی</b></h1>
+            <img src="~/Content/image/logo1.jpg" style="width: 50px; height: 50px" />
+
+        </div>
+        <div class="row card-body p-3 ">
+            <div class="col-6 p-3">
+                <p><strong class="me-2">RollNo:</strong>@Model.StudentTable.RollNO</p>
+                <p><strong class="me-2"> Name:</strong>@Model.StudentTable.Name</p>
+                <p><strong class="me-2">FatherName:</strong>@Model.StudentTable.FatherName</p>
+                <p><strong class="me-2">Teacher:</strong>@Model.StaffTable.Name</p>
+                <p><strong class="me-2">Reciot No:</strong>@Model.ReciptNo</p>
+                <p><strong class="me-2">Reciot No:</strong>@Model.StudentTable.ClassTable.Name</p>
+                <p><strong class="me-2">Teacher Signatuer:<br /></strong></p>
+                <p>------------------------------</p>
+            </div>
+            <div class="col-6 p-3">
+                <p><strong class="me-2">Fee:</strong>@Model.Amount</p>
+                <p><strong class="me-2">Discount:</strong>@Model.Discount</p>
+                <p><strong class="me-2">Remain:</strong>@Model.Remain</p>
+                <p><strong class="me-2">NetAmount:</strong>@Model.NetAmount</p>
+                <p><strong class="me-2">Date:</strong> @SchoolMIS.Models.Converssion.ToShamsi(Model.PaidDate)</p>
+                <p><strong class="me-2">Student Signatuer:<br /></strong></p>
+                <p>------------------------------</p>
+
+            </div>
+        </div>
+       
+    </div>
+    <div class="btn-group " id="printBtn">
+        <button class="btn btn-primary" onclick="window.print()">print</button>
+        <a class="btn btn-outline-success" href="@Url.Action("Index","FeeTables")">close </a>
+    </div>
+</body>

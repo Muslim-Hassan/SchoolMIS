@@ -1,0 +1,127 @@
+﻿@model SchoolMIS.Models.ClassTable
+
+
+<link href="~/Content/custom/customCSS.css" rel="stylesheet" />
+<div class="container-fluid m-0 p-0">
+    <div class="row">
+        <div class="d-flex justify-content-md-between pt-2 pb-4">
+            <h4><b> صنفونو معلومات اضافه کول</b></h4>
+            <h4><b>Create New Class  Information</b></h4>
+
+        </div>
+    </div>
+
+    @*this is alert section*@
+    <div id="resultMessage"></div>
+    <div class="card">
+        <form enctype="multipart/form-data" id="ClassForm">
+            <div class="row  d-flex flex-row p-3 pt-5">
+                @Html.AntiForgeryToken()
+                <div class="col-8">
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group">
+                                <p class="control-label me-3 mb-0">صنف</p>
+                                <div class="col-md-12">
+
+                                    <input type="text" name="Name" id="Name" class="form-control" style="width:100%" />
+
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <p class="control-label me-3  mb-0">شاکردان </p>
+                                <div class="col-md-12">
+                                    <input type="text" name="StudentAmount" id="StudentAmount" class="form-control" style="width:100%" />
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <p class="control-label me-3  mb-0">حاضر شاګردان</p>
+                                <div class="col-md-12">
+                                    <input type="text" name="PresentStudent" id="PresentStudent" class="form-control" style="width:100%" />
+
+                                </div>
+                            </div>
+
+                            <div class="form-group" style="width:200px">
+                                <p class="control-label me-3 mb-0">نکران استاذ</p>
+                                <div class="col-md-12">
+                                    @Html.DropDownList("StaffID", null, htmlAttributes: new { @class = "form-control" })
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="form-group ">
+                            <div class="col-12 btn-group ">
+                                <a href="@Url.Action("Index","ClassTables")" class="btn t btn-outline-success border-bottom-success">لیست ته شاتګ</a>
+                                <button type="submit" class="btn btn-primary">معلومات اضافه کړئ</button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="col-4 mt-4">
+
+                    <img src="~/Content/image/classroom.jpg" id="showImage" style="width:100%;border-radius:3%;height:197px; " />
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="~/Scripts/jquery-3.7.0.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script>
+    $(document).ready(function () {
+
+        $("#ClassForm").validate({
+            rules: {
+                Name: {
+                    required: true,
+                },
+                StudentAmount: {
+                    required: true,
+                    maxlength: 3,
+                },
+                PresentStudent: {
+                    required: true,
+                    maxlength: 3,
+                },
+              
+            },
+
+    submitHandler: function (form) {
+        var formData = $("#ClassForm").serialize();
+
+         $.ajax({
+             url: '@Url.Action("Create","ClassTables")',
+             type: 'POST',
+             data: formData,
+             success: function (response) {
+                 if (response.success) {
+                     $("#resultMessage").html("<div class='alert alert-success'>" + response.msg + "</div>");
+                     $("#ClassForm")[0].reset();
+                     window.location.href = response.redirectUrl;
+                 } else {
+                     $("#resultMessage").html("<div class='alert alert-danger'>" + response.msg  + "</div>");
+                 }
+             },
+             error: function () {
+                 $("#resultMessage").html("<div class='alert alert-danger'>An error occurred.</div>");
+             }
+         });
+     }
+ });
+        });
+</script>
+
+

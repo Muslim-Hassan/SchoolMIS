@@ -1,0 +1,180 @@
+﻿@model SchoolMIS.Models.StudentAttendencyEditModel
+<link href="~/Content/custom/customCSS.css" rel="stylesheet" />
+<body>
+    <div class="container-fluid p-2">
+        <div class="row">
+            <div class="d-flex justify-content-md-between pt-2 pb-4">
+                <h4><b>د  شاګردانو حاضری  بیارغول</b></h4>
+                <h4><b>Edition of Student Attendency  </b></h4>
+
+            </div>
+        </div>
+
+        @*this is alert section*@
+        <div id="resultMessage"></div>
+        <div class="card p-4">
+            <form id="StudentAttendencyForm" enctype="multipart/form-data">
+                @Html.AntiForgeryToken()
+                <div class="row">
+                    <div class="col-md-4">
+                        @Html.HiddenFor(model => model.StudentAttendencyID, new { @type = "hidden" })
+                        <div class="form-group">
+                            <p class="control-label me-3  mb-0">شاګرد</p>
+                            <div class="col-md-12">
+                                @Html.DropDownList("StudentID", null, htmlAttributes: new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <p class="control-label me-3  mb-0">استاذ</p>
+                            <div class="col-md-12">
+                                @Html.DropDownList("StaffID", null, htmlAttributes: new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <p class="control-label me-3  mb-0">صنف</p>
+                            <div class="col-md-12">
+                                @Html.DropDownList("ClassID", null, htmlAttributes: new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <p class="control-label me-3  mb-0">میاشت</p>
+                            <div class="col-md-12">
+                                <select type="text" name="Month" id="Month" class="form-control" style="width:100%">
+                                    <option selected value="@Model.Month">@Model.Month</option>
+                                    <option value="حمل">حمل</option>
+                                    <option value="ثور">ثور</option>
+                                    <option value="جوزا">جوزا</option>
+                                    <option value="سرطان">سرطان</option>
+                                    <option value="اسد">اسد</option>
+                                    <option value="سنبله">سنبله</option>
+                                    <option value="میزان">میزان</option>
+                                    <option value="عقرب">عقرب</option>
+                                    <option value="قوس">قوس</option>
+                                    <option value="جدی">جدی</option>
+                                    <option value="دلو">دلو</option>
+                                    <option value="حوت">حوت</option>
+
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <p class="control-label me-3  mb-0">رسمی ورځی</p>
+                            <div class="col-md-12">
+                                @Html.EditorFor(model => model.FormalDays, new { htmlAttributes = new { @type = "number", @class = "form-control" } })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <p class="control-label me-3  mb-0"> حاضر</p>
+                            <div class="col-md-12">
+                                @Html.EditorFor(model => model.Present, new { htmlAttributes = new { @type = "number", @class = "form-control" } })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <p class="control-label me-3  mb-0"> تاریخ</p>
+                            <div class="col-md-12">
+                                <input type="text" name="Date" id="Date" value="@Model.Date" class="form-control" />
+                                @*@Html.EditorFor(model => model.Date, new { htmlAttributes = new { @class = "form-control" } })*@
+                            </div>
+                        </div>
+
+
+                        <div class="form-group mt-4 pt-3">
+                            <div class="btn-group  col-12 ">
+                                <a href="@Url.Action("Index","StudentAttendencyTables")" class="btn  btn-outline-success border-bottom-success">   شاتګ</a>
+                                <button type="submit" class="btn btn-primary">   نوی کړئ</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="row ms-1 border-1 mt-4">
+                            <img src="~/Content/image/attendency2.jpg" style="width: 100%; height: 275px; border-radius: 5%; " />
+                        </div>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+
+    </div>
+
+    <script src="~/Scripts/jquery-3.7.0.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script type="text/javascript"></script>
+    @section Scripts {
+        @Scripts.Render("~/bundles/persianDatepicker")
+
+        <script>
+            $(document).ready(function () {
+
+                $("#Date").persianDatepicker({
+                    format: 'YYYY/MM/DD',
+                    initialValue: false,
+                    autoClose: true
+                });
+            });
+        </script>
+    }
+    <script>
+    $(document).ready(function () {
+
+        $("#StudentAttendencyForm").validate({
+            rules: {
+                StudentID: {
+                    required: true,
+                },
+                Date: {
+                    required: true,
+
+                },
+                StaffID: {
+                    required: true,
+                },
+                Month: {
+                    required: true,
+
+                },
+                FormalDay: {
+                    required: true,
+                    number: true
+                },
+                Present: {
+                    required: true,
+                    number: true
+                },
+            },
+            submitHandler: function (form) {
+
+                var formData = new FormData(form);
+
+                $.ajax({
+                    url: '@Url.Action("Create", "StudentAttendencyTables")',
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        if (response.success) {
+                            $("#resultMessage").html("<div class='alert alert-success'>" + response.msg + "</div>");
+                            $("#StudentAttendencyForm")[0].reset();
+                            window.location.href = response.redirectUrl;
+                        } else {
+                            $("#resultMessage").html("<div class='alert alert-danger'>" + response.msg + "</div>");
+                        }
+                    },
+                    error: function () {
+                        $("#resultMessage").html("<div class='alert alert-danger'>An error occurred.</div>");
+                    }
+
+                });
+            }
+        });
+
+    });
+
+    </script>
+
+</body>

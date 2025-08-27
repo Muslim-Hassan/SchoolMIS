@@ -1,0 +1,148 @@
+﻿
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html dir="rtl">
+<head>
+
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link href="~/Content/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <link href="~/Content/custom/customCSS.css" rel="stylesheet" />
+</head>
+
+<body class="p-5" style=" font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">
+    <div class="row text-center">
+        <div class="col-3">
+            <img src="~/Content/image/logo1.jpg" style="width:200px" />
+        </div>
+        <div class="col-6 d-flex flex-column fw-bold">
+            <p> د افغانستان اسلامی امارت</p>
+            <p> د پوهنی وزارت</p>
+            <p> د ننګرهار د پوهنی ریاست</p>
+            <p> د بټی کوټ د پوهنی امریت</p>
+            <p> چاردیوال ځصوصی ښوونځی</p>
+
+        </div>
+        <div class="col-3 mt-3">
+            <img src="~/Content/image/aei.jpg" style="width:180px" />
+
+        </div>
+    </div>
+    <hr />
+
+    <div class="row d-flex flex-row justify-content-around">
+        <div class="col-3 border">
+            <img src="@Session["StudenteImage"]" style="width:100px" />
+        </div>
+        <div class="col-9 border">
+
+            <table class="table table-bordered ">
+                <tbody>
+                    <tr>
+                        <th>نوم</th>
+                        <td> @Session["StudentName"]</td>
+                    </tr>
+                    <tr>
+                        <th>پلار نوم</th>
+                        <td>@Session["StudentFatherName"]</td>
+                    </tr>
+                    <tr>
+                        <th>نیکه نوم</th>
+                        <td>@Session["StudentGrandFatherName"]</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="row mt-3">
+        <div class="table-responsive">
+            <table class="table table-bordered " id="dataTable" width="100%" cellspacing="0">
+                <tbody>
+                    <tr>
+                        <th> اساس نمبر</th>
+                        <td>@Session["RollNo"]</td>
+                        <th>شاګرد ایډی</th>
+                        <td>@Session["StudentId"]</td>
+                        
+                    </tr>
+                    <tr>
+                        <th>ملت</th>
+                        <td>@Session["Nationality"]</td>
+                        <th> پلار وظیفه</th>
+                        <td> @Session["FatherJob"]</td>
+
+                    </tr>
+                    <tr>
+                        <th> داخلی نیټه    </th>
+                        <td>@Session["RegDate"]</td>
+                        <th>زیږیدو نیټه</th>
+                        <td> @Session["DOB"]</td>
+                    </tr>
+                    <tr>
+                        <th>جنسیت</th>
+                        <td>@Session["Gender"]</td>
+                        <th>جنسیت</th>
+                        <td>@Session["ClassID"]</td>
+                    </tr>
+                    <tr>
+                        <th>ورور نوم</th>
+                        <td> @Session["Brother"]</td>
+                        <th>کاکا نوم</th>
+                        <td>@Session["Uncle"]</td>
+                    </tr>
+                    <tr>
+                        <th> تذکری نمبر</th>
+                        <td> @Session["IdentityID"]</td>
+                        <th> اړیکی شمیره</th>
+                        <td> @Session["Contact"]</td>
+                    </tr>
+                    <tr>
+                        <th>فعلی استوګنځی</th>
+                        <td>@Session["C_Address"]</td>
+                        <th>اصلی استوګنخی</th>
+                        <td>@Session["P_Address"]</td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+    <h4>د شاګرد د حاضری معلومات</h4>
+    <div class="row mt-3">
+        <div class="table-responsive">
+            <table class="table table-bordered " id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>رسمی ورځی</th>
+                        <th>حاضری ورځی</th>
+                        <th>غیر حاضری ورځی</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>@Session["FormalDay"]</td>
+                        <td>@Session["Present"]</td>
+                        <td>@Session["Absent"]</td>
+                    </tr>
+                </tbody>
+             </table>
+            </div>
+        </div>
+
+        <button class="btn btn-primary" onclick="window.print()">Print Student Details</button>
+        <a class="btn btn-outline-success" href="@Url.Action("Index","Home")">داخیلیدو صفحی ته تګ  </a>
+
+</body>
+</html>
+
+
+

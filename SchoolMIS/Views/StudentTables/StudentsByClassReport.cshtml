@@ -1,0 +1,173 @@
+﻿@model IEnumerable<SchoolMIS.Models.StudentTable>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html dir="rtl">
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>StudentsByClassReport</title>
+    <link href="~/Content/custom/customCSS.css" rel="stylesheet" />
+    <link href="~/Content/css/sb-admin-2.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-3.7.0.min.js"></script>
+</head>
+<body style=" font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">
+
+    <div class="container-fluid">
+
+        <div class="col-12 d-flex flex-row justify-content-between  mb-3 p-3">
+
+            <img src="~/Content/image/logo1.jpg" style="width:150px ;height:70px" />
+            <div class="text-center">
+                <h2><b>چاردیوال خصوصی ښوونځی</b></h2>
+                <h4><b>د صنف په اساس  د شاګردانو راپور  </b></h4>
+            </div>
+            <img src="~/Content/image/aei.jpg" style="width:100px;height:60px" />
+
+        </div>
+        <form action="/StudentTables/StudentsByClassReport " method="post">
+            
+            <div class="row mb-4">
+                <div class="col-md-11 d-flex flex-row">
+                    <label class="ps-2 pt-2 "><b>ټولګی</b></label>
+                    @Html.DropDownList("ClassID", ViewBag.SelectList as SelectList,"ټولګی وټاکئ", htmlAttributes: new { @id = "classID", @class = "form-control hideInPrint" })
+                </div>
+                <div class="col-md-1">
+                    <button type="submit"   class="btn btn-primary hideInPrint"> جوړ کړئ</button>
+                   
+
+                </div>
+            </div>
+          
+
+        </form>
+        <h4>د @ViewBag.ClassName د شاګردانو راپور</h4>
+        <div class="row">
+            <div class="table-responsive">
+                <table class="table table-bordered " id="dataTable" width="100%" cellspacing="0">
+                    <thead class="table-active">
+                        <tr>
+
+                        <tr>
+                            <th>
+                                اساس
+                            </th>
+                            <th>
+                                نوم
+                            </th>
+                            <th>
+                                پلارنوم
+                            </th>
+                            <th>
+                                نیکه نوم
+                            </th>
+                            <th>
+                                چنسیت
+                            </th>
+                            <th>
+                                تولد کال
+                            </th>
+                            <th>
+                                تذکری نمبر
+                            </th>
+                            <th>
+                                داخلی کال
+                            </th>
+                            <th>
+                                شمیره
+                            </th>
+                            <th>
+                                ادرس
+                            </th>
+
+                            <th>
+                                شاګرد ډول
+                            </th>
+                            <th>
+                                تصویر
+                            </th>
+                            <th>
+                                صنف
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="tbody">
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.RollNO)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.FatherName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.GrandFatherName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Gender)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.DOB)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.IdentityID)
+                                </td>
+
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.RegistrationDate)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Contact)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.CurrentAddress)
+                                </td>
+
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.StudentType)
+                                </td>
+                                <td> <img src="~/Content/img/@Path.GetFileName(item.Image)" style="width:30px" /></td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ClassTable.Name)
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+
+
+
+
+        </div>
+        <div class="col-12  d-flex flex-row justify-content-center" dir="ltr">
+          
+            <div>
+                <a href="@Url.Action("Dashboard","Home")"  class="btn btn-success hideInPrint">کورپاڼی ته شاتګ </a>
+                <a class="btn btn-primary hideInPrint "  onclick="window.print()">راپور پرنټ ګړئ </a>
+                <a class="btn btn-primary hideInPrint "  onclick="window.print()">PDF ذخیره کړئ </a>
+            </div>
+        </div>
+    </div>
+
+
+ 
+
+   
+
+
+
+</body>
+</html>

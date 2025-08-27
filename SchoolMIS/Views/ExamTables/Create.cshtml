@@ -1,0 +1,436 @@
+﻿@model SchoolMIS.Models.ExamTable
+
+<link href="~/Content/custom/customCSS.css" rel="stylesheet" />
+<body>
+    <div class="container-fluid p-2">
+        <div class="row">
+            <div class="d-flex justify-content-md-between pt-2 pb-4">
+                <h4><b>د امتحاناتو معلومات اضافه کول</b></h4>
+                <h4><b>Create New Exam Information</b></h4>
+
+            </div>
+        </div>
+
+        @*this is alert section*@
+        <div id="resultMessage"></div>
+        <div class="card p-4">
+            <form id="ExamForm" enctype="multipart/form-data">
+                @Html.AntiForgeryToken()
+                <div class="row">
+                    <div class="col-4">
+
+                        <div class="form-group">
+                            <p class="control-label me-3  mb-0">امتحان ډول</p>
+                            <div class="col-md-12">
+                                <select type="text" name="ExamType" id="ExamType" class="form-control" onchange="GetVlaue(this)" style="width:100% ;height:40px">
+                                    <option value="کلنۍ">کلنۍ</option>
+                                    <option value="څلورنیمه">څلورنیمه</option>
+                                    <option value="ټیست">ټیست</option>
+                                </select>
+                            </div>
+
+                        </div>
+
+                        <div class="form-group">
+                            <p class="control-label me-3  mb-0">شاکرد</p>
+                            <div class="col-md-12">
+                                @Html.DropDownList("StudentID", null, htmlAttributes: new { @id = "StudentID", @class = "form-control" })
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <p class="control-label me-3  mb-0">استاذ</p>
+                            <div class="col-md-12">
+                                @Html.DropDownList("StaffID", null, htmlAttributes: new { @id = "StaffID", @class = "form-control" })
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <p class="control-label me-3  mb-0">مضمون</p>
+                            <div class="col-md-12">
+                            
+                                <select type="text" name="SubjectID" id="SubjectID" class="form-control"style="width:100% ;height:40px">
+                                </select>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-4">
+                        <div class="form-group">
+                            <p class="control-label me-3  mb-0">صنف</p>
+                            <div class="col-md-12">
+                              
+                                <select type="text" name="ClassID" id="ClassID" class="form-control" style="width:100% ;height:40px">
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <p class="control-label me-3  mb-0">تاریخ</p>
+                            <div class="col-md-12">
+                                <input type="text" name="Date" id="Date" class="form-control" style="width: 100%; height: 40px" />
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <p class="control-label me-3  mb-0"> پوره نمری</p>
+                            <div class="col-md-12">
+                                <input type="text" name="TotalScore" value="60" id="TotalScore" class="form-control" style="width:100% ;height:40px" />
+
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <p class="control-label me-3 mb-0">  تحریری نمری</p>
+                            <div class="col-md-12">
+                                <input type="number" name="writtenTest" id="writtenTest" class="form-control" style="width:100% ;height:40px" />
+
+                            </div>
+                        </div>
+
+
+                    </div>
+
+
+
+                    <div class="col-4 ">
+
+                        <div class="form-group">
+                            <p class="control-label me-3  mb-0">تقریری نمری</p>
+                            <div class="col-md-12">
+                                <input type="number" name="verbalTest" id="verbalTest" value="0" class="form-control" style="width: 100%; height: 40px" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <p class="control-label me-3  mb-0">صنفی لیاقت</p>
+                            <div class="col-md-12">
+                                <input type="number" name="ClassWork" value="3" id="ClassWork" class="form-control" style="width: 100%; height: 40px" />
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <p class="control-label me-3  mb-0">  کورنی کار</p>
+                            <div class="col-md-12">
+                                <input type="number" name="homeWork" value="3" id="homeWork" class="form-control" style="width:100% ;height:40px" />
+
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <p class="control-label me-3 mb-0"> اخیستل شوی نمری</p>
+                            <div class="col-md-12">
+                                <input type="text" name="AbtainScore" id="AbtainScore" class="form-control" onclick="GetMarks(this)" style="width:100% ;height:40px" />
+
+                            </div>
+                        </div>
+
+
+
+
+                    </div>
+
+                </div>
+
+                <div class="row mt-3">
+                    <div class="form-group">
+                        <div class="btn-group  col-12 ">
+                            <a href="@Url.Action("Index","ExamTables")" class="btn t btn-outline-success border-bottom-success">  شاتګ</a>
+                            <button type="submit" class="btn btn-primary"> اضافه کړئ</button>
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+
+
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover">
+                    <thead class="table-active">
+                        <tr>
+                            <th>اساس</th>
+                            <th>شاګرد</th>
+                            <th>پلار نوم</th>
+                            <th>صنف</th>
+                            <th>شمیره</th>
+                            <th> غیر حاضری ٪ </th>
+                            <th>تصویر</th>
+
+
+                        </tr>
+                    </thead>
+
+                    @{
+                        var deprived = ViewBag.mahroomStudent as List<SchoolMIS.Models.StudentTable>;
+                    }
+                    <tbody id="tbody">
+                        @foreach (var item in deprived)
+                        {
+                            <tr>
+
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.RollNO)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.FatherName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ClassTable.Name)
+
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Contact)
+                                </td>
+                                <td>
+                                    @ViewBag.status
+                                </td>
+                                <td>
+                                    <img src="~/Content/img/@Path.GetFileName(item.Image)" style="width:30px" />
+                                </td>
+
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="~/Scripts/jquery-3.7.0.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script type="text/javascript"></script>
+    @section Scripts {
+        @Scripts.Render("~/bundles/persianDatepicker")
+
+        <script>
+            $(document).ready(function () {
+
+                $("#Date").persianDatepicker({
+                    format: 'YYYY/MM/DD',
+                    autoClose: true
+                });
+            });
+        </script>
+    }
+    <script>
+    $(document).ready(function () {
+
+
+       $("#StudentID").on('change', function () {
+
+         var studentID = $("#StudentID").val();
+
+        if (studentID) {
+        $.ajax({
+            url: '@Url.Action("ClassName", "ExamTables")',
+            type: "Post",
+            data: { id: studentID },
+            success: function (response) {
+
+                if (response != null) {
+                    $("#ClassID").empty().append($('<option value=""> ټولګی وټاکئ</option>'));
+                    $.each(response.data.ClassName, function (i, item) {
+                        $("#ClassID").append($("<option>", {
+                            value: item.Value,
+                            text: item.Text
+                        }));
+                    });
+                } else {
+                    $("#SubjectID").append($("<option>", {
+
+                        text: "شاګردان پیدا نشو"
+                    }));
+                }
+
+            },
+            error: function () {
+                alert("errore");
+            }
+
+
+        })
+    } else {
+        alert("also erroer");
+    }
+
+
+})
+
+
+
+
+
+
+
+
+
+        $("#StaffID").on('change', function () {
+
+       var staffID = $("#StaffID").val();
+
+
+       if (staffID) {
+           $.ajax({
+               url: '@Url.Action("subjects", "ExamTables")',
+               type: "POST",
+               data: { id: staffID },
+               success: function (response) {
+
+                   $("#SubjectID").empty().append($('<option value=""> مضمون وټاکئ</option>'));
+                   if (response != null) {
+
+                       $.each(response.data.subject  , function (i, item) {
+                           $("#SubjectID").append($("<option>", {
+                               value: item.Value,
+                               text: item.Text
+                           }));
+                       });
+                   } else {
+                       $("#SubjectID").append($("<option>", {
+
+                           text: "شاګردان پیدا نشو"
+                       }));
+                   }
+
+               },
+               error: function () {
+                   alert("errore");
+               }
+
+
+           })
+       } else {
+           alert("also erroer");
+       }
+
+
+   })
+
+
+
+
+
+
+
+
+
+
+
+
+
+        $("#ExamForm").validate({
+            rules: {
+                ExamType: {
+                    required: true,
+                },
+                Date: {
+                    required: true,
+
+                },
+                TotalScore: {
+                    required: true,
+                    number:true
+
+                },
+                SubjectID: {
+                    required: true,
+                },
+               ClassID: {
+                    required: true,
+                },
+                AbtainScore: {
+                    required: true,
+                    number: true
+                },
+                verbalTest: {
+                    required: true,
+
+                },
+                writtenTest: {
+                    required: true,
+                },
+                ClassWork: {
+                    required: true,
+                },
+                homeWork: {
+                    required: true,
+                },
+               
+            },
+            submitHandler: function (form) {
+
+                var formData = new FormData(form);
+
+                $.ajax({
+                    url: '@Url.Action("Create", "ExamTables")',
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        if (response.success) {
+                            $("#resultMessage").html("<div class='alert alert-success'>" + response.msg + "</div>");
+                            $("#ExamForm")[0].reset();
+                            window.location.href = response.redirectUrl;
+                        } else {
+                            $("#resultMessage").html("<div class='alert alert-danger'>" + response.msg + "</div>");
+                        }
+                    },
+                    error: function () {
+                        $("#resultMessage").html("<div class='alert alert-danger'>An error occurred.</div>");
+                    }
+
+                });
+            }
+        });
+
+
+
+
+
+
+
+
+    });
+        function GetVlaue() {
+            if ($("#ExamType").val() == "کلنۍ") {
+                $("#TotalScore").val(60).text(60)
+                $("#ClassWork").val(3).text(3)
+                $("#homeWork").val(3).text(3)
+
+            } else if ($("#ExamType").val() == "څلورنیمه") {
+                $("#TotalScore").val(40).text(40)
+                $("#ClassWork").val(2).text(2)
+                $("#homeWork").val(2).text(2)
+            } else {
+                $("#TotalScore").val(20).text(20)
+            }
+        }
+        function GetMarks() {
+
+            var written = $("#writtenTest").val();
+            var verbalTest = $("#verbalTest").val();
+            var Class = $("#ClassWork").val();
+            var home = $("#homeWork").val();
+
+            var coll = parseFloat(written) + parseFloat(verbalTest)+ parseFloat(Class)+ parseFloat(home) ;
+
+            $("#AbtainScore").val(coll).text(coll);
+
+
+        }
+
+
+
+
+
+
+    </script>
+
+</body>

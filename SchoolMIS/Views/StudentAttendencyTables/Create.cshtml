@@ -1,0 +1,288 @@
+﻿@model SchoolMIS.Models.StudentAttendencyTable
+<link href="~/Content/custom/customCSS.css" rel="stylesheet" />
+<body>
+    <div class="container-fluid p-2">
+        <div class="row">
+            <div class="d-flex justify-content-md-between pt-2 pb-4">
+                <h4><b>د  شاګردانو حاضری اضافه کول</b></h4>
+                <h4><b>Create  Attendency Of Student</b></h4>
+
+            </div>
+        </div>
+
+        @*this is alert section*@
+        <div id="resultMessage"></div>
+        <div class="card p-4">
+            <form id="StudentAttendencyForm" enctype="multipart/form-data">
+                @Html.AntiForgeryToken()
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <p class="control-label me-3 me-3 mb-0">صنف</p>
+                            <div class="col-md-12">
+                                @Html.DropDownList("ClassID", null, "ټولګی وټاکئ   ", htmlAttributes: new { @id = "ClassID", @class = "form-control" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <p class="control-label me-3 me-3 mb-0">استاذ</p>
+                            <div class="col-md-12">
+                                @*@Html.DropDownList("StaffID", null, htmlAttributes: new { @id = "staffID", @class = "form-control" })*@
+                                <select type="text" name="StaffID" id="StaffID" class="form-control" style="width:100%">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <p class="control-label me-3  mb-0">شاګرد</p>
+                            <div class="col-md-12">
+
+                                @*@Html.DropDownList("StudentID", null, htmlAttributes: new { @id = "StudentID", @class = "form-control" })*@
+                                <select type="text" name="StudentID" id="StudentID" class="form-control" style="width:100%">
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <p class="control-label me-3  mb-0">میاشت</p>
+                            <div class="col-md-12">
+                                <select type="text" name="Month" id="Month" class="form-control" style="width:100%" onchange="GVMonth()">
+                                    <option value="حمل">حمل</option>
+                                    <option value="ثور">ثور</option>
+                                    <option value="جوزا">جوزا</option>
+                                    <option value="سرطان">سرطان</option>
+                                    <option value="اسد">اسد</option>
+                                    <option value="سنبله">سنبله</option>
+                                    <option value="میزان">میزان</option>
+                                    <option value="عقرب">عقرب</option>
+                                    <option value="قوس">قوس</option>
+                                    <option value="جدی">جدی</option>
+                                    <option value="دلو">دلو</option>
+                                    <option value="حوت">حوت</option>
+
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <p class="control-label me-3  mb-0">رسمی ورځی</p>
+                            <div class="col-md-12">
+                                <input type="number" name="FormalDays" value="31" id="FormalDays" class="form-control" style="width:100%" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <p class="control-label me-3  mb-0"> حاضر</p>
+                            <div class="col-md-12">
+                                <input type="number" name="Present" id="Present" class="form-control" style="width:100%" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <p class="control-label me-3  mb-0"> تاریخ</p>
+                            <div class="col-md-12">
+                                <input type="text" name="Date" id="Date" class="form-control" style="width:100%" />
+                            </div>
+                        </div>
+                        <div class="form-group mt-4 pt-3">
+                            <div class="btn-group  col-12 ">
+                                <a href="@Url.Action("Index","StudentAttendencyTables")" class="btn  btn-outline-success border-bottom-success">   شاتګ</a>
+                                <button type="submit" class="btn btn-primary">   اضافه کړئ</button>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-4">
+                        <div class="row ms-1 border-1 mt-4">
+                            <img src="~/Content/image/attendency2.jpg" style="width: 100%; height: 275px; border-radius: 5%; " />
+                        </div>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+
+    </div>
+
+    <script src="~/Scripts/jquery-3.7.0.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script type="text/javascript"></script>
+    @section Scripts {
+        @Scripts.Render("~/bundles/persianDatepicker")
+
+        <script>
+            $(document).ready(function () {
+
+                $("#Date").persianDatepicker({
+                    format: 'YYYY/MM/DD',
+                    autoClose: true
+                });
+            });
+        </script>
+    }
+    @*@section Scripts{
+        <script>
+            function sendStudentIdToGetMethod(ClassID) {
+
+                if (ClassID) {
+                    fetch(`/StudentAttendencyTables/Create?studentId=${}`, {
+                        method: 'GET',
+                        cache: 'no-cache'
+                    }).catch(error => {
+                        // مهمه نه ده که error راشي
+                        alert('Request sent, no need for response.');
+                    });
+                }
+            }
+
+
+          </script>
+        }*@
+    <script>
+        $(document).ready(function () {
+
+            $("#ClassID").on('change', function () {
+                var classID = $("#ClassID").val();
+
+                if (classID) {
+                    $.ajax({
+                        url: '@Url.Action("getClass", "StudentAttendencyTables")',
+                        type: "get",
+                        data: { classID: classID },
+                        success: function (response) {
+
+                            $("#StaffID").empty().append($('<option value=""> استاذ وټاکئ </option>'));
+                            $("#StudentID").empty().append($('<option value=""> شاګرد وټاکئ</option>'));
+                            if (response != null) {
+                                $.each(response.StudentList, function (i, item) {
+                                    $("#StudentID").append($("<option>", {
+                                        value: item.Value,
+                                        text: item.Text
+                                    }));
+                                });
+                            } else {
+                                $("#StudentID").append($("<option>", {
+
+                                    text: "شاګردان پیدا نشو"
+                                }));
+                            }
+                            if (response != null) {
+                                $.each(response.Staff, function (i, item) {
+                                    $("#StaffID").append($("<option>", {
+                                        value: item.Value,
+                                        text: item.Text
+                                    }));
+                                });
+                            } else {
+                                $("#StaffID").append($("<option>", {
+
+                                    text: "شاګردان پیدا نشو"
+                                }));
+                            }
+                        },
+                        error: function () {
+                            alert("errore");
+                        }
+
+
+                    })
+                } else {
+                    alert("also erroer");
+                }
+
+
+            });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        $("#StudentAttendencyForm").validate({
+            rules: {
+                StudentID: {
+                    required: true,
+                },
+                Date: {
+                    required: true,
+
+                },
+                StaffID: {
+                    required: true,
+                },
+
+                FormalDays: {
+                    required: true,
+                    number: true
+                },
+                Present: {
+                    required: true,
+                    number: true
+                },
+            },
+            submitHandler: function (form) {
+
+                var formData = new FormData(form);
+
+                $.ajax({
+                    url: '@Url.Action("Create", "StudentAttendencyTables")',
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        if (response.success) {
+                            $("#resultMessage").html("<div class='alert alert-success'>" + response.msg + "</div>");
+                            $("#StudentAttendencyForm")[0].reset();
+                            window.location.href = response.redirectUrl;
+                        } else {
+                            $("#resultMessage").html("<div class='alert alert-danger'>" + response.msg + "</div>");
+                        }
+                    },
+                    error: function () {
+                        $("#resultMessage").html("<div class='alert alert-danger'>An error occurred.</div>");
+                    }
+
+                });
+            }
+        });
+
+        });
+
+
+
+
+
+    function GVMonth() {
+        var Month = $("#Month").val();
+
+        if (Month == "حمل" || Month == "ثور" || Month == "جوزا" || Month == "سرطان" || Month == "اسد" || Month == "سنبله") {
+
+            $("#FormalDays").val(31).text(31);
+        } else if (Month == "حوت") {
+            $("#FormalDays").val(29).text(29);
+        } else {
+            $("#FormalDays").val(30).text(30);
+        }
+
+
+
+
+    }
+
+
+
+
+    </script>
+
+</body>

@@ -1,0 +1,155 @@
+﻿@model SchoolMIS.Models.ExpencesTable
+<link href="~/Content/custom/customCSS.css" rel="stylesheet" />
+<body>
+    <div class="container-fluid p-2">
+        <div class="row">
+            <div class="d-flex justify-content-md-between pt-2 pb-4">
+                <h4><b>د مصارفو معلوماتو  بیارغول</b></h4>
+                <h4><b>Edition of  Expences Information</b></h4>
+               
+            </div>
+        </div>
+
+        @*this is alert section*@
+        <div id="resultMessage"></div>
+        <div class="card p-4">
+            <form id="ExpencesForm" enctype="multipart/form-data">
+                @Html.AntiForgeryToken()
+                <div class="row">
+                    <div class="col-8">
+                        <div class="row">
+                            <div class="col-6">
+                                @Html.HiddenFor(model => model.ExpencesID, new { @type = "hidden" })
+                                <div class="form-group">
+                                    <p class="control-label me-3  mb-0">څیز نوم</p>
+                                    <div class="col-md-12">
+                                        @Html.EditorFor(model => model.ItemName, new { htmlAttributes = new { @class = "form-control" } })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <p class="control-label me-3  mb-0">اندازه</p>
+                                    <div class="col-md-12">
+                                        @Html.EditorFor(model => model.Amount, new { htmlAttributes = new { @id = "Amount", @class = "form-control" } })
+
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <p class="control-label me-3  mb-0">قیمت</p>
+                                    <div class="col-md-12">
+                                        @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @id = "Price", @class = "form-control" } })
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <p class="control-label me-3  mb-0">راوړونکی</p>
+                                    <div class="col-md-12">
+                                        @Html.DropDownList("StaffID", null, htmlAttributes: new { @class = "form-control" })
+
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <p class="control-label me-3  mb-0">تاریخ</p>
+                                    <div class="col-md-12">
+                                        @Html.EditorFor(model => model.Date, new { htmlAttributes = new {@id="Date", @class = "form-control" } })
+                                       
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <p class="control-label me-3  mb-0"> وضاحت</p>
+                                    <div class="col-md-12">
+                                        @Html.EditorFor(model => model.Description, new { htmlAttributes = new {@id= "Description", @class = "form-control" } })
+                                        
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="form-group">
+                                <div class="btn-group  col-12 ">
+                                    <a href="@Url.Action("Index","ExpencesTables")" class="btn  btn-outline-success border-bottom-success"> لیست ته شاتګ</a>
+                                    <button type="submit" class="btn btn-primary"> نوی معلومات اضافه کړئ</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="row ms-1 border-1 mt-4">
+                            <img src="~/Content/image/money3.png" id="hideImage" style="width: 100%; height: 265px; border-radius: 5%; " />
+                        </div>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+
+    </div>
+
+    <script src="~/Scripts/jquery-3.7.0.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+    <script>
+    $(document).ready(function () {
+
+        $("#ExpencesForm").validate({
+            rules: {
+                ExamType: {
+                    required: true,
+                },
+                Date: {
+                    required: true,
+
+                },
+                TotalScore: {
+                    required: true,
+                    number:true
+
+                },
+                AbtainScore: {
+                    required: true,
+                    number: true
+                },
+                Result: {
+                    required: true,
+
+                },
+            },
+            submitHandler: function (form) {
+
+                var formData = new FormData(form);
+
+                $.ajax({
+                    url: '@Url.Action("Create", "ExpencesTables")',
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        if (response.success) {
+                            $("#resultMessage").html("<div class='alert alert-success'>" + response.msg + "</div>");
+                            $("#ExpencesForm")[0].reset();
+                            window.location.href = response.redirectUrl;
+                        } else {
+                            $("#resultMessage").html("<div class='alert alert-danger'>" + response.msg + "</div>");
+                        }
+                    },
+                    error: function () {
+                        $("#resultMessage").html("<div class='alert alert-danger'>An error occurred.</div>");
+                    }
+
+                });
+            }
+        });
+
+    });
+      
+    </script>
+
+</body>
+
+
+

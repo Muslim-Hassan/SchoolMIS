@@ -1,0 +1,153 @@
+﻿@model IEnumerable<SchoolMIS.Models.StudentTable>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html dir="rtl">
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>AllStudentsReport</title>
+    <link href="~/Content/custom/customCSS.css" rel="stylesheet" />
+    <link href="~/Content/css/sb-admin-2.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+
+</head>
+
+<body style=" font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">
+    <div class="container-fluid">
+
+        <div class="col-12 d-flex flex-row justify-content-between  mb-3 p-3">
+
+            <img src="~/Content/image/logo1.jpg" style="width:150px ;height:70px" />
+            <div class="text-center">
+                <h2><b>چاردیوال خصوصی ښوونځی</b></h2>
+                <h4><b>د ټولو شاګردانو راپور</b></h4>
+            </div>
+            <img src="~/Content/image/aei.jpg" style="width:100px;height:60px" />
+
+        </div>
+
+        <div class="row">
+            <div class="table-responsive">
+                <table class="table table-bordered " id="dataTable" width="100%" cellspacing="0">
+                    <thead class="table-active">
+                        <tr>
+
+                        <tr>
+                            <th>
+                                اساس
+                            </th>
+                            <th>
+                                نوم
+                            </th>
+                            <th>
+                                پلارنوم
+                            </th>
+                            <th>
+                                نیکه نوم
+                            </th>
+                            <th>
+                                جنسیت
+                            </th>
+                            <th>
+                                تولد کال
+                            </th>
+                            <th>
+                                تذکری نمبر
+                            </th>
+                            <th>
+                                داخلی کال
+                            </th>
+                            <th>
+                                شمیره
+                            </th>
+                            <th>
+                                ادرس
+                            </th>
+
+                            <th>
+                                شاګرد ډول
+                            </th>
+                            <th>
+                                تصویر
+                            </th>
+                            <th>
+                                ټولګی
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="tbody">
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.RollNO)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.FatherName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.GrandFatherName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Gender)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.DOB)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.IdentityID)
+                                </td>
+
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.RegistrationDate)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Contact)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.CurrentAddress)
+                                </td>
+
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.StudentType)
+                                </td>
+                                <td> <img src="~/Content/img/@Path.GetFileName(item.Image)" style="width:30px" /></td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ClassTable.Name)
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+
+
+
+
+        </div>
+        <div class="col-12  d-flex flex-row justify-content-between" dir="ltr">
+            <p class="mb-0">Print Date:@ViewBag.currentDate</p>
+            <div>
+                <a href="@Url.Action("Dashboard","Home")" id="printBtn" class="btn btn-success">کور پاڼی ته شاتګ </a>
+                <a class="btn btn-primary " id="printBtn" onclick="window.print()"> PDF ذخیره کړئ</a>
+                <a class="btn btn-primary " id="printBtn" onclick="window.print()">راپور پرنټ کړئ </a>
+            </div>
+        </div>
+    </div>
+
+
+
+  
+</body>
+</html>

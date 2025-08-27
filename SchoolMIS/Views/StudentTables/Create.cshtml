@@ -1,0 +1,349 @@
+﻿@model SchoolMIS.Models.StudentTable
+
+<link href="~/Content/custom/customCSS.css" rel="stylesheet" />
+<body>
+    <div class="container-fluid p-2">
+        <div class="row">
+            <div class="d-flex justify-content-md-between pt-2 pb-4">
+                <h4><b>د شاګردانو معلومات اضافه کول</b></h4>
+                <h4><b>Create New Student Information</b></h4>
+
+            </div>
+        </div>
+
+        @*this is alert section*@
+        <div id="resultMessage"></div>
+        <div class="card p-4">
+            <form id="StudentForm" enctype="multipart/form-data">
+                @Html.AntiForgeryToken()
+                <div class="row">
+                    <div class="col-4">
+
+                        <div class="form-group">
+                            <p class="control-label me-3 mb-0"> اساس</p>
+                            <div class="col-md-12">
+                                <input type="text" name="RollNO" id="RollNO" class="form-control" style="width:100%" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <p class="control-label me-3 mb-0">نوم</p>
+                            <div class="col-md-12">
+                                <input type="text" name="Name" id="Name" class="form-control" style="width:100%" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <p class="control-label me-3  mb-0">پلار نوم</p>
+                            <div class="col-md-12">
+                                <input type="text" name="FatherName" id="FatherName" class="form-control" style="width:100%" />
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <p class="control-label me-3  mb-0">نیکه نوم</p>
+                            <div class="col-md-12">
+                                <input type="text" name="GrandFatherName" id="GrandFatherName" class="form-control" style="width:100%" />
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <p class="control-label me-3 mb-0">جنسیت</p>
+                            <div class="col-md-12">
+                                <select type="text" name="Gender" id="Gender" class="form-control" style="width:100%">
+                                    <option vlaue="نارینه">نارینه</option>
+                                    <option vlaue="ښځینه">ښځینه</option>
+                                </select>
+
+                            </div>
+                        </div>
+                        <div class="form-group " style="width:100%">
+                            <p class="control-label me-3  mb-0">اوسنی استوکنځی</p>
+                            <div class="col-md-12">
+                                <input type="text" name="CurrentAddress" id="CurrentAddress" class="form-control" style="width:100%" />
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <p class="control-label me-3 mb-0">ورور نوم</p>
+                            <div class="col-md-12">
+                                <input type="text" name="Brother" id="Brother" class="form-control" style="width:100%" />
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-4">
+                        <div class="form-group">
+                            <p class="control-label me-3  mb-0">صنف</p>
+                            <div class="col-md-12">
+                                @Html.DropDownList("ClassID", null, htmlAttributes: new { @class = "form-control" })
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <p class="control-label me-3  mb-0">ملت</p>
+                            <div class="col-md-12">
+                                <input type="text" name="Nationality" value="افغان" id="Nationality" class="form-control" style="width:100%" />
+
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <p class="control-label me-3 mb-0">پلار وظیفه</p>
+                            <div class="col-md-12">
+                                <Select type="text" name="FatherJob" id="FatherJob" class="form-control" style="width:100%">
+                                    <option value="معلم">معلم</option>
+                                    <option value="ډاکټر"> ډاکټر</option>
+                                    <option value="انجنیر">انجنیر</option>
+                                    <option value="غریبکار">غریبکار</option>
+                                    <option value="ملا امام">ملا امام</option>
+                                    <option value="نور">نور</option>
+                                </Select>
+
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <p class="control-label me-3 mb-0">مورنۍ ژبه</p>
+                            <div class="col-md-12">
+                                <select type="text" name="NativeLanguage" id="NativeLanguage" class="form-control" style="width:100%">
+                                    <option vlaue="پښتو">پښتو</option>
+                                    <option vlaue="دری">دری</option>
+                                    <option vlaue="نور">نور</option>
+                                </select>
+
+                            </div>
+                        </div>
+                        <div class="form-group " style="width:100%">
+                            <p class="control-label me-3  mb-0">اړیکی شمیره</p>
+                            <div class="col-md-12">
+                                <input type="text" name="Contact" id="Contact" class="form-control" style="width:100%" />
+
+                            </div>
+                        </div>
+
+                        <div class="form-group " style="width:100%">
+                            <p class="control-label me-3  mb-0">اصلی استوګنځی</p>
+                            <div class="col-md-12">
+                                <input type="text" name="PermenentAddress" id="PermenentAddress" class="form-control" style="width:100%" />
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <p class="control-label me-3 mb-0">کاکا نوم</p>
+                            <div class="col-md-12">
+                                <input type="text" id="Uncle" name="Uncle" class="form-control" style="width:100%" /><br>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="col-4">
+                        <div class="row ">
+                            <div class="col-6 ">
+                                <div class="form-group">
+                                    <p class="control-label  mb-0">پیدایښت نیټه</p>
+                                    <div class="col-md-12 m-0 p-0">
+                                        <input type="text" name="DOB" id="DOB" class="form-control" style="width:100%" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6 ">
+                                <div class="form-group">
+                                    <p class="control-label   mb-0">داخلی نیټه</p>
+                                    <div class="col-md-12 m-0 p-0">
+                                        <input type="text" name="RegistrationDate" id="RegistrationDate" class="form-control" onchange="loadImage(this)" style="width:100%" />
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="form-group">
+                            <p class="control-label  mb-0">تذکری نمبر</p>
+                            <div class="col-md-12 m-0 p-0">
+                                <input type="text" name="IdentityID" id="IdentityID" class="form-control" style="width:100%" />
+                            </div>
+                        </div>
+                        <div class="form-group " style="width:100%">
+                            <p class="control-label   mb-0">شاګرد ډول</p>
+                            <div class="col-md-12 m-0 p-0">
+                                <select type="text" name="StudentType" id="StudentType" class="form-control" style="width:100%">
+                                    <option vlaue="رسمی">رسمی</option>
+                                    <option vlaue="غیر رسمی">غیر رسمی</option>
+
+                                </select>
+
+                            </div>
+                        </div>
+                        <div class="form-group " style="width:100%">
+                            <p class="control-label   mb-0">تصویر</p>
+                            <div class="col-md-12 m-0 p-0">
+                                <input type="file" name="Image" id="Image" class="form-control" onchange="loadImage(this)" style="width:100%" />
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="btn-group mt-2 col-12 m-0 p-0" style="width:96%">
+                                <a href="@Url.Action("Index","StudentTables")" class="btn t btn-outline-success border-bottom-success">  شاتګ</a>
+                                <button type="submit" class="btn btn-primary"> اضافه کړئ</button>
+                            </div>
+
+                        </div>
+                        <div class="row border-1 ms-1">
+                            <div class="col-md-12 m-0 pr-3">
+                                <img src="" id="showImage" style="width: 98%; height: 155px; display: none; border-radius: 3%; border: 1px solid Gray" />
+                                <img src="~/Content/image/UserIcon.png" id="hideImage" style="width: 96%; height: 155px; border-radius: 3%; border: 1px solid Gray" />
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+
+    </div>
+
+    <script src="~/Scripts/jquery-3.7.0.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script type="text/javascript"></script>
+    @section Scripts {
+        @Scripts.Render("~/bundles/persianDatepicker")
+
+        <script>
+            $(document).ready(function () {
+
+                $("#RegistrationDate").persianDatepicker({
+                    format: 'YYYY/MM/DD',
+                    autoClose: true
+                });
+                $("#DOB").persianDatepicker({
+                    format: 'YYYY/MM/DD',
+                    autoClose: true
+                });
+            });
+        </script>
+    }
+    <script>
+    $(document).ready(function () {
+
+        $("#StudentForm").validate({
+            rules: {
+                Name: {
+                    required: true,
+                    minlength: 3,
+                    maxlength: 20,
+
+                },
+                FatherName: {
+                    required: true,
+                    minlength: 3,
+                    maxlength: 20,
+
+
+                },
+                GrandFatherName: {
+                    required: true,
+                    minlength: 3,
+                    maxlength: 20,
+
+                },
+                Contact: {
+                    required: true,
+                    number: true,
+                    minlength: 10,
+                    maxlength: 13
+                },
+                IdentityID: {
+                    required: true,
+                    number: true,
+                    minlength: 8
+                },
+                Nationality: {
+                    required: true,
+                },
+                CurrentAddress: {
+                    required: true,
+
+                },
+                RollNO: {
+                    required: true,
+                    number: true
+                },
+                DOB: {
+                    required: true,
+                  
+                },
+                PermenentAddress: {
+                    required: true,
+
+                },
+                Image: {
+                    required: true,
+                },
+                Brother: {
+                    required: true,
+
+                },
+                Uncle: {
+                    required: true,
+
+                },
+                RegistrationDate: {
+                    required: true,
+                  
+                }
+
+
+            },
+            submitHandler: function (form) {
+
+                var formData = new FormData(form);
+                formData.append("Image", $("#Image")[0].files[0]);
+
+                $.ajax({
+                    url: '@Url.Action("Create", "StudentTables")',
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        if (response.success) {
+                            $("#resultMessage").html("<div class='alert alert-success'>" + response.msg + "</div>");
+                            $("#StudentForm")[0].reset();
+                            window.location.href = response.redirectUrl;
+                        } else {
+                            $("#resultMessage").html("<div class='alert alert-danger'>" + response.msg + "</div>");
+                        }
+                    },
+                    error: function () {
+                        $("#resultMessage").html("<div class='alert alert-danger'>An error occurred.</div>");
+                    }
+
+                });
+            }
+        });
+    });
+
+
+
+
+
+    function loadImage(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader()
+            reader.onload = function (e) {
+                $("#showImage").attr("src", e.target.result);
+                $("#showImage").show();
+                $("#hideImage").hide();
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+    </script>
+
+</body>
+
+
+
+
