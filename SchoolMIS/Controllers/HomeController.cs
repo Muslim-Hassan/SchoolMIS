@@ -12,7 +12,7 @@ using System.Web.Services.Description;
 
 namespace SchoolMIS.Controllers
 {
-    
+    // hkjhkjhkuhuih
     public class HomeController : Controller
     {
         private SchoolMISEntities db = new SchoolMISEntities();
