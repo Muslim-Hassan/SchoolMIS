@@ -31,6 +31,7 @@ namespace SchoolMIS.Controllers
         public JsonResult Authenticate(login userTable)
         {
             // Check if user exists in the database
+
             var user = db.UserTables.FirstOrDefault(u => u.UserName == userTable.UserName && u.Password == userTable.Password);
             var student = db.StudentTables.FirstOrDefault(u => u.RollNO.ToString() == userTable.UserName && userTable.Password=="1234");
             if (userTable.UserName != null || userTable.Password != null)
@@ -42,6 +43,7 @@ namespace SchoolMIS.Controllers
                         FormsAuthentication.SignOut();
                        
                         // Optionally set session data
+
                         Session["UserId"] = user.UserID;
                         Session["Username"] = user.UserName;
                         Session["Password"] = user.Password;
