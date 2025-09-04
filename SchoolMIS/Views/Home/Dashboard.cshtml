@@ -125,12 +125,12 @@
 
 
         </form>
-        @foreach(var itm in Model)
+        @foreach (var itm in Model)
         {
             ViewBag.Day = itm.Day;
             ViewBag.Teacher = itm.StaffTable.Name;
         }
-        @{ 
+        @{
             int no = 1;
         }
         <p>د <strong>@ViewBag.Day</strong> ورځی د<strong> @ViewBag.Teacher</strong> تقسیم اوقات  </p>
@@ -153,16 +153,16 @@
                 <tbody id="tbody">
                     @foreach (var item in Model)
                     {
-                     
+
                         <tr>
                             <td>
-                               @no
+                                @no
                             </td>
-                          
+
                             <td>
                                 @Html.DisplayFor(modelItem => item.ClassTable.Name)
                             </td>
-                          
+
                             <td>
                                 @Html.DisplayFor(modelItem => item.SubjectTable.Name)
 
@@ -227,7 +227,7 @@
             <i class="fas fa-dollar-sign  fa-3x text-danger"></i>
             <div>
                 <div class="text-danger fw-bold">میاشتنی مصارف </div>
-               <div class="text-primary mt-2 fw-bolder"><span style="float:right">AF</span> @ViewBag.AllExpences  </div>
+                <div class="text-primary mt-2 fw-bolder"><span style="float:right">AF</span> @ViewBag.AllExpences  </div>
             </div>
 
         </div>
@@ -248,7 +248,7 @@
                         var income = ViewBag.otherIncome + ViewBag.TotalIncom;
                     }
                     <span style="float:right">AF</span>
-               
+
                     @income
 
                 </div>
@@ -257,6 +257,7 @@
         </div>
     </div>
 
+    @*This is general page for dashboard*@
 
     <div class=" row card bg-gradient-light d-flex flex-row border-left-danger  justify-content-between mt-4 p-4 text-center ">
 
@@ -270,7 +271,7 @@
             </div>
 
             <div class="crad-body p-3">
-چهاردیوال خصوصی ښوونخی چی په چهاردهی کلی کی موقعیت لری په ۱۳۹۸ ه ش کال کی یی د جهاردهی غیور ولس ته د خدمت په اساس جوړ شو او تر اوسه فعالیت کوی
+                چهاردیوال خصوصی ښوونخی چی په چهاردهی کلی کی موقعیت لری په ۱۳۹۸ ه ش کال کی یی د جهاردهی غیور ولس ته د خدمت په اساس جوړ شو او تر اوسه فعالیت کوی
             </div>
         </div>
         <div class="col-md-3  card mt-2 m-0 p-0 ">
@@ -280,7 +281,7 @@
             </div>
 
             <div class="crad-body p-3">
-             د چهاردیوال خصوصی ښوونځی موسس دروند مشر الحاج انجنیر دوست محمد چاردیوال. چی دغه ښوونځی یی د زده کړی سره د مینی په خاطر یی ددی ښوونځی اساس کیښود.
+                د چهاردیوال خصوصی ښوونځی موسس دروند مشر الحاج انجنیر دوست محمد چاردیوال. چی دغه ښوونځی یی د زده کړی سره د مینی په خاطر یی ددی ښوونځی اساس کیښود.
             </div>
         </div>
         <div class="col-md-3 card mt-2 m-0 p-0 ">
@@ -290,7 +291,7 @@
             </div>
 
             <div class="crad-body p-3">
-          چهاردهی کلی  چی یو د مشهورو کلیو د بټی کوټ څخه دی په ځپل غیږ کی یی بی شمیره علمی قدرونه روزلی او هیوادوالو خدمت ته یی وړاندی کړیږ
+                چهاردهی کلی  چی یو د مشهورو کلیو د بټی کوټ څخه دی په ځپل غیږ کی یی بی شمیره علمی قدرونه روزلی او هیوادوالو خدمت ته یی وړاندی کړیږ
 
             </div>
         </div>
