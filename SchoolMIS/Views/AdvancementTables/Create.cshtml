@@ -73,7 +73,7 @@
                             <div class="form-group">
                                 <div class="btn-group  col-12 ">
                                     <a href="@Url.Action("Index","AdvancementTables")" class="btn  btn-outline-success border-bottom-success">Get back to the List لیست ته شاتګ</a>
-                                    <button type="submit" class="btn btn-primary">  معلومات  بیارغول</button>
+                                    <button type="submit" class="btn btn-primary">Rebuild Information معلومات  بیارغول</button>
                                 </div>
                             </div>
                         </div>
@@ -122,7 +122,7 @@
             success: function (response) {
 
                 if (response != null) {
-                    $("#FromClassID").empty().append($('<option value=""> ټولګی وټاکئ</option>'));
+                    $("#FromClassID").empty().append($('<option value="">Select Class ټولګی وټاکئ</option>'));
                     $.each(response.data.ClassName, function (i, item) {
                         $("#FromClassID").append($("<option>", {
                             value: item.Value,
@@ -132,7 +132,7 @@
                 } else {
                     $("#SubjectID").append($("<option>", {
 
-                        text: "class پیدا نشو"
+                        text: "class didnt found پیدا نشو"
                     }));
                 }
             },
