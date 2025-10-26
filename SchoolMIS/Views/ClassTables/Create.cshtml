@@ -5,7 +5,7 @@
 <div class="container-fluid m-0 p-0">
     <div class="row">
         <div class="d-flex justify-content-md-between pt-2 pb-4">
-            <h4><b> صنفونو معلومات اضافه کول</b></h4>
+            <h4><b>Add Classes Information صنفونو معلومات اضافه کول</b></h4>
             <h4><b>Create New Class  Information</b></h4>
 
         </div>
@@ -21,7 +21,7 @@
                     <div class="row">
                         <div class="col-6">
                             <div class="form-group">
-                                <p class="control-label me-3 mb-0">صنف</p>
+                                <p class="control-label me-3 mb-0">Class صنف</p>
                                 <div class="col-md-12">
 
                                     <input type="text" name="Name" id="Name" class="form-control" style="width:100%" />
@@ -30,7 +30,7 @@
                             </div>
 
                             <div class="form-group">
-                                <p class="control-label me-3  mb-0">شاکردان </p>
+                                <p class="control-label me-3  mb-0">Students شاکردان </p>
                                 <div class="col-md-12">
                                     <input type="text" name="StudentAmount" id="StudentAmount" class="form-control" style="width:100%" />
 
@@ -39,7 +39,7 @@
                         </div>
                         <div class="col-6">
                             <div class="form-group">
-                                <p class="control-label me-3  mb-0">حاضر شاګردان</p>
+                                <p class="control-label me-3  mb-0">Students Attendance حاضر شاګردان</p>
                                 <div class="col-md-12">
                                     <input type="text" name="PresentStudent" id="PresentStudent" class="form-control" style="width:100%" />
 
@@ -47,7 +47,7 @@
                             </div>
 
                             <div class="form-group" style="width:200px">
-                                <p class="control-label me-3 mb-0">نکران استاذ</p>
+                                <p class="control-label me-3 mb-0">Fore Master نکران استاذ</p>
                                 <div class="col-md-12">
                                     @Html.DropDownList("StaffID", null, htmlAttributes: new { @class = "form-control" })
                                 </div>
@@ -58,8 +58,8 @@
                     <div class="row mt-4">
                         <div class="form-group ">
                             <div class="col-12 btn-group ">
-                                <a href="@Url.Action("Index","ClassTables")" class="btn t btn-outline-success border-bottom-success">لیست ته شاتګ</a>
-                                <button type="submit" class="btn btn-primary">معلومات اضافه کړئ</button>
+                                <a href="@Url.Action("Index","ClassTables")" class="btn t btn-outline-success border-bottom-success">Going back to List لیست ته شاتګ</a>
+                                <button type="submit" class="btn btn-primary">Add Information معلومات اضافه کړئ</button>
                             </div>
 
                         </div>
