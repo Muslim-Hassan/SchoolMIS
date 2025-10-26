@@ -147,7 +147,7 @@
                 </div>
 
                 <div class="modal-footer bg-danger text-white">
-                    <button type="button" class="btn btn-secondary pe-2" data-bs-dismiss="modal">شا تګ</button>
+                    <button type="button" class="btn btn-secondary pe-2" data-bs-dismiss="modal">Going back شا تګ</button>
                 </div>
             </div>
         </div>
@@ -194,7 +194,7 @@
                type: 'POST',
                data: { id: id },  // Send the serialized data
                success: function (response) {
-                   $("#resultMessage").html("<div class='alert alert-success'>" + "معلومات په کامیابۍ سره ختم شول" + "</div>");
+                   $("#resultMessage").html("<div class='alert alert-success'>" + "Information has been finished successfully معلومات په کامیابۍ سره ختم شول" + "</div>");
                  window.location.href = response.redirectUrl;
         },
         error: function () {
