@@ -39,14 +39,14 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <p class="control-label me-3  mb-0">استاذ</p>
+                            <p class="control-label me-3  mb-0">Teacher استاذ</p>
                             <div class="col-md-12">
                                 @Html.DropDownList("StaffID", null, htmlAttributes: new { @id = "StaffID", @class = "form-control" })
 
                             </div>
                         </div>
                         <div class="form-group">
-                            <p class="control-label me-3  mb-0">مضمون</p>
+                            <p class="control-label me-3  mb-0">Subject مضمون</p>
                             <div class="col-md-12">
                             
                                 <select type="text" name="SubjectID" id="SubjectID" class="form-control"style="width:100% ;height:40px">
@@ -57,7 +57,7 @@
                     </div>
                     <div class="col-4">
                         <div class="form-group">
-                            <p class="control-label me-3  mb-0">صنف</p>
+                            <p class="control-label me-3  mb-0">Class صنف</p>
                             <div class="col-md-12">
                               
                                 <select type="text" name="ClassID" id="ClassID" class="form-control" style="width:100% ;height:40px">
@@ -66,14 +66,14 @@
                         </div>
 
                         <div class="form-group">
-                            <p class="control-label me-3  mb-0">تاریخ</p>
+                            <p class="control-label me-3  mb-0">Date تاریخ</p>
                             <div class="col-md-12">
                                 <input type="text" name="Date" id="Date" class="form-control" style="width: 100%; height: 40px" />
 
                             </div>
                         </div>
                         <div class="form-group">
-                            <p class="control-label me-3  mb-0"> پوره نمری</p>
+                            <p class="control-label me-3  mb-0">Total Marks پوره نمری</p>
                             <div class="col-md-12">
                                 <input type="text" name="TotalScore" value="60" id="TotalScore" class="form-control" style="width:100% ;height:40px" />
 
@@ -81,7 +81,7 @@
                         </div>
 
                         <div class="form-group">
-                            <p class="control-label me-3 mb-0">  تحریری نمری</p>
+                            <p class="control-label me-3 mb-0">Written Marks تحریری نمری</p>
                             <div class="col-md-12">
                                 <input type="number" name="writtenTest" id="writtenTest" class="form-control" style="width:100% ;height:40px" />
 
@@ -96,21 +96,21 @@
                     <div class="col-4 ">
 
                         <div class="form-group">
-                            <p class="control-label me-3  mb-0">تقریری نمری</p>
+                            <p class="control-label me-3  mb-0">Oral Marks تقریری نمری</p>
                             <div class="col-md-12">
                                 <input type="number" name="verbalTest" id="verbalTest" value="0" class="form-control" style="width: 100%; height: 40px" />
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <p class="control-label me-3  mb-0">صنفی لیاقت</p>
+                            <p class="control-label me-3  mb-0">Class Ability صنفی لیاقت</p>
                             <div class="col-md-12">
                                 <input type="number" name="ClassWork" value="3" id="ClassWork" class="form-control" style="width: 100%; height: 40px" />
 
                             </div>
                         </div>
                         <div class="form-group">
-                            <p class="control-label me-3  mb-0">  کورنی کار</p>
+                            <p class="control-label me-3  mb-0">Home Work کورنی کار</p>
                             <div class="col-md-12">
                                 <input type="number" name="homeWork" value="3" id="homeWork" class="form-control" style="width:100% ;height:40px" />
 
@@ -118,7 +118,7 @@
                         </div>
 
                         <div class="form-group">
-                            <p class="control-label me-3 mb-0"> اخیستل شوی نمری</p>
+                            <p class="control-label me-3 mb-0">Obtain Marks اخیستل شوی نمری</p>
                             <div class="col-md-12">
                                 <input type="text" name="AbtainScore" id="AbtainScore" class="form-control" onclick="GetMarks(this)" style="width:100% ;height:40px" />
 
