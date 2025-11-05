@@ -34,11 +34,11 @@
     .right{float:right;}
 </style>
 <div class="d-flex justify-content-md-between pt-2">
-    <h4><b>د  امتحاناتو معلومات</b></h4>
+    <h4><b>Examination Information د امتحاناتو معلومات</b></h4>
 
     <p class="btn btn-group">
-        <a href="@Url.Action("Dashboard","Home")" class="btn btn-primary"> کور صفحه</a>
-        <a href="@Url.Action("Create","ExamTables")" class="btn btn-success @creation"> نوی معلومات اضافه کړئ</a>
+        <a href="@Url.Action("Dashboard","Home")" class="btn btn-primary">Home Page کور صفحه</a>
+        <a href="@Url.Action("Create","ExamTables")" class="btn btn-success @creation">Add new Information نوی معلومات اضافه کړئ</a>
 
     </p>
     <h4><b>Exams  Information</b></h4>
@@ -51,26 +51,26 @@
                 <thead class="table-active">
                     <tr>
 
-                        <th>امتحان</th>
-                        <th>مضمون</th>
-                        <th>صنف</th>
-                        <th>شاګرد</th>
-                        <th>استاذ</th>
-                        <th>تاریخ</th>
-                        <th>نمری </th>
+                        <th>Exam امتحان</th>
+                        <th>Subject مضمون</th>
+                        <th>Class صنف</th>
+                        <th>Student شاګرد</th>
+                        <th>Teacer استاذ</th>
+                        <th>Date تاریخ</th>
+                        <th>Marks نمری</th>
                         <th>Action </th>
                     </tr>
                 </thead>
                 <tfoot class="table-active">
                     <tr>
 
-                        <th>امتحان</th>
- <th>مضمون</th>
- <th>صنف</th>
- <th>شاګرد</th>
- <th>استاذ</th>
- <th>تاریخ</th>
- <th>نمری </th>
+                        <th>Exam امتحان</th>
+ <th>Subject مضمون</th>
+ <th>Class صنف</th>
+ <th>Student شاګرد</th>
+ <th>Teacher استاذ</th>
+ <th>Date تاریخ</th>
+ <th>Marks نمری </th>
  <th>Action </th>
                     </tr>
                 </tfoot>
@@ -124,7 +124,7 @@
             <div class="modal-header  text-white d-flex justify-content-between align-content-center border-dark" id="bg-danger">
                 <img src="~/Content/image/logo1.jpg" style="width:40px;border-radius:50%;" />
 
-                <h4 class="modal-title text-center px-2"><b> ایا غواړی چی امتحان معلومات لمنځه یوسی؟</b></h4>
+                <h4 class="modal-title text-center px-2"><b>Do you want to delete Exam information ایا غواړی چی امتحان معلومات لمنځه یوسی؟</b></h4>
 
 
             </div>
@@ -134,31 +134,31 @@
                 <div class="row">
                     <div class="col-6 card p-3 shadow">
 
-                        <p><span id="DStudent" class="left"></span><strong class="right">شاګرد نوم :</strong> </p>
+                        <p><span id="DStudent" class="left"></span><strong class="right">Student_Name شاګرد نوم :</strong> </p>
                         <hr class="m-0 p-0" />
-                        <p> <span id="DTeacher" class="left"></span><strong class="right">ممتحن استاذ : </strong></p>
+                        <p> <span id="DTeacher" class="left"></span><strong class="right">Examiner Teacher ممتحن استاذ : </strong></p>
                         <hr class="m-0 p-0" />
-                        <p> <span id="DSubject" class="left"></span><strong class="right">مضمون  : </strong></p>
+                        <p> <span id="DSubject" class="left"></span><strong class="right">Subject مضمون  : </strong></p>
                         <hr class="m-0 p-0" />
-                        <p> <span id="DClass" class="left"></span><strong class="right">صنف : </strong></p>
+                        <p> <span id="DClass" class="left"></span><strong class="right">Class صنف : </strong></p>
                         <hr class="m-0 p-0" />
-                        <p> <span id="DTotalScore" class="left"></span><strong class="right">ټولی نمري : </strong></p>
+                        <p> <span id="DTotalScore" class="left"></span><strong class="right">Total Marks ټولی نمري : </strong></p>
                         <hr class="m-0 p-0" />
-                        <p><span id="DAbtainScore" class="left"></span><strong class="right">اخستل شوی نمري :</strong> </p>
+                        <p><span id="DAbtainScore" class="left"></span><strong class="right">Obtained Marks اخستل شوی نمري :</strong> </p>
                     </div>
                     <div class="col-6 card p-3 shadow">
 
-                        <p><span id="DExamType" class="left"></span><strong class="right">امتحان ډول :</strong> </p>
+                        <p><span id="DExamType" class="left"></span><strong class="right">Exam Type امتحان ډول :</strong> </p>
                         <hr class="m-0 p-0" />
-                        <p><span id="DDate" class="left"></span><strong class="right">تاریخ :</strong> </p>
+                        <p><span id="DDate" class="left"></span><strong class="right">Date تاریخ :</strong> </p>
                         <hr class="m-0 p-0" />
-                        <p> <span id="DwrittenTest" class="left"></span><strong class="right">تحریری نمري : </strong></p>
+                        <p> <span id="DwrittenTest" class="left"></span><strong class="right">Written Marks تحریری نمري : </strong></p>
                         <hr class="m-0 p-0" />
-                        <p><span id="DverbalTest" class="left"></span><strong class="right"> تقریری نمري :</strong> </p>
+                        <p><span id="DverbalTest" class="left"></span><strong class="right">Verbal Marks تقریری نمري :</strong> </p>
                         <hr class="m-0 p-0" />
-                        <p> <span id="DClassWork" class="left"></span><strong class="right"> صنفی لیاقت : </strong></p>
+                        <p> <span id="DClassWork" class="left"></span><strong class="right">Class Ability صنفی لیاقت : </strong></p>
                         <hr class="m-0 p-0" />
-                        <p><span id="DhomeWork" class="left"></span><strong class="right">  کورنی کار :</strong> </p>
+                        <p><span id="DhomeWork" class="left"></span><strong class="right">Home Work کورنی کار :</strong> </p>
 
                     </div>
 
@@ -183,7 +183,7 @@
             <div class="modal-header bg-danger text-white d-flex justify-content-between align-content-center border-dark">
                 <img src="~/Content/image/logo1.jpg" style="width:40px;border-radius:50%;" />
 
-                <h4 class="modal-title text-center px-2"><b><span id="header"></span>امتحان معلومات</b></h4>
+                <h4 class="modal-title text-center px-2"><b><span id="header"></span>Exam Information امتحان معلومات</b></h4>
 
 
             </div>
@@ -192,31 +192,31 @@
 
                     <div class="col-6 card p-3 shadow">
 
-                        <p><span id="Student" class="left"></span><strong class="right">شاګرد نوم :</strong> </p>
+                        <p><span id="Student" class="left"></span><strong class="right">Student Name شاګرد نوم :</strong> </p>
                         <hr class="m-0 p-0" />
-                        <p> <span id="Teacher" class="left"></span><strong class="right">ممتحن استاذ : </strong></p>
+                        <p> <span id="Teacher" class="left"></span><strong class="right">Examiner Teacher ممتحن استاذ : </strong></p>
                         <hr class="m-0 p-0" />
-                        <p> <span id="subject" class="left"></span><strong class="right">مضمون : </strong></p>
+                        <p> <span id="subject" class="left"></span><strong class="right">Subject مضمون : </strong></p>
                         <hr class="m-0 p-0" />
-                        <p> <span id="Class" class="left"></span><strong class="right">صنف : </strong></p>
+                        <p> <span id="Class" class="left"></span><strong class="right">Class صنف : </strong></p>
                         <hr class="m-0 p-0" />
-                        <p> <span id="TotalScore" class="left"></span><strong class="right">ټولی نمري : </strong></p>
+                        <p> <span id="TotalScore" class="left"></span><strong class="right">Total Marks ټولی نمري : </strong></p>
                         <hr class="m-0 p-0" />
-                        <p><span id="AbtainScore" class="left"></span><strong class="right">اخستل شوی نمري :</strong> </p>
+                        <p><span id="AbtainScore" class="left"></span><strong class="right">Obtained Marks اخستل شوی نمري :</strong> </p>
 
                     </div>
                     <div class="col-6 card p-3 shadow">
-                        <p><span id="ExamType" class="left"></span><strong class="right"> امتحان ډول:</strong> </p>
+                        <p><span id="ExamType" class="left"></span><strong class="right">Exam Type امتحان ډول:</strong> </p>
                         <hr class="m-0 p-0" />
-                        <p><span id="Date" class="left"></span><strong class="right">تاریخ :</strong> </p>
+                        <p><span id="Date" class="left"></span><strong class="right">Date تاریخ :</strong> </p>
                         <hr class="m-0 p-0" />
-                        <p> <span id="writtenTest" class="left"></span><strong class="right">تحریری نمري : </strong></p>
+                        <p> <span id="writtenTest" class="left"></span><strong class="right">Written Marks تحریری نمري : </strong></p>
                         <hr class="m-0 p-0" />
-                        <p><span id="verbalTest" class="left"></span><strong class="right"> تقریری نمري :</strong> </p>
+                        <p><span id="verbalTest" class="left"></span><strong class="right">Verbal Marks تقریری نمري :</strong> </p>
                         <hr class="m-0 p-0" />
-                        <p> <span id="ClassWork" class="left"></span><strong class="right"> صنفی لیاقت : </strong></p>
+                        <p> <span id="ClassWork" class="left"></span><strong class="right">Class Ability صنفی لیاقت : </strong></p>
                         <hr class="m-0 p-0" />
-                        <p><span id="homeWork" class="left"></span><strong class="right">  کورنی کار :</strong> </p>
+                        <p><span id="homeWork" class="left"></span><strong class="right">Home Work کورنی کار :</strong> </p>
 
                     </div>
                 </div>
@@ -226,7 +226,7 @@
             </div>
 
             <div class="modal-footer bg-danger text-white">
-                <button type="button" class="btn btn-secondary pe-2" data-bs-dismiss="modal">شا تګ</button>
+                <button type="button" class="btn btn-secondary pe-2" data-bs-dismiss="modal">Going back شا تګ</button>
             </div>
         </div>
     </div>
