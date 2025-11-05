@@ -4,7 +4,7 @@
     <div class="container-fluid p-2">
         <div class="row">
             <div class="d-flex justify-content-md-between pt-2 pb-4">
-                <h4><b>د امتحاناتو معلومات نوی کول</b></h4>
+                <h4><b>Get new Exam Information د امتحاناتو معلومات نوی کول</b></h4>
                 <h4><b>Edition of  Exam Information</b></h4>
 
             </div>
@@ -19,35 +19,35 @@
                     <div class="col-4">
                         @Html.HiddenFor(model => model.ExamID, new { @type = "hidden" })
                         <div class="form-group">
-                            <p class="control-label me-3  mb-0">امتحان ډول</p>
+                            <p class="control-label me-3  mb-0">Exam Type امتحان ډول</p>
                             <div class="col-md-12">
                                 <select type="text" name="ExamType" id="ExamType" class="form-control" onchange="GetVlaue(this)" style="width:100%">
                                  
                                     <option value="@Model.ExamType ">@Model.ExamType </option>
-                                    <option value="کلنۍ">کلنۍ</option>
-                                    <option value="څلورنیمه">څلورنیمه</option>
-                                    <option value="ټیست">ټیست</option>
+                                    <option value="کلنۍ Yearly">کلنۍ</option>
+                                    <option value="Fourth_Month څلورنیمه">څلورنیمه</option>
+                                    <option value="Test ټیست">ټیست</option>
                                 </select>
                             </div>
 
                         </div>
 
                         <div class="form-group">
-                            <p class="control-label me-3  mb-0">شاکرد</p>
+                            <p class="control-label me-3  mb-0">Student شاکرد</p>
                             <div class="col-md-12">
                                 @Html.DropDownList("StudentID", null, htmlAttributes: new { @id = "StudentID", @class = "form-control" })
 
                             </div>
                         </div>
                         <div class="form-group">
-                            <p class="control-label me-3  mb-0">استاذ</p>
+                            <p class="control-label me-3  mb-0">Teacher استاذ</p>
                             <div class="col-md-12">
                                 @Html.DropDownList("StaffID", null, htmlAttributes: new { @id = "StaffID", @class = "form-control" })
 
                             </div>
                         </div>
                         <div class="form-group">
-                            <p class="control-label me-3  mb-0">مضمون</p>
+                            <p class="control-label me-3  mb-0">Subject مضمون</p>
                             <div class="col-md-12">
                                 @*@Html.DropDownList("SubjectID", null, htmlAttributes: new {@id= "SubjectID" ,@class = "form-control" })*@
                                 @Html.DropDownList("SubjectId", ViewBag.sub as SelectList, "select subject", new { @class = "form-control" })
@@ -57,28 +57,28 @@
                     </div>
                     <div class="col-4">
                         <div class="form-group">
-                            <p class="control-label me-3  mb-0">صنف</p>
+                            <p class="control-label me-3  mb-0">Class صنف</p>
                             <div class="col-md-12">
                                 @Html.DropDownList("ClassID", null, htmlAttributes: new { @id = "ClassID", @class = "form-control" })
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <p class="control-label me-3  mb-0">تاریخ</p>
+                            <p class="control-label me-3  mb-0">Date تاریخ</p>
                             <div class="col-md-12">
                                
                                 <input type="text" value="@ViewBag.Date" name="Date" id="Date" class="form-control" />
                             </div>
                         </div>
                         <div class="form-group">
-                            <p class="control-label me-3  mb-0"> پوره نمری</p>
+                            <p class="control-label me-3  mb-0">Total Marks پوره نمری</p>
                             <div class="col-md-12">
                                 @Html.EditorFor(model => model.TotalScore, new { htmlAttributes = new { @id = "TotalScore", @class = "form-control", } })
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <p class="control-label me-3 mb-0">  تحریری نمری</p>
+                            <p class="control-label me-3 mb-0">Written_Marks تحریری نمری</p>
                             <div class="col-md-12">
                                 @Html.EditorFor(model => model.writtenTest, new { htmlAttributes = new { @id = "writtenTest", @class = "form-control", @style = "height:40px" } })
 
@@ -93,7 +93,7 @@
                     <div class="col-4 ">
 
                         <div class="form-group">
-                            <p class="control-label me-3  mb-0">تقریری نمری</p>
+                            <p class="control-label me-3  mb-0">Verbal Marks تقریری نمری</p>
                             <div class="col-md-12">
 
                                 @Html.EditorFor(model => model.verbalTest, new { htmlAttributes = new { @id = "verbalTest", @class = "form-control", @style = "height:40px" } })
@@ -102,7 +102,7 @@
                         </div>
 
                         <div class="form-group">
-                            <p class="control-label me-3  mb-0">صنفی لیاقت</p>
+                            <p class="control-label me-3  mb-0">Class Ability صنفی لیاقت</p>
                             <div class="col-md-12">
                               
                                 @Html.EditorFor(model => model.ClassWork, new { htmlAttributes = new { @id = "ClassWork", @class = "form-control", @style = "height:40px" } })
@@ -110,7 +110,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <p class="control-label me-3  mb-0">  کورنی کار</p>
+                            <p class="control-label me-3  mb-0">Home_Work کورنی کار</p>
                             <div class="col-md-12">
                             
                                 @Html.EditorFor(model => model.homeWork, new { htmlAttributes = new { @id = "homeWork", @class = "form-control", @style = "height:40px" } })
@@ -119,9 +119,9 @@
                         </div>
 
                         <div class="form-group">
-                            <p class="control-label me-3 mb-0"> اخیستل شوی نمری</p>
+                            <p class="control-label me-3 mb-0">Obtained Marks اخیستل شوی نمری</p>
                             <div class="col-md-12">
-                                @Html.EditorFor(model => model.AbtainScore, new { htmlAttributes = new { @id = "AbtainScore", @class = "form-control", @style = "height:40px" } })
+                                @Html.EditorFor(model => model.AbtainScore, new { htmlAttributes = new { @id = "ObtainedScore", @class = "form-control", @style = "height:40px" } })
 
                             </div>
                         </div>
@@ -137,7 +137,7 @@
                     <div class="form-group">
                         <div class="btn-group  col-12 ">
                             <a href="@Url.Action("Index","ExamTables")" class="btn t btn-outline-success border-bottom-success">  شاتګ</a>
-                            <button type="submit" class="btn btn-primary"> نوی کړئ</button>
+                            <button type="submit" class="btn btn-primary">Get New نوی کړئ</button>
                         </div>
                     </div>
                 </div>
