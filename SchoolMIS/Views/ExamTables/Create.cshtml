@@ -32,7 +32,7 @@
                         </div>
 
                         <div class="form-group">
-                            <p class="control-label me-3  mb-0">شاکرد</p>
+                            <p class="control-label me-3  mb-0">Student شاکرد</p>
                             <div class="col-md-12">
                                 @Html.DropDownList("StudentID", null, htmlAttributes: new { @id = "StudentID", @class = "form-control" })
 
@@ -118,7 +118,7 @@
                         </div>
 
                         <div class="form-group">
-                            <p class="control-label me-3 mb-0">Obtain Marks اخیستل شوی نمری</p>
+                            <p class="control-label me-3 mb-0">Obtained Marks اخیستل شوی نمری</p>
                             <div class="col-md-12">
                                 <input type="text" name="AbtainScore" id="AbtainScore" class="form-control" onclick="GetMarks(this)" style="width:100% ;height:40px" />
 
@@ -135,8 +135,8 @@
                 <div class="row mt-3">
                     <div class="form-group">
                         <div class="btn-group  col-12 ">
-                            <a href="@Url.Action("Index","ExamTables")" class="btn t btn-outline-success border-bottom-success">  شاتګ</a>
-                            <button type="submit" class="btn btn-primary"> اضافه کړئ</button>
+                            <a href="@Url.Action("Index","ExamTables")" class="btn t btn-outline-success border-bottom-success">Going back شاتګ</a>
+                            <button type="submit" class="btn btn-primary">Add اضافه کړئ</button>
                         </div>
                     </div>
                 </div>
@@ -150,13 +150,13 @@
                 <table class="table table-bordered table-hover">
                     <thead class="table-active">
                         <tr>
-                            <th>اساس</th>
-                            <th>شاګرد</th>
-                            <th>پلار نوم</th>
-                            <th>صنف</th>
-                            <th>شمیره</th>
-                            <th> غیر حاضری ٪ </th>
-                            <th>تصویر</th>
+                            <th>Serial اساس</th>
+                            <th>Student شاګرد</th>
+                            <th>Fater_Name پلار نوم</th>
+                            <th>Class صنف</th>
+                            <th>Number شمیره</th>
+                            <th>Absenty % غیر حاضری ٪ </th>
+                            <th>Photo تصویر</th>
 
 
                         </tr>
@@ -234,7 +234,7 @@
             success: function (response) {
 
                 if (response != null) {
-                    $("#ClassID").empty().append($('<option value=""> ټولګی وټاکئ</option>'));
+                    $("#ClassID").empty().append($('<option value="">Select Class ټولګی وټاکئ</option>'));
                     $.each(response.data.ClassName, function (i, item) {
                         $("#ClassID").append($("<option>", {
                             value: item.Value,
@@ -244,7 +244,7 @@
                 } else {
                     $("#SubjectID").append($("<option>", {
 
-                        text: "شاګردان پیدا نشو"
+                        text: "Students have not found شاګردان پیدا نشو"
                     }));
                 }
 
@@ -282,7 +282,7 @@
                data: { id: staffID },
                success: function (response) {
 
-                   $("#SubjectID").empty().append($('<option value=""> مضمون وټاکئ</option>'));
+                   $("#SubjectID").empty().append($('<option value="">Select Subject مضمون وټاکئ</option>'));
                    if (response != null) {
 
                        $.each(response.data.subject  , function (i, item) {
@@ -294,7 +294,7 @@
                    } else {
                        $("#SubjectID").append($("<option>", {
 
-                           text: "شاګردان پیدا نشو"
+                           text: "Students have not found شاګردان پیدا نشو"
                        }));
                    }
 
@@ -399,12 +399,12 @@
 
     });
         function GetVlaue() {
-            if ($("#ExamType").val() == "کلنۍ") {
+            if ($("#ExamType").val() == "Yearly کلنۍ") {
                 $("#TotalScore").val(60).text(60)
                 $("#ClassWork").val(3).text(3)
                 $("#homeWork").val(3).text(3)
 
-            } else if ($("#ExamType").val() == "څلورنیمه") {
+            } else if ($("#ExamType").val() == "Fourth_Month څلورنیمه") {
                 $("#TotalScore").val(40).text(40)
                 $("#ClassWork").val(2).text(2)
                 $("#homeWork").val(2).text(2)
